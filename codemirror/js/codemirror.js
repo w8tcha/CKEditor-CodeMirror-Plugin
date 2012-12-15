@@ -3015,7 +3015,7 @@ window.CodeMirror = (function() {
     cm.getTextArea = function() { return textarea; };
     cm.toTextArea = function() {
       save();
-      textarea.parentNode.removeChild(cm.getWrapperElement());
+	  textarea.parentNode.removeChild(cm.getWrapperElement());
       textarea.style.display = "";
       if (textarea.form) {
         off(textarea.form, "submit", save);
