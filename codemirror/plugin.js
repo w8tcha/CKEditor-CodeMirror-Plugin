@@ -10,7 +10,6 @@
 (function () {
     CKEDITOR.plugins.add('codemirror', {
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh',
-		icons: 'source,source-rtl',
 		init: function (editor) {
 
             var rootPath = this.path;
@@ -31,19 +30,16 @@
                 CKEDITOR.scriptLoader.load([rootPath + 'js/xml.js', rootPath + 'js/javascript.js', rootPath + 'js/css.js', rootPath + 'js/htmlmixed.js']);
             });
 
-
-
-
             // Source mode isn't available in inline mode yet.
             if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) return;
 
             var sourcearea = CKEDITOR.plugins.sourcearea;
-
-            editor.addMode('source', function (callback) {
+			
+			editor.addMode('source', function (callback) {
                 var contentsSpace = editor.ui.space('contents'),
                     textarea = contentsSpace.getDocument().createElement('textarea');
-
-                textarea.setStyles(
+				
+				textarea.setStyles(
                 CKEDITOR.tools.extend({
                     // IE7 has overflow the <textarea> from wrapping table cell.
                     width: CKEDITOR.env.ie7Compat ? '99%' : '100%',
@@ -67,23 +63,26 @@
 
                 editor.ui.space('contents').append(textarea);
 
-                editable = editor.editable(new sourceEditable(editor, textarea));
-
+                window["editable_" +  editor.id] = editor.editable(new sourceEditable(editor, textarea));
+				
                 // Fill the textarea with the current editor data.
-                editable.setData(editor.getData(1));
-
-                editor.fire('ariaWidget', this);
+                window["editable_" +  editor.id].setData(editor.getData(1));
+				
+				window["editable_" +  editor.id].editorID = editor.id;
+				
+				editor.fire('ariaWidget', this);
 
                 var delay;
 
-                var sourceAreaElement = editable,
+                var sourceAreaElement = window["editable_" +  editor.id],
                     holderElement = sourceAreaElement.getParent();
 
                 var holderHeight = holderElement.$.clientHeight + 'px';
                 var holderWidth = holderElement.$.clientWidth + 'px';
-
-
-                codemirror = CodeMirror.fromTextArea(sourceAreaElement.$, {
+				
+                codemirror = editor.id;
+ 
+				window["codemirror_" +  editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: 'text/html',
                     matchBrackets: true,
                     workDelay: 300,
@@ -94,12 +93,12 @@
                     onChange: function () {
                         clearTimeout(delay);
                         delay = setTimeout(function () {
-                            codemirror.save();
+                            window["codemirror_" +  editor.id].save();
                         }, 300);
                     }
                 });
 
-                codemirror.setSize(holderWidth, holderHeight);
+                window["codemirror_" +  editor.id].setSize(holderWidth, holderHeight);
 
                 callback();
             });
@@ -119,13 +118,13 @@
             });
 
             editor.on('resize', function () {
-                if (editable) {
-					var holderElement = editable.getParent();
+                if (window["editable_" +  editor.id]) {
+					var holderElement = window["editable_" +  editor.id].getParent();
 
                 	var holderHeight = holderElement.$.clientHeight + 'px';
                 	var holderWidth = holderElement.$.clientWidth + 'px';
-
-                	codemirror.setSize(holderWidth, holderHeight);
+					
+					window["codemirror_" +  editor.id].setSize(holderWidth, holderHeight);
 				}
             });
         }
@@ -138,11 +137,10 @@
                 this.setValue(data);
                 this.editor.fire('dataReady');
             },
-
-            getData: function () {
+			
+			getData: function () {
                 return this.getValue();
             },
-
             // Insertions are not supported in source editable.
             insertHtml: function () {},
             insertElement: function () {},
@@ -152,9 +150,13 @@
             setReadOnly: function (isReadOnly) {
                 this[(isReadOnly ? 'set' : 'remove') + 'Attribute']('readOnly', 'readonly');
             },
+			editorID : null,
+			
 
             detach: function () {
-                codemirror.toTextArea();
+				
+				window["codemirror_" +  this.editorID].toTextArea();
+				
                 sourceEditable.baseProto.detach.call(this);
                 this.clearCustomData();
                 this.remove();
@@ -163,9 +165,6 @@
         }
     });
 })();
-
-var codemirror;
-var editable;
 
 CKEDITOR.plugins.sourcearea = {
     commands: {
@@ -179,6 +178,7 @@ CKEDITOR.plugins.sourcearea = {
             exec: function (editor) {
                 if (editor.mode == 'wysiwyg') editor.fire('saveSnapshot');
                 editor.getCommand('source').setState(CKEDITOR.TRISTATE_DISABLED);
+				
                 editor.setMode(editor.mode == 'source' ? 'wysiwyg' : 'source');
             },
 
