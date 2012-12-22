@@ -1,18 +1,8 @@
 /* BASICS */
-@font-face {
-    font-family: 'source_code_proregular';
-    src: url('sourcecodepro-regular.eot');
-    src: url('sourcecodepro-regular.eot?#iefix') format('embedded-opentype'),
-         url('sourcecodepro-regular.woff') format('woff'),
-         url('sourcecodepro-regular.ttf') format('truetype'),
-         url('sourcecodepro-regular.svg#source_code_proregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font-family: 'source_code_proregular',monospace;
+  font-family: monospace;
   height: 300px;
 }
 .CodeMirror-scroll {
@@ -27,7 +17,6 @@
 }
 .CodeMirror pre {
   padding: 0 4px; /* Horizontal padding of content */
-  font-family: 'source_code_proregular',monospace;
 }
 
 .CodeMirror-scrollbar-filler {

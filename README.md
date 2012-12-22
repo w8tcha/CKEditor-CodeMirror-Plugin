@@ -25,5 +25,7 @@ Installation
 
 ````
 config.extraPlugins = '[ codemirror ]';
-config.codemirror_theme : 'rubyblue';
+
+// If you want to use a theme set the theme here 
+// config.codemirror_theme : 'rubyblue';
 ````
