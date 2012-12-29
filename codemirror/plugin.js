@@ -90,13 +90,14 @@
                     lineNumbers: true,
                     lineWrapping: true,
 					theme: codeMirrorTheme,
-                    onChange: function () {
-                        clearTimeout(delay);
+                });
+				
+				window["codemirror_" +  editor.id].on("change", function(cm, change) {
+					clearTimeout(delay);
                         delay = setTimeout(function () {
                             window["codemirror_" +  editor.id].save();
                         }, 300);
-                    }
-                });
+				});
 
                 window["codemirror_" +  editor.id].setSize(holderWidth, holderHeight);
 
