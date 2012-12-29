@@ -61,7 +61,7 @@
 .CodeMirror pre.CodeMirror-cursor.CodeMirror-overwrite {}
 
 /* DEFAULT THEME */
-
+.cm-s-default { font:13px/1.4em monospace; }
 .cm-s-default .cm-keyword {color: #708;}
 .cm-s-default .cm-atom {color: #219;}
 .cm-s-default .cm-number {color: #164;}
