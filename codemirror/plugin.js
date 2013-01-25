@@ -19,7 +19,7 @@
 
             var codeMirrorTheme = config.codemirror_theme != null ? config.codemirror_theme : 'default';
 			
-			var autoFormatOnStart = config.autoFormatOnStart != null ? config.autoFormatOnStart : true;
+            var autoFormatOnStart = config.codemirror_autoFormatOnStart != null ? config.codemirror_autoFormatOnStart : true;
 
             CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.css');
 
