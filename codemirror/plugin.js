@@ -18,6 +18,8 @@
             var config = editor.config;
 
             var codeMirrorTheme = config.codemirror_theme != null ? config.codemirror_theme : 'default';
+			
+			var autoFormatOnStart = config.autoFormatOnStart != null ? config.autoFormatOnStart : true;
 
             CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.css');
 
@@ -26,7 +28,7 @@
                 CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + codeMirrorTheme + '.css');
             }
             CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.js', function (success) {
-				CKEDITOR.scriptLoader.load([rootPath + 'js/xml.js', rootPath + 'js/javascript.js', rootPath + 'js/css.js', rootPath + 'js/htmlmixed.js']);
+				CKEDITOR.scriptLoader.load([rootPath + 'js/xml.js', rootPath + 'js/javascript.js', rootPath + 'js/css.js', rootPath + 'js/htmlmixed.js', rootPath + 'js/addon/format/formatting.js']);
             });
 
             // Source mode isn't available in inline mode yet.
@@ -37,7 +39,7 @@
 			editor.addMode('source', function (callback) {
 			
 			if (typeof (CodeMirror) == 'undefined') {
-				CKEDITOR.scriptLoader.load([rootPath + 'js/codemirror.js',rootPath + 'js/xml.js', rootPath + 'js/javascript.js', rootPath + 'js/css.js', rootPath + 'js/htmlmixed.js'], function (success) {
+				CKEDITOR.scriptLoader.load([rootPath + 'js/codemirror.js',rootPath + 'js/xml.js', rootPath + 'js/javascript.js', rootPath + 'js/css.js', rootPath + 'js/htmlmixed.js', rootPath + 'js/addon/format/formatting.js'], function (success) {
 					loadCodeMirror (editor);
 					callback();
 				});
@@ -87,8 +89,8 @@
 				window["editable_" +  editor.id].editorID = editor.id;
 				
 				editor.fire('ariaWidget', this);
-
-                var delay;
+				
+				var delay;
 
                 var sourceAreaElement = window["editable_" +  editor.id],
                     holderElement = sourceAreaElement.getParent();
@@ -106,7 +108,31 @@
                     lineNumbers: true,
                     lineWrapping: true,
 					theme: codeMirrorTheme,
+					onKeyEvent : function (codeMirror_Editor, evt) {
+						if (evt.type=="keydown" && evt.ctrlKey && evt.keyCode == 75 && !evt.shiftKey) {
+								var range = getSelectedRange();
+								codeMirror_Editor.commentRange(true, range.from, range.to);
+						}
+						else if (evt.type=="keydown" && evt.ctrlKey && evt.keyCode == 75 && evt.shiftKey) {
+								var range = getSelectedRange();
+								codeMirror_Editor.commentRange(false, range.from, range.to);
+							
+						}
+						else if (evt.type=="keydown" && evt.ctrlKey && evt.keyCode == 70 && evt.shiftKey) {
+								var range = getSelectedRange();
+								codeMirror_Editor.autoFormatRange(range.from, range.to, false);
+							
+						}
+					}
                 });
+				
+				if (autoFormatOnStart) {
+					window["codemirror_" +  editor.id].autoFormatRange({line: 0, ch : 0}, {line:window["codemirror_" +  editor.id].lineCount(), ch : 0}, true);
+				}
+			
+                function getSelectedRange() {
+					return { from: window["codemirror_" +  editor.id].getCursor(true), to: window["codemirror_" +  editor.id].getCursor(false) };
+				}
 				
 				window["codemirror_" +  editor.id].on("change", function(cm, change) {
 					clearTimeout(delay);
@@ -127,8 +153,8 @@
                     toolbar: 'mode,10'
                 });
             }
-
-            editor.on('mode', function () {
+			
+			editor.on('mode', function () {
 				editor.getCommand('source').setState(editor.mode == 'source' ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
             });
 
