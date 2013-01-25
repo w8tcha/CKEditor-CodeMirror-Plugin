@@ -3,6 +3,11 @@ CKEditor-CodeMirror-Plugin
 
 Syntax Highlighting for the CKEditor (Source View) with the CodeMirror Plugin
 
+### Available Shortcuts
+* 'Ctrl-K' to comment the currently selected text
+* New Command 'Ctrl-Shift-K' to uncomment currently selected text
+* New Command 'Ctrl-Shift-F' to autoformat currely selected text
+
 The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 
 ![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorSourceView.png)
@@ -28,4 +33,7 @@ config.extraPlugins = '[ codemirror ]';
 
 // If you want to use a theme set the theme here 
 // config.codemirror_theme : 'rubyblue';
+
+// Extra Option to disable/enable Automatic Code Formatting every time the source view is opened (By Default its enabled)
+// config.codemirror_autoFormatOnStart : true; 
 ````
