@@ -5,8 +5,8 @@ Syntax Highlighting for the CKEditor (Source View) with the CodeMirror Plugin
 
 ### Available Shortcuts
 * 'Ctrl-K' to comment the currently selected text
-* New Command 'Ctrl-Shift-K' to uncomment currently selected text
-* New Command 'Ctrl-Shift-F' to autoformat currely selected text
+* 'Ctrl-Shift-K' to uncomment currently selected text
+* 'Ctrl-Shift-F' to autoformat currely selected text
 
 The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 
