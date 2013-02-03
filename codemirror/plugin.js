@@ -125,9 +125,9 @@
                 var delay;
                 var sourceAreaElement = window["editable_" + editor.id],
                     holderElement = sourceAreaElement.getParent();
-                var holderHeight = holderElement.$.clientHeight + 'px';
-                var holderWidth = holderElement.$.clientWidth + 'px';
+
                 codemirror = editor.id;
+								
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: 'text/html',
                     matchBrackets: config.matchBrackets,
@@ -166,6 +166,10 @@
                         }
                     }
                 });
+				
+				var holderHeight = holderElement.$.clientHeight + 'px';
+                var holderWidth = holderElement.$.clientWidth + 'px';
+				
                 // Store config so we can access it within commands etc.
                 window["codemirror_" + editor.id].config = config;
                 if (config.autoFormatOnStart) {
