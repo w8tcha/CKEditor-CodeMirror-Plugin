@@ -6,7 +6,7 @@ Syntax Highlighting for the CKEditor (Source View) with the CodeMirror Plugin
 ### Available Shortcuts
 * 'Ctrl-K' to comment the currently selected text
 * 'Ctrl-Shift-K' to uncomment currently selected text
-* 'Ctrl-Alt-K' to autoformat currely selected text
+* 'Ctrl-Alt-K' to auto format currently selected text
 * 'Ctrl-F' to perform a search
 * 'Ctrl-G' to find next
 * 'Ctrl-Shift-G' to find previous
@@ -19,7 +19,7 @@ The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 
 
 
-This Plugin uses the jquery-oembed-all Plugin  located at https://github.com/starfishmod/jquery-oembed-all.
+This Plugin uses the jquery-oembed-all Plugin located at https://github.com/starfishmod/jquery-oembed-all.
 
 
 
