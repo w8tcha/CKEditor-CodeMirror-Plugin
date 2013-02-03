@@ -4,7 +4,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'codemirror', 'fo', {
 	toolbar: 'Kelda',
-	autoFormatl: 'AutoFormat',
+	autoFormat: 'Format Selection',
 	commentSelectedRange: 'Comment Selection',
 	uncommentSelectedRange: 'Uncomment Selection'
 });
