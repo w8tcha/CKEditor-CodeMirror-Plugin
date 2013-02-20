@@ -3,7 +3,6 @@
 *  "sourcearea" editing mode, which displays the xhtml source code with
 *  syntax highlight and line numbers.
 * Licensed under the MIT license
-* jQuery Embed Plugin Embeds: http://code.google.com/p/jquery-oembed/ (MIT License)
 * Plugin for: http://ckeditor.com/license (GPL/LGPL/MPL: http://ckeditor.com/license)
 */
 

@@ -18,12 +18,6 @@ The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 ![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorSourceView.png)
 
 
-
-This Plugin uses the jquery-oembed-all Plugin located at https://github.com/starfishmod/jquery-oembed-all.
-
-
-
-
 ####License
 
 Licensed under the terms of the MIT License.
