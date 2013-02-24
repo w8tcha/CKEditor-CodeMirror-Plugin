@@ -23,7 +23,6 @@
                 enableCodeFolding: true,
                 enableCodeFormatting: true,
                 autoFormatOnStart: true,
-                autoFormatOnModeChange: true,
                 autoFormatOnUncomment: true,
                 styleActiveLine: true,
                 highlightSelectionMatches: true,
