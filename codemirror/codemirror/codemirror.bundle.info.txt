@@ -1,6 +1,6 @@
 Using CodeMirror 3.1.
 
-codemirror.standart.min.js:
+codemirror.bundle.min.js:
 	codemirror.js
 	mode/css/css.js
 	mode/htmlmixed/htmlmixed.js
@@ -18,7 +18,7 @@ codemirror.standart.min.js:
 	addon/search/match-highlighter.js
 	addon/selection/active-line.js
 
-codemirror.standart.min.css:
+codemirror.bundle.min.css:
 	codemirror.css
 	addon/dialog/dialog.css
 	./codemirror.extra.css
