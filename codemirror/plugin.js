@@ -3,7 +3,6 @@
 *  "sourcearea" editing mode, which displays the xhtml source code with
 *  syntax highlight and line numbers.
 * Licensed under the MIT license
-* jQuery Embed Plugin Embeds: http://code.google.com/p/jquery-oembed/ (MIT License)
 * Plugin for: http://ckeditor.com/license (GPL/LGPL/MPL: http://ckeditor.com/license)
 */
 
@@ -15,19 +14,18 @@
             var rootPath = this.path;
             // Default Config
             var defaultConfig = {
+                autoLoadCodemirror: true,
                 theme: 'default',
                 matchBrackets: true,
                 lineNumbers: true,
                 lineWrapping: true,
                 autoCloseTags: false,
-                enableSearchTools: true,
                 enableCodeFolding: true,
                 enableCodeFormatting: true,
                 autoFormatOnStart: true,
-                autoFormatOnModeChange: true,
                 autoFormatOnUncomment: true,
-                highlightActiveLine: true,
-                highlightMatches: true,
+                styleActiveLine: true,
+                highlightSelectionMatches: true,
                 showTabs: false,
                 showFormatButton: true,
                 showCommentButton: true,
@@ -43,57 +41,31 @@
             if (editor.config.codemirror_autoFormatOnStart) {
                 config.autoFormatOnStart = editor.config.codemirror_autoFormatOnStart;
             }
-            CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.css');
-            if (config.theme.length && config.theme != 'default') {
-                CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+            if (editor.config.highlightMatches) {
+                config.highlightSelectionMatches = editor.config.highlightMatches;
             }
-            if (config.showTabs) {
-                CKEDITOR.document.appendStyleSheet(rootPath + 'js/addon/edit/showtabs.css');
+            if (editor.config.highlightActiveLine) {
+                config.styleActiveLine = editor.config.highlightActiveLine;
             }
-            if (config.enableSearchTools) {
-                CKEDITOR.document.appendStyleSheet(rootPath + 'js/addon/dialog/dialog.css');
-            }
-            CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.js', function (success) {
-                CKEDITOR.scriptLoader.load(getCodeMirrorScripts());
-            });
+            if (config.autoLoadCodemirror) {
+              CKEDITOR.scriptLoader.load(rootPath + 'codemirror/codemirror.bundle.min.js');
+              CKEDITOR.document.appendStyleSheet(rootPath + 'codemirror/codemirror.bundle.min.css');
+              if (config.theme.length && config.theme != 'default') {
+                  CKEDITOR.document.appendStyleSheet(rootPath + 'codemirror/theme/' + config.theme + '.css');
+              }
+              if (config.showTabs) {
+                  CKEDITOR.document.appendStyleSheet(rootPath + 'codemirror/codemirror.showtabs.css');
+              }
+	    }
             // Source mode isn't available in inline mode yet.
             if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
                 return;
             }
             var sourcearea = CKEDITOR.plugins.sourcearea;
             editor.addMode('source', function (callback) {
-                if (typeof (CodeMirror) == 'undefined') {
-                    CKEDITOR.scriptLoader.load([rootPath + 'js/codemirror.js'].concat(getCodeMirrorScripts()), function (success) {
-                        loadCodeMirror(editor);
-                        callback();
-                    });
-                } else {
-                    loadCodeMirror(editor);
-                    callback();
-                }
+                  loadCodeMirror(editor);
+                  callback();
             });
-
-            function getCodeMirrorScripts() {
-                var scriptFiles = [rootPath + 'js/xml.js', rootPath + 'js/javascript.js', rootPath + 'js/css.js', rootPath + 'js/htmlmixed.js'];
-                if (config.autoCloseTags) {
-                    scriptFiles.push(rootPath + 'js/addon/edit/closetag.js');
-                }
-                if (config.highlightMatches) {
-                    scriptFiles.push(rootPath + 'js/addon/edit/match-highlighter.js');
-                }
-                if (config.enableSearchTools) {
-                    scriptFiles.push(rootPath + 'js/addon/dialog/dialog.js');
-                    scriptFiles.push(rootPath + 'js/addon/search/search.js');
-                    scriptFiles.push(rootPath + 'js/addon/search/searchcursor.js');
-                }
-                if (config.enableCodeFolding) {
-                    scriptFiles.push(rootPath + 'js/addon/edit/foldcode.js');
-                }
-                if (config.enableCodeFormatting) {
-                    scriptFiles.push(rootPath + 'js/addon/format/formatting.js');
-                }
-                return scriptFiles;
-            }
 
             function loadCodeMirror(editor) {
                 var contentsSpace = editor.ui.space('contents'),
@@ -136,6 +108,8 @@
                     lineNumbers: config.lineNumbers,
                     lineWrapping: config.lineWrapping,
                     autoCloseTags: config.autoCloseTags,
+                    styleActiveLine: config.styleActiveLine,
+                    highlightSelectionMatches: config.highlightSelectionMatches,
                     theme: config.theme,
                     onKeyEvent: function (codeMirror_Editor, evt) {
                         if (config.enableCodeFormatting) {
@@ -180,6 +154,7 @@
                         line: window["codemirror_" + editor.id].lineCount(),
                         ch: 0
                     }, true);
+                    window["codemirror_" + editor.id].setSelection({line:0, ch:0});
                 }
 
                 function getSelectedRange() {
@@ -198,23 +173,6 @@
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
                 if (config.lineNumbers && config.enableCodeFolding) {
                     window["codemirror_" + editor.id].on("gutterClick", CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder));
-                }
-                // Highlight Active Line
-                if (config.highlightActiveLine) {
-                    window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
-                    window["codemirror_" + editor.id].on("cursorActivity", function () {
-                        var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
-                        if (cur != window["codemirror_" + editor.id].hlLine) {
-                            window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
-                            window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
-                        }
-                    });
-                }
-                // Highlight Matches
-                if (config.highlightMatches) {
-                    window["codemirror_" + editor.id].on("cursorActivity", function () {
-                        window["codemirror_" + editor.id].matchHighlight("CodeMirror-selected");
-                    });
                 }
             }
             editor.addCommand('source', sourcearea.commands.source);
@@ -365,6 +323,7 @@ CKEDITOR.plugins.sourcearea = {
                         line: window["codemirror_" + editor.id].lineCount(),
                         ch: 0
                     }, true);
+                    window["codemirror_" + editor.id].setSelection({line:0, ch:0});
                 }
             },
             canUndo: true
