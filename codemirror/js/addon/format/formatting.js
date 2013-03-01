@@ -73,7 +73,7 @@
   });
 
   // Applies automatic formatting to the specified range
-  CodeMirror.defineExtension("autoFormatRange", function (from, to, isFormatAll) {
+  CodeMirror.defineExtension("autoFormatRange", function (from, to) {
     var cm = this;
     var outer = cm.getMode(), text = cm.getRange(from, to).split("\n");
     var state = CodeMirror.copyState(outer, cm.getTokenAt(from).state);
@@ -105,20 +105,10 @@
     }
 
     cm.operation(function () {
-		cm.replaceRange(out, from, to);
-		
-		for (var cur = from.line + 1, end = from.line + lines; cur <= end; ++cur)
-		{
-			cm.indentLine(cur, "smart");
-		}
-		
-		if (isFormatAll) {
-			//cm.focus();
-			cm.setCursor({ line:0, ch:0 });
-	    }
-		else {
-			cm.setSelection(from, cm.getCursor(false));
-	    }
+      cm.replaceRange(out, from, to);
+      for (var cur = from.line + 1, end = from.line + lines; cur <= end; ++cur)
+        cm.indentLine(cur, "smart");
+      cm.setSelection(from, cm.getCursor(false));
     });
   });
 })();

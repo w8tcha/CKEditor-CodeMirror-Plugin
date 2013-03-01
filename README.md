@@ -17,13 +17,6 @@ The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 
 ![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorSourceView.png)
 
-
-
-This Plugin uses the jquery-oembed-all Plugin located at https://github.com/starfishmod/jquery-oembed-all.
-
-
-
-
 ####License
 
 Licensed under the terms of the MIT License.
@@ -51,7 +44,10 @@ config.codemirror = {
 	matchBrackets: true,
 	
 	// Whether or not you want tags to automatically close themselves
-	autoCloseTags: false,
+	autoCloseTags: true,
+	
+	// Whether or not you want Brackets to automatically close themselves
+	autoCloseBrackets: true,
 	
 	// Whether or not to enable search tools, CTRL+F (Find), CTRL+SHIFT+F (Replace), CTRL+SHIFT+R (Replace All), CTRL+G (Find Next), CTRL+SHIFT+G (Find Previous)
 	enableSearchTools: true,
