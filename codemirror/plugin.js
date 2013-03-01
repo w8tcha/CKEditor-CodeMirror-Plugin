@@ -23,12 +23,11 @@
                 enableSearchTools: true,
                 enableCodeFolding: true,
                 enableCodeFormatting: true,
-                autoFormatOnStart: true,
+                autoFormatOnStart: false,
                 autoFormatOnModeChange: true,
                 autoFormatOnUncomment: true,
                 highlightActiveLine: true,
                 highlightMatches: true,
-                showTabs: false,
                 showFormatButton: true,
                 showCommentButton: true,
                 showUncommentButton: true
@@ -121,7 +120,6 @@
 					autoCloseBrackets: config.autoCloseBrackets,
                     highlightSelectionMatches: config.highlightMatches,
                     theme: config.theme,
-					indentWithTabs: config.showTabs,
                     onKeyEvent: function(codeMirror_Editor, evt) {
                         if (config.enableCodeFormatting) {
                             if (evt.type == "keydown" && evt.ctrlKey && evt.keyCode == 75 && !evt.shiftKey && !evt.altKey) {

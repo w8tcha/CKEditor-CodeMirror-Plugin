@@ -70,9 +70,6 @@ config.codemirror = {
 	// Whether or not to highlight all matches of current word/selection
 	highlightMatches: true,
 	
-	// Whether or not to display tabs
-	showTabs: false,
-	
 	// Whether or not to show the format button on the toolbar
 	showFormatButton: true,
 	
