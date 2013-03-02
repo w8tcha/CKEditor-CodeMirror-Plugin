@@ -15,6 +15,7 @@
             // Default Config
             var defaultConfig = {
                 theme: 'default',
+                autoLoadCodeMirror: true,
                 matchBrackets: true,
                 lineNumbers: true,
                 lineWrapping: true,
@@ -42,21 +43,28 @@
             if (editor.config.codemirror_autoFormatOnStart) {
                 config.autoFormatOnStart = editor.config.codemirror_autoFormatOnStart;
             }
-            CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
 
-            if (config.theme.length && config.theme != 'default') {
-                CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-            }
-            CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
-                CKEDITOR.scriptLoader.load(getCodeMirrorScripts());
-            });
             // Source mode isn't available in inline mode yet.
             if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
                 return;
             }
+
+            // Load CodeMirror
+            if (config.autoLoadCodeMirror) {
+                CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                if (config.theme.length && config.theme != 'default') {
+                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                }
+                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
+                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts());
+                });
+            }
+
             var sourcearea = CKEDITOR.plugins.sourcearea;
             editor.addMode('source', function(callback) {
                 if (typeof(CodeMirror) == 'undefined') {
+                    // Ignoring config.autoLoadCodeMirror here. If CodeMirror isn't loaded at this point, we need to load it.
+                    // It is assumed that either config.autoLoadCodeMirror is true or all css files are loaded manually.
                     CKEDITOR.scriptLoader.load([rootPath + 'js/codemirror.min.js'].concat(getCodeMirrorScripts()), function() {
                         loadCodeMirror(editor);
                         callback();
