@@ -182,6 +182,11 @@
                         }
                     });
                 }
+
+                // Run config.onLoad callback, if present.
+                if (typeof config.onLoad == 'function') {
+                    config.onLoad(window["codemirror_" + editor.id], editor);
+                }
             }
 
             editor.addCommand('source', sourcearea.commands.source);
