@@ -50,6 +50,7 @@
             }
 
             // Load CodeMirror
+            // It is assumed that either config.autoLoadCodeMirror is true (default value) or all CodeMirror js and css files are loaded manually.
             if (config.autoLoadCodeMirror) {
                 CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
                 if (config.theme.length && config.theme != 'default') {
@@ -63,8 +64,6 @@
             var sourcearea = CKEDITOR.plugins.sourcearea;
             editor.addMode('source', function(callback) {
                 if (typeof(CodeMirror) == 'undefined') {
-                    // Ignoring config.autoLoadCodeMirror here. If CodeMirror isn't loaded at this point, we need to load it.
-                    // It is assumed that either config.autoLoadCodeMirror is true or all css files are loaded manually.
                     CKEDITOR.scriptLoader.load([rootPath + 'js/codemirror.min.js'].concat(getCodeMirrorScripts()), function() {
                         loadCodeMirror(editor);
                         callback();
