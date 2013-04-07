@@ -27,7 +27,7 @@ Licensed under the terms of the MIT License.
  2. In the CKEditor configuration file (config.js) add the following code:
 
 ````
-config.extraPlugins = '[ codemirror ]';
+config.extraPlugins = 'codemirror';
 
 config.codemirror = {
 	
