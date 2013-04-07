@@ -21,6 +21,7 @@
                 lineWrapping: true,
                 autoCloseTags: true,
                 autoCloseBrackets: true,
+                continueComments: true,
                 enableSearchTools: true,
                 enableCodeFolding: true,
                 enableCodeFormatting: true,
@@ -53,7 +54,7 @@
             // It is assumed that either config.autoLoadCodeMirror is true (default value) or all CodeMirror js and css files are loaded manually.
             if (config.autoLoadCodeMirror) {
                 CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-                if (config.theme.length && config.theme !== 'default') {
+                if (config.theme.length && config.theme != 'default') {
                     CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                 }
                 CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
@@ -116,6 +117,10 @@
 
                 codemirror = editor.id;
 
+                /*CodeMirror.commands.autocomplete = function(cm) {
+                    CodeMirror.showHint(cm, CodeMirror.htmlHint);
+                };*/
+
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: 'text/html',
                     matchBrackets: config.matchBrackets,
@@ -126,7 +131,9 @@
                     autoCloseTags: config.autoCloseTags,
                     autoCloseBrackets: config.autoCloseBrackets,
                     highlightSelectionMatches: config.highlightMatches,
+                    continueComments: config.continueComments,
                     theme: config.theme,
+                    //extraKeys: {"Ctrl-Space": "autocomplete"},
                     onKeyEvent: function(codeMirror_Editor, evt) {
                         if (config.enableCodeFormatting) {
                             var range = getSelectedRange();
@@ -182,7 +189,7 @@
                     window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
                     window["codemirror_" + editor.id].on("cursorActivity", function() {
                         var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
-                        if (cur !== window["codemirror_" + editor.id].hlLine) {
+                        if (cur != window["codemirror_" + editor.id].hlLine) {
                             window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
                             window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
                         }
@@ -248,7 +255,7 @@
             
             var selectAllCommand = editor.commands.selectAll;
             
-            if (selectAllCommand !== null) {
+            if (selectAllCommand != null) {
                 selectAllCommand.on('exec', function () {
                     if (editor.mode === 'source') {
                         window["codemirror_" + editor.id].setSelection({
