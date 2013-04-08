@@ -4,7 +4,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'codemirror', 'pl', {
 	toolbar: 'Źródło dokumentu',
-	autoFormat: 'Format Selection',
-	commentSelectedRange: 'Comment Selection',
-	uncommentSelectedRange: 'Uncomment Selection'
+	autoFormat: 'Sformatuj zaznaczenie',
+	commentSelectedRange: 'Zakomentuj zaznaczenie',
+	uncommentSelectedRange: 'Odkomentuj zaznaczenie'
 });
