@@ -32,6 +32,7 @@
                 highlightMatches: true,
                 showFormatButton: true,
                 showCommentButton: true,
+                showSearchButton: true,
                 showUncommentButton: true
             };
             // Get Config & Lang
@@ -58,14 +59,20 @@
                     CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                 }
                 CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
-                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts());
+                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(false));
                 });
             }
 
             var sourcearea = CKEDITOR.plugins.sourcearea;
             editor.addMode('source', function(callback) {
-                if (typeof (CodeMirror) === 'undefined') {
-                    CKEDITOR.scriptLoader.load([rootPath + 'js/codemirror.min.js'].concat(getCodeMirrorScripts()), function() {
+                if (typeof (CodeMirror) == 'undefined') {
+                    CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                    
+                    if (config.theme.length && config.theme != 'default') {
+                        CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                    }
+
+                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(true), function () {
                         loadCodeMirror(editor);
                         callback();
                     });
@@ -75,8 +82,8 @@
                 }
             });
 
-            function getCodeMirrorScripts() {
-                var scriptFiles = [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
+            function getCodeMirrorScripts(includeMain) {
+                var scriptFiles = includeMain ? [rootPath + 'js/codemirror.min.js', rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'] : [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
 
                 if (config.enableSearchTools) {
                     scriptFiles.push(rootPath + 'js/codemirror.search-addons.min.js');
