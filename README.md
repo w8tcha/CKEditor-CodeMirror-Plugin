@@ -70,6 +70,10 @@ config.codemirror = {
 	
 	// Whether or not to highlight all matches of current word/selection
 	highlightMatches: true,
+
+     // Whether or not to show the search Code button on the toolbar
+	showSearchButton: true,
+
 	
 	// Whether or not to show the format button on the toolbar
 	showFormatButton: true,
@@ -78,7 +82,10 @@ config.codemirror = {
 	showCommentButton: true,
 	
 	// Whether or not to show the uncomment button on the toolbar
-	showUncommentButton: true
+	showUncommentButton: true,
+
+     // Whether or not to show the showAutoCompleteButton button on the toolbar
+	showAutoCompleteButton: true,
 };
 
 ````

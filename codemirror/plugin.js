@@ -8,7 +8,7 @@
 
 (function() {
     CKEDITOR.plugins.add('codemirror', {
-        icons: 'AutoFormat,CommentSelectedRange,UncommentSelectedRange',
+        icons: 'SearchCode,AutoFormat,CommentSelectedRange,UncommentSelectedRange,AutoComplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh',
         init: function(editor) {
             var rootPath = this.path;
@@ -32,7 +32,8 @@
                 showFormatButton: true,
                 showCommentButton: true,
                 showSearchButton: true,
-                showUncommentButton: true
+                showUncommentButton: true,
+                showAutoCompleteButton: true
             };
             // Get Config & Lang
             var config = CKEDITOR.tools.extend(defaultConfig, editor.config.codemirror || {}, true);
@@ -60,7 +61,7 @@
                         CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                     }
 
-                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
+                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.js', function() {
 
                         CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
                             loadCodeMirror(editor);
@@ -87,6 +88,7 @@
             function loadCodeMirror(editor) {
                 var contentsSpace = editor.ui.space('contents'),
                     textarea = contentsSpace.getDocument().createElement('textarea');
+
                 textarea.setStyles(
                     CKEDITOR.tools.extend({
                             // IE7 has overflow the <textarea> from wrapping table cell.
@@ -218,35 +220,59 @@
                 });
             }
             if (config.enableCodeFormatting) {
+                editor.addCommand('searchCode', sourcearea.commands.searchCode);
                 editor.addCommand('autoFormat', sourcearea.commands.autoFormat);
                 editor.addCommand('commentSelectedRange', sourcearea.commands.commentSelectedRange);
                 editor.addCommand('uncommentSelectedRange', sourcearea.commands.uncommentSelectedRange);
+                editor.addCommand('autoCompleteToggle', sourcearea.commands.autoCompleteToggle);
+                
                 if (editor.ui.addButton) {
+                    if (config.showFormatButton || config.showCommentButton || config.showUncommentButton || config.showSearchButton) {
+                        editor.ui.add('-', CKEDITOR.UI_SEPARATOR, { toolbar: 'mode,30' });
+                    }
+                    if (config.showSearchButton && config.enableSearchTools) {
+                        editor.ui.addButton('searchCode', {
+                            label: lang.searchCode,
+                            command: 'searchCode',
+                            toolbar: 'mode,40'
+                        });
+                    }
                     if (config.showFormatButton) {
                         editor.ui.addButton('autoFormat', {
                             label: lang.autoFormat,
                             command: 'autoFormat',
-                            toolbar: 'mode,20'
+                            toolbar: 'mode,50'
                         });
                     }
                     if (config.showCommentButton) {
                         editor.ui.addButton('CommentSelectedRange', {
                             label: lang.commentSelectedRange,
                             command: 'commentSelectedRange',
-                            toolbar: 'mode,30'
+                            toolbar: 'mode,60'
                         });
                     }
                     if (config.showUncommentButton) {
                         editor.ui.addButton('UncommentSelectedRange', {
                             label: lang.uncommentSelectedRange,
                             command: 'uncommentSelectedRange',
-                            toolbar: 'mode,40'
+                            toolbar: 'mode,70'
+                        });
+                    }
+                    if (config.showAutoCompleteButton) {
+                        editor.ui.addButton('AutoComplete', {
+                            label: lang.autoCompleteToggle,
+                            command: 'autoCompleteToggle',
+                            toolbar: 'mode,80'
                         });
                     }
                 }
             }
             editor.on('mode', function () {
                 editor.getCommand('source').setState(editor.mode === 'source' ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+
+                if (editor.mode === 'source') {
+                  editor.getCommand('autoCompleteToggle').setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+                }
 
             });
             editor.on('resize', function() {
@@ -336,6 +362,18 @@ CKEDITOR.plugins.sourcearea = {
             },
             canUndo: false
         },
+        searchCode: {
+            modes: {
+                wysiwyg: 0,
+                source: 1
+            },
+            editorFocus: false,
+            readOnly: 1,
+            exec: function(editor) {
+                CodeMirror.commands.find(window["codemirror_" + editor.id]);
+            },
+            canUndo: true
+        },
         autoFormat: {
             modes: {
                 wysiwyg: 0,
@@ -384,6 +422,24 @@ CKEDITOR.plugins.sourcearea = {
                 if (window["codemirror_" + editor.id].config.autoFormatOnUncomment) {
                     window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
                 }
+            },
+            canUndo: true
+        },
+        autoCompleteToggle: {
+            modes: {
+                wysiwyg: 0,
+                source: 1
+            },
+            editorFocus: false,
+            readOnly: 1,
+            exec: function (editor) {
+                if (this.state == CKEDITOR.TRISTATE_ON) {
+                    window["codemirror_" + editor.id].setOption("autoCloseTags", false);
+                } else if (this.state == CKEDITOR.TRISTATE_OFF) {
+                    window["codemirror_" + editor.id].setOption("autoCloseTags", true);
+                }
+
+                this.toggleState();
             },
             canUndo: true
         }
