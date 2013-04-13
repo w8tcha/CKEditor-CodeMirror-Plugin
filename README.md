@@ -7,6 +7,7 @@ Syntax Highlighting for the CKEditor (Source View) with the CodeMirror Plugin
 * 'Ctrl-K' to comment the currently selected text
 * 'Ctrl-Shift-K' to uncomment currently selected text
 * 'Ctrl-Alt-K' to auto format currently selected text
+* 'Ctrl-Q' Expand/Collapse Code Block
 * 'Ctrl-F' to perform a search
 * 'Ctrl-G' to find next
 * 'Ctrl-Shift-G' to find previous
