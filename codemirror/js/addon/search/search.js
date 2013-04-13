@@ -56,7 +56,7 @@
         state.query = parseQuery(query);
         cm.removeOverlay(state.overlay);
         state.overlay = searchOverlay(query);
-        cm.addOverlay(state.overlay);
+		cm.addOverlay(state.overlay);
         state.posFrom = state.posTo = cm.getCursor();
         findNext(cm, rev);
       });

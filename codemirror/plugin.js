@@ -120,6 +120,11 @@
                 /*CodeMirror.commands.autocomplete = function(cm) {
                     CodeMirror.showHint(cm, CodeMirror.htmlHint);
                 };*/
+                
+                // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
+                if (config.lineNumbers && config.enableCodeFolding) {
+                    window["foldFunc_" + editor.id] = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
+                }
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: 'text/html',
@@ -134,6 +139,7 @@
                     continueComments: config.continueComments,
                     theme: config.theme,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
+                    extraKeys: { "Ctrl-Q": function(codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
                     onKeyEvent: function(codeMirror_Editor, evt) {
                         if (config.enableCodeFormatting) {
                             var range = getSelectedRange();
@@ -180,9 +186,10 @@
                     }, 300);
                 });
                 window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
+                
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
                 if (config.lineNumbers && config.enableCodeFolding) {
-                    window["codemirror_" + editor.id].on("gutterClick", CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder));
+                    window["codemirror_" + editor.id].on("gutterClick", window["foldFunc_" + editor.id]);
                 }
                 // Highlight Active Line
                 if (config.highlightActiveLine) {
