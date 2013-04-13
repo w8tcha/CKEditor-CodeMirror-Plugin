@@ -85,7 +85,7 @@ config.codemirror = {
 	showUncommentButton: true,
 
      // Whether or not to show the showAutoCompleteButton button on the toolbar
-	showAutoCompleteButton: true,
+	showAutoCompleteButton: true
 };
 
 ````
