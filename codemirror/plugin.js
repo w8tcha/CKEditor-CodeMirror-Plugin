@@ -15,7 +15,6 @@
             // Default Config
             var defaultConfig = {
                 theme: 'default',
-                autoLoadCodeMirror: true,
                 matchBrackets: true,
                 lineNumbers: true,
                 lineWrapping: true,
@@ -51,39 +50,33 @@
                 return;
             }
 
-            // Load CodeMirror
-            // It is assumed that either config.autoLoadCodeMirror is true (default value) or all CodeMirror js and css files are loaded manually.
-            if (config.autoLoadCodeMirror) {
-                CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-                if (config.theme.length && config.theme != 'default') {
-                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                }
-                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
-                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(false));
-                });
-            }
-
             var sourcearea = CKEDITOR.plugins.sourcearea;
             editor.addMode('source', function(callback) {
                 if (typeof (CodeMirror) == 'undefined') {
+                    
                     CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
                     
                     if (config.theme.length && config.theme != 'default') {
                         CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                     }
 
-                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(true), function () {
-                        loadCodeMirror(editor);
-                        callback();
+                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
+
+                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
+                            loadCodeMirror(editor);
+                            callback();
+                        });
                     });
+                    
+                    
                 } else {
                     loadCodeMirror(editor);
                     callback();
                 }
             });
 
-            function getCodeMirrorScripts(includeMain) {
-                var scriptFiles = includeMain ? [rootPath + 'js/codemirror.min.js', rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'] : [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
+            function getCodeMirrorScripts() {
+                var scriptFiles = [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
 
                 if (config.enableSearchTools) {
                     scriptFiles.push(rootPath + 'js/codemirror.search-addons.min.js');
@@ -245,10 +238,9 @@
                     }
                 }
             }
-            editor.on('mode', function() {
+            editor.on('mode', function () {
                 editor.getCommand('source').setState(editor.mode === 'source' ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
-                
-                
+
             });
             editor.on('resize', function() {
                 if (window["editable_" + editor.id] && editor.mode === 'source') {
@@ -258,7 +250,6 @@
                     window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
                 }
             });
-            
             
             var selectAllCommand = editor.commands.selectAll;
             
@@ -307,7 +298,13 @@
             editorID: null,
             detach: function() {
                 window["codemirror_" + this.editorID].toTextArea();
+                
+                // Free Memory on destroy
+                window["editable_" + this.editorID] = null;
+                window["codemirror_" + this.editorID] = null;
+
                 sourceEditable.baseProto.detach.call(this);
+                
                 this.clearCustomData();
                 this.remove();
             }
@@ -324,7 +321,9 @@ CKEDITOR.plugins.sourcearea = {
             editorFocus: false,
             readOnly: 1,
             exec: function(editor) {
-                if (editor.mode === 'wysiwyg') editor.fire('saveSnapshot');
+                if (editor.mode === 'wysiwyg') {
+                    editor.fire('saveSnapshot');
+                }
                 editor.getCommand('source').setState(CKEDITOR.TRISTATE_DISABLED);
                 editor.setMode(editor.mode === 'source' ? 'wysiwyg' : 'source');
             },
