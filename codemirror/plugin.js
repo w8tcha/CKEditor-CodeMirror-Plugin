@@ -133,6 +133,7 @@
                     matchBrackets: config.matchBrackets,
                     workDelay: 300,
                     workTime: 35,
+                    readOnly: editor.config.readOnly,
                     lineNumbers: config.lineNumbers,
                     lineWrapping: config.lineWrapping,
                     autoCloseTags: config.autoCloseTags,
@@ -282,6 +283,11 @@
                     var holderWidth = holderElement.$.clientWidth + 'px';
                     window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
                 }
+            });
+            
+            editor.on('readOnly', function () {
+                window["codemirror_" + editor.id].setOption("readOnly", this.readOnly);
+
             });
             
             var selectAllCommand = editor.commands.selectAll;
