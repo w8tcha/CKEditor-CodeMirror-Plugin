@@ -14,6 +14,7 @@
             var rootPath = this.path;
             // Default Config
             var defaultConfig = {
+		mode: 'text/html',
                 theme: 'default',
                 matchBrackets: true,
                 lineNumbers: true,
@@ -129,7 +130,7 @@
                 }
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
-                    mode: 'text/html',
+                    mode: config.mode,
                     matchBrackets: config.matchBrackets,
                     workDelay: 300,
                     workTime: 35,
