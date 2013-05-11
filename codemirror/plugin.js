@@ -61,7 +61,7 @@
                         CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                     }
 
-                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.js', function() {
+                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
 
                         CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
                             loadCodeMirror(editor);
