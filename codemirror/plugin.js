@@ -49,6 +49,204 @@
 
             // Source mode isn't available in inline mode yet.
             if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
+                
+                // Override Source Dialog
+                CKEDITOR.dialog.add('sourcedialog', function (editor) {
+                    var size = CKEDITOR.document.getWindow().getViewPaneSize();
+
+                    // Make it maximum 800px wide, but still fully visible in the viewport.
+                    var width = Math.min(size.width - 70, 800);
+
+                    // Make it use 2/3 of the viewport height.
+                    var height = size.height / 1.5;
+
+                    // Store old editor data to avoid unnecessary setData.
+                    var oldData;
+
+                    function loadCodeMirrorInline(editor, holderElement, textarea) {
+                        var delay;
+
+                        window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
+                            mode: 'text/html',
+                            matchBrackets: config.matchBrackets,
+                            workDelay: 300,
+                            workTime: 35,
+                            readOnly: editor.config.readOnly,
+                            lineNumbers: config.lineNumbers,
+                            lineWrapping: config.lineWrapping,
+                            autoCloseTags: config.autoCloseTags,
+                            autoCloseBrackets: config.autoCloseBrackets,
+                            highlightSelectionMatches: config.highlightMatches,
+                            continueComments: config.continueComments,
+                            theme: config.theme,
+                            //extraKeys: {"Ctrl-Space": "autocomplete"},
+                            extraKeys: { "Ctrl-Q": function (codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
+                            onKeyEvent: function (codeMirror_Editor, evt) {
+                                if (config.enableCodeFormatting) {
+                                    var range = getSelectedRange();
+                                    if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
+                                        window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
+                                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
+                                        window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
+                                        if (config.autoFormatOnUncomment) {
+                                            window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                        }
+                                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
+                                        window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                    }
+                                }
+                            }
+                        });
+
+                        var holderHeight = height + 'px';
+                        var holderWidth = width + 'px';
+
+                        // Store config so we can access it within commands etc.
+                        window["codemirror_" + editor.id].config = config;
+                        if (config.autoFormatOnStart) {
+                            window["codemirror_" + editor.id].autoFormatAll({
+                                line: 0,
+                                ch: 0
+                            }, {
+                                line: window["codemirror_" + editor.id].lineCount(),
+                                ch: 0
+                            });
+                        }
+
+                        function getSelectedRange() {
+                            return {
+                                from: window["codemirror_" + editor.id].getCursor(true),
+                                to: window["codemirror_" + editor.id].getCursor(false)
+                            };
+                        }
+
+                        window["codemirror_" + editor.id].on("change", function (cm, change) {
+                            clearTimeout(delay);
+                            delay = setTimeout(function () {
+                                window["codemirror_" + editor.id].save();
+                            }, 300);
+                        });
+                        window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
+
+                        // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
+                        if (config.lineNumbers && config.enableCodeFolding) {
+                            window["codemirror_" + editor.id].on("gutterClick", window["foldFunc_" + editor.id]);
+                        }
+                        // Highlight Active Line
+                        if (config.highlightActiveLine) {
+                            window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
+                            window["codemirror_" + editor.id].on("cursorActivity", function () {
+                                var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
+                                if (cur != window["codemirror_" + editor.id].hlLine) {
+                                    window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
+                                    window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
+                                }
+                            });
+                        }
+
+                        // Run config.onLoad callback, if present.
+                        if (typeof config.onLoad === 'function') {
+                            config.onLoad(window["codemirror_" + editor.id], editor);
+                        }
+                    }
+
+                    return {
+                        title: editor.lang.sourcedialog.title,
+                        minWidth: width,
+                        minHeight: height,
+                        onShow: function () {
+                            var holderElement = this.getElement().getParent();
+                            var textArea = this.getContentElement('main', 'data').getInputElement().$;
+
+                            // Load the content
+                            this.setValueOf('main', 'data', oldData = editor.getData());
+
+                            if (typeof (CodeMirror) == 'undefined') {
+
+                                CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+
+                                if (config.theme.length && config.theme != 'default') {
+                                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                                }
+
+                                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function () {
+
+                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function () {
+                                        loadCodeMirrorInline(editor, holderElement, textArea);
+                                    });
+                                });
+
+
+                            } else {
+                                loadCodeMirrorInline(editor, holderElement, textArea);
+                            }
+
+
+                        },
+
+                        onOk: (function () {
+
+                            function setData(newData) {
+                                var that = this;
+
+                                editor.setData(newData, function () {
+                                    that.hide();
+
+                                    // Ensure correct selection.
+                                    var range = editor.createRange();
+                                    range.moveToElementEditStart(editor.editable());
+                                    range.select();
+                                });
+                            }
+
+                            return function () {
+                                window["codemirror_" + editor.id].toTextArea();
+
+                                // Free Memory on destroy
+                                window["editable_" + editor.id] = null;
+                                window["codemirror_" + editor.id] = null;
+
+                                // Remove CR from input data for reliable comparison with editor data.
+                                var newData = this.getValueOf('main', 'data').replace(/\r/g, '');
+
+                                // Avoid unnecessary setData. Also preserve selection
+                                // when user changed his mind and goes back to wysiwyg editing.
+                                if (newData === oldData)
+                                    return true;
+
+                                // Set data asynchronously to avoid errors in IE.
+                                CKEDITOR.env.ie ?
+                                    CKEDITOR.tools.setTimeout(setData, 0, this, newData)
+                                    :
+                                    setData.call(this, newData);
+
+                                // Don't let the dialog close before setData is over.
+                                return false;
+                            };
+                        })(),
+
+                        contents: [{
+                            id: 'main',
+                            label: editor.lang.sourcedialog.title,
+                            elements: [{
+                                type: 'textarea',
+                                id: 'data',
+                                dir: 'ltr',
+                                inputStyle: 'cursor:auto;' +
+                                    'width:' + width + 'px;' +
+                                    'height:' + height + 'px;' +
+                                    'tab-size:4;' +
+                                    'text-align:left;',
+                                'class': 'cke_source cke_enable_context_menu'
+                            }]
+                        }]
+                    };
+                });
+
+
+
+
+
                 return;
             }
 
@@ -452,233 +650,3 @@ CKEDITOR.plugins.sourcearea = {
         }
     }
 };
-// Override Source Dialog
-CKEDITOR.dialog.add('sourcedialog', function(editor) {
-    var size = CKEDITOR.document.getWindow().getViewPaneSize();
-
-    // Make it maximum 800px wide, but still fully visible in the viewport.
-    var width = Math.min(size.width - 70, 800);
-
-    // Make it use 2/3 of the viewport height.
-    var height = size.height / 1.5;
-
-    // Store old editor data to avoid unnecessary setData.
-    var oldData;
-
-    var rootPath = CKEDITOR.plugins.getPath('codemirror');
-
-    // Default Config
-    var defaultConfig = {
-        theme: 'default',
-        matchBrackets: true,
-        lineNumbers: true,
-        lineWrapping: true,
-        autoCloseTags: true,
-        autoCloseBrackets: true,
-        continueComments: true,
-        enableSearchTools: true,
-        enableCodeFolding: true,
-        enableCodeFormatting: true,
-        autoFormatOnStart: false,
-        autoFormatOnModeChange: true,
-        autoFormatOnUncomment: true,
-        highlightActiveLine: true,
-        highlightMatches: true,
-        showFormatButton: true,
-        showCommentButton: true,
-        showSearchButton: true,
-        showUncommentButton: true,
-        showAutoCompleteButton: true
-    };
-    // Get Config & Lang
-    var config = CKEDITOR.tools.extend(defaultConfig, editor.config.codemirror || {}, true);
-
-    function getCodeMirrorScripts() {
-        var scriptFiles = [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
-
-        if (config.enableSearchTools) {
-            scriptFiles.push(rootPath + 'js/codemirror.search-addons.min.js');
-        }
-        return scriptFiles;
-    }
-
-    function loadCodeMirror(editor, holderElement, textarea) {
-        var delay;
-
-        window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
-            mode: 'text/html',
-            matchBrackets: config.matchBrackets,
-            workDelay: 300,
-            workTime: 35,
-            readOnly: editor.config.readOnly,
-            lineNumbers: config.lineNumbers,
-            lineWrapping: config.lineWrapping,
-            autoCloseTags: config.autoCloseTags,
-            autoCloseBrackets: config.autoCloseBrackets,
-            highlightSelectionMatches: config.highlightMatches,
-            continueComments: config.continueComments,
-            theme: config.theme,
-            //extraKeys: {"Ctrl-Space": "autocomplete"},
-            extraKeys: { "Ctrl-Q": function(codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
-            onKeyEvent: function(codeMirror_Editor, evt) {
-                if (config.enableCodeFormatting) {
-                    var range = getSelectedRange();
-                    if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
-                        window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
-                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
-                        window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
-                        if (config.autoFormatOnUncomment) {
-                            window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                        }
-                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
-                        window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                    }
-                }
-            }
-        });
-
-        var holderHeight = height + 'px';
-        var holderWidth = width + 'px';
-
-        // Store config so we can access it within commands etc.
-        window["codemirror_" + editor.id].config = config;
-        if (config.autoFormatOnStart) {
-            window["codemirror_" + editor.id].autoFormatAll({
-                    line: 0,
-                    ch: 0
-                }, {
-                    line: window["codemirror_" + editor.id].lineCount(),
-                    ch: 0
-                });
-        }
-
-        function getSelectedRange() {
-            return {
-                from: window["codemirror_" + editor.id].getCursor(true),
-                to: window["codemirror_" + editor.id].getCursor(false)
-            };
-        }
-
-        window["codemirror_" + editor.id].on("change", function(cm, change) {
-            clearTimeout(delay);
-            delay = setTimeout(function() {
-                window["codemirror_" + editor.id].save();
-            }, 300);
-        });
-        window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
-
-        // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
-        if (config.lineNumbers && config.enableCodeFolding) {
-            window["codemirror_" + editor.id].on("gutterClick", window["foldFunc_" + editor.id]);
-        }
-        // Highlight Active Line
-        if (config.highlightActiveLine) {
-            window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
-            window["codemirror_" + editor.id].on("cursorActivity", function() {
-                var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
-                if (cur != window["codemirror_" + editor.id].hlLine) {
-                    window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
-                    window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
-                }
-            });
-        }
-
-        // Run config.onLoad callback, if present.
-        if (typeof config.onLoad === 'function') {
-            config.onLoad(window["codemirror_" + editor.id], editor);
-        }
-    }
-
-    return {
-        title: editor.lang.sourcedialog.title,
-        minWidth: width,
-        minHeight: height,
-        onShow: function() {
-            var holderElement = this.getElement().getParent();
-            var textArea = this.getContentElement('main', 'data').getInputElement().$;
-
-            // Load the content
-            this.setValueOf('main', 'data', oldData = editor.getData());
-
-            if (typeof(CodeMirror) == 'undefined') {
-
-                CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-
-                if (config.theme.length && config.theme != 'default') {
-                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                }
-
-                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
-
-                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                        loadCodeMirror(editor, holderElement, textArea);
-                    });
-                });
-
-
-            } else {
-                loadCodeMirror(editor, holderElement, textArea);
-            }
-
-
-        },
-
-        onOk: (function() {
-
-            function setData(newData) {
-                var that = this;
-
-                editor.setData(newData, function() {
-                    that.hide();
-
-                    // Ensure correct selection.
-                    var range = editor.createRange();
-                    range.moveToElementEditStart(editor.editable());
-                    range.select();
-                });
-            }
-
-            return function() {
-                window["codemirror_" + editor.id].toTextArea();
-
-                // Free Memory on destroy
-                window["editable_" + editor.id] = null;
-                window["codemirror_" + editor.id] = null;
-
-                // Remove CR from input data for reliable comparison with editor data.
-                var newData = this.getValueOf('main', 'data').replace(/\r/g, '');
-
-                // Avoid unnecessary setData. Also preserve selection
-                // when user changed his mind and goes back to wysiwyg editing.
-                if (newData === oldData)
-                    return true;
-
-                // Set data asynchronously to avoid errors in IE.
-                CKEDITOR.env.ie ?
-                    CKEDITOR.tools.setTimeout(setData, 0, this, newData)
-                    :
-                    setData.call(this, newData);
-
-                // Don't let the dialog close before setData is over.
-                return false;
-            };
-        })(),
-
-        contents: [{
-            id: 'main',
-            label: editor.lang.sourcedialog.title,
-            elements: [{
-                type: 'textarea',
-                type: 'textarea',
-                id: 'data',
-                dir: 'ltr',
-                inputStyle: 'cursor:auto;' +
-                    'width:' + width + 'px;' +
-                    'height:' + height + 'px;' +
-                    'tab-size:4;' +
-                    'text-align:left;',
-                'class': 'cke_source cke_enable_context_menu'
-            }]
-        }]
-    };
-});
