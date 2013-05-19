@@ -15,6 +15,7 @@
             // Default Config
             var defaultConfig = {
                 theme: 'default',
+                mode: 'text/html',
                 matchBrackets: true,
                 lineNumbers: true,
                 lineWrapping: true,
@@ -129,7 +130,7 @@
                 }
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
-                    mode: 'text/html',
+                    mode: config.mode,
                     matchBrackets: config.matchBrackets,
                     workDelay: 300,
                     workTime: 35,
@@ -452,7 +453,7 @@ CKEDITOR.plugins.sourcearea = {
     }
 };
 // Override Source Dialog
-CKEDITOR.dialog.add('sourcedialog', function (editor) {
+CKEDITOR.dialog.add('sourcedialog', function(editor) {
     var size = CKEDITOR.document.getWindow().getViewPaneSize();
 
     // Make it maximum 800px wide, but still fully visible in the viewport.
@@ -465,7 +466,7 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
     var oldData;
 
     var rootPath = CKEDITOR.plugins.getPath('codemirror');
-    
+
     // Default Config
     var defaultConfig = {
         theme: 'default',
@@ -491,7 +492,7 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
     };
     // Get Config & Lang
     var config = CKEDITOR.tools.extend(defaultConfig, editor.config.codemirror || {}, true);
-    
+
     function getCodeMirrorScripts() {
         var scriptFiles = [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
 
@@ -500,10 +501,10 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
         }
         return scriptFiles;
     }
-    
+
     function loadCodeMirror(editor, holderElement, textarea) {
         var delay;
-        
+
         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
             mode: 'text/html',
             matchBrackets: config.matchBrackets,
@@ -518,8 +519,8 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
             continueComments: config.continueComments,
             theme: config.theme,
             //extraKeys: {"Ctrl-Space": "autocomplete"},
-            extraKeys: { "Ctrl-Q": function (codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
-            onKeyEvent: function (codeMirror_Editor, evt) {
+            extraKeys: { "Ctrl-Q": function(codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
+            onKeyEvent: function(codeMirror_Editor, evt) {
                 if (config.enableCodeFormatting) {
                     var range = getSelectedRange();
                     if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
@@ -543,12 +544,12 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
         window["codemirror_" + editor.id].config = config;
         if (config.autoFormatOnStart) {
             window["codemirror_" + editor.id].autoFormatAll({
-                line: 0,
-                ch: 0
-            }, {
-                line: window["codemirror_" + editor.id].lineCount(),
-                ch: 0
-            });
+                    line: 0,
+                    ch: 0
+                }, {
+                    line: window["codemirror_" + editor.id].lineCount(),
+                    ch: 0
+                });
         }
 
         function getSelectedRange() {
@@ -558,9 +559,9 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
             };
         }
 
-        window["codemirror_" + editor.id].on("change", function (cm, change) {
+        window["codemirror_" + editor.id].on("change", function(cm, change) {
             clearTimeout(delay);
-            delay = setTimeout(function () {
+            delay = setTimeout(function() {
                 window["codemirror_" + editor.id].save();
             }, 300);
         });
@@ -573,7 +574,7 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
         // Highlight Active Line
         if (config.highlightActiveLine) {
             window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
-            window["codemirror_" + editor.id].on("cursorActivity", function () {
+            window["codemirror_" + editor.id].on("cursorActivity", function() {
                 var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
                 if (cur != window["codemirror_" + editor.id].hlLine) {
                     window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
@@ -592,14 +593,14 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
         title: editor.lang.sourcedialog.title,
         minWidth: width,
         minHeight: height,
-        onShow: function () {
+        onShow: function() {
             var holderElement = this.getElement().getParent();
             var textArea = this.getContentElement('main', 'data').getInputElement().$;
-            
+
             // Load the content
             this.setValueOf('main', 'data', oldData = editor.getData());
-           
-            if (typeof (CodeMirror) == 'undefined') {
+
+            if (typeof(CodeMirror) == 'undefined') {
 
                 CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
 
@@ -607,9 +608,9 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
                     CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                 }
 
-                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function () {
+                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
 
-                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function () {
+                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
                         loadCodeMirror(editor, holderElement, textArea);
                     });
                 });
@@ -618,16 +619,16 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
             } else {
                 loadCodeMirror(editor, holderElement, textArea);
             }
-            
-            
-        
+
+
         },
 
-        onOk: (function () {
+        onOk: (function() {
+
             function setData(newData) {
                 var that = this;
 
-                editor.setData(newData, function () {
+                editor.setData(newData, function() {
                     that.hide();
 
                     // Ensure correct selection.
@@ -637,13 +638,13 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
                 });
             }
 
-            return function () {
+            return function() {
                 window["codemirror_" + editor.id].toTextArea();
 
                 // Free Memory on destroy
                 window["editable_" + editor.id] = null;
                 window["codemirror_" + editor.id] = null;
-                
+
                 // Remove CR from input data for reliable comparison with editor data.
                 var newData = this.getValueOf('main', 'data').replace(/\r/g, '');
 
@@ -654,9 +655,9 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
 
                 // Set data asynchronously to avoid errors in IE.
                 CKEDITOR.env.ie ?
-						CKEDITOR.tools.setTimeout(setData, 0, this, newData)
-					:
-						setData.call(this, newData);
+                    CKEDITOR.tools.setTimeout(setData, 0, this, newData)
+                    :
+                    setData.call(this, newData);
 
                 // Don't let the dialog close before setData is over.
                 return false;
@@ -672,10 +673,10 @@ CKEDITOR.dialog.add('sourcedialog', function (editor) {
                 id: 'data',
                 dir: 'ltr',
                 inputStyle: 'cursor:auto;' +
-					'width:' + width + 'px;' +
-					'height:' + height + 'px;' +
-					'tab-size:4;' +
-					'text-align:left;',
+                    'width:' + width + 'px;' +
+                    'height:' + height + 'px;' +
+                    'tab-size:4;' +
+                    'text-align:left;',
                 'class': 'cke_source cke_enable_context_menu'
             }]
         }]
