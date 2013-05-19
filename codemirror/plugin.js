@@ -64,7 +64,7 @@
                     // Store old editor data to avoid unnecessary setData.
                     var oldData;
 
-                    function loadCodeMirrorInline(editor, holderElement, textarea) {
+                    function loadCodeMirrorInline(editor, textarea) {
                         var delay;
 
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
@@ -166,8 +166,8 @@
                         title: editor.lang.sourcedialog.title,
                         minWidth: width,
                         minHeight: height,
+                        resizable : CKEDITOR.DIALOG_RESIZE_NONE,
                         onShow: function () {
-                            var holderElement = this.getElement().getParent();
                             var textArea = this.getContentElement('main', 'data').getInputElement().$;
 
                             // Load the content
@@ -184,13 +184,13 @@
                                 CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function () {
 
                                     CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function () {
-                                        loadCodeMirrorInline(editor, holderElement, textArea);
+                                        loadCodeMirrorInline(editor, textArea);
                                     });
                                 });
 
 
                             } else {
-                                loadCodeMirrorInline(editor, holderElement, textArea);
+                                loadCodeMirrorInline(editor, textArea);
                             }
 
 

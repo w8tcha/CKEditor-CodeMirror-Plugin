@@ -12,6 +12,9 @@
 	cursor: pointer;
 }
 
+/* Fix for the sourceDialog */
+.cke_reset_all,.cke_reset_all *{color:inherit;font:inherit}
+
 /* Fixes for themes */
 .cm-s-cobalt .CodeMirror-selected { background: #b36539 !important; }
 .cm-s-erlang-dark .CodeMirror-selected { background: #b36539 !important; }
