@@ -195,7 +195,13 @@
 
 
                         },
+                        onCancel: function() {
+                            window["codemirror_" + editor.id].toTextArea();
 
+                            // Free Memory on destroy
+                            window["editable_" + editor.id] = null;
+                            window["codemirror_" + editor.id] = null;
+                        },
                         onOk: (function () {
 
                             function setData(newData) {
