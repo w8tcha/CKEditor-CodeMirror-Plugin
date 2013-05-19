@@ -14,28 +14,29 @@
             var rootPath = this.path;
             // Default Config
             var defaultConfig = {
-                theme: 'default',
-                mode: 'text/html',
-                matchBrackets: true,
-                lineNumbers: true,
-                lineWrapping: true,
-                autoCloseTags: true,
                 autoCloseBrackets: true,
+                autoCloseTags: true,
+                autoFormatOnStart: false,
+                autoFormatOnUncomment: true,
                 continueComments: true,
-                enableSearchTools: true,
                 enableCodeFolding: true,
                 enableCodeFormatting: true,
-                autoFormatOnStart: false,
-                autoFormatOnModeChange: true,
-                autoFormatOnUncomment: true,
+                enableSearchTools: true,
                 highlightActiveLine: true,
                 highlightMatches: true,
-                showFormatButton: true,
+                lineNumbers: true,
+                lineWrapping: true,
+                mode: 'text/html',
+                matchBrackets: true,
+                showAutoCompleteButton: true,
                 showCommentButton: true,
+                showFormatButton: true,
                 showSearchButton: true,
                 showUncommentButton: true,
-                showAutoCompleteButton: true
+                theme: 'default',
+                useBeautify: true
             };
+            
             // Get Config & Lang
             var config = CKEDITOR.tools.extend(defaultConfig, editor.config.codemirror || {}, true);
             var lang = editor.lang.codemirror;
@@ -103,14 +104,25 @@
 
                         // Store config so we can access it within commands etc.
                         window["codemirror_" + editor.id].config = config;
+                        
                         if (config.autoFormatOnStart) {
-                            window["codemirror_" + editor.id].autoFormatAll({
-                                line: 0,
-                                ch: 0
-                            }, {
-                                line: window["codemirror_" + editor.id].lineCount(),
-                                ch: 0
-                            });
+                            if (config.useBeautify) {
+                                var indent_size = 4;
+                                var indent_char = ' ';
+                                var brace_style = 'collapse'; //collapse, expand, end-expand 
+
+                                var source = window["codemirror_" + editor.id].getValue();
+
+                                window["codemirror_" + editor.id].setValue(html_beautify(source, indent_size, indent_char, 120, brace_style));
+                            } else {
+                                window["codemirror_" + editor.id].autoFormatAll({
+                                    line: 0,
+                                    ch: 0
+                                }, {
+                                    line: window["codemirror_" + editor.id].lineCount(),
+                                    ch: 0
+                                });
+                            }
                         }
 
                         function getSelectedRange() {
@@ -278,6 +290,10 @@
             function getCodeMirrorScripts() {
                 var scriptFiles = [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
 
+                if (config.useBeautify) {
+                    scriptFiles.push(rootPath + 'js/beautify.min.js');
+                }
+
                 if (config.enableSearchTools) {
                     scriptFiles.push(rootPath + 'js/codemirror.search-addons.min.js');
                 }
@@ -365,13 +381,23 @@
                 // Store config so we can access it within commands etc.
                 window["codemirror_" + editor.id].config = config;
                 if (config.autoFormatOnStart) {
-                    window["codemirror_" + editor.id].autoFormatAll({
+                    if (config.useBeautify) {
+                        var indent_size = 4;
+                        var indent_char = ' ';
+                        var brace_style = 'collapse'; //collapse, expand, end-expand 
+
+                        var source = window["codemirror_" + editor.id].getValue();
+
+                        window["codemirror_" + editor.id].setValue(html_beautify(source, indent_size, indent_char, 120, brace_style));
+                    } else {
+                        window["codemirror_" + editor.id].autoFormatAll({
                             line: 0,
                             ch: 0
                         }, {
                             line: window["codemirror_" + editor.id].lineCount(),
                             ch: 0
                         });
+                    }
                 }
 
                 function getSelectedRange() {

@@ -60,10 +60,7 @@ config.codemirror = {
 	enableCodeFormatting: true,
 	
 	// Whether or not to automatically format code should be done when the editor is loaded
-	autoFormatOnStart: true,
-
-// Whether or not to automatically format code should be done every time the source view is opened
-	autoFormatOnModeChange: true,
+	autoFormatOnStart: true, 
 	
 	// Whether or not to automatically format code which has just been uncommented
 	autoFormatOnUncomment: true,
