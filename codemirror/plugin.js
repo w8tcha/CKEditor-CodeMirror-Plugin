@@ -117,7 +117,7 @@
                 var sourceAreaElement = window["editable_" + editor.id],
                     holderElement = sourceAreaElement.getParent();
 
-                codemirror = editor.id;
+                //codemirror = editor.id;
 
                 /*CodeMirror.commands.autocomplete = function(cm) {
                     CodeMirror.showHint(cm, CodeMirror.htmlHint);
@@ -226,7 +226,7 @@
                 editor.addCommand('commentSelectedRange', sourcearea.commands.commentSelectedRange);
                 editor.addCommand('uncommentSelectedRange', sourcearea.commands.uncommentSelectedRange);
                 editor.addCommand('autoCompleteToggle', sourcearea.commands.autoCompleteToggle);
-                
+
                 if (editor.ui.addButton) {
                     if (config.showFormatButton || config.showCommentButton || config.showUncommentButton || config.showSearchButton) {
                         editor.ui.add('-', CKEDITOR.UI_SEPARATOR, { toolbar: 'mode,30' });

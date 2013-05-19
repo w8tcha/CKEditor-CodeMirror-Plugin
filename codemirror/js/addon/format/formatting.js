@@ -9,31 +9,143 @@
   });
 
   CodeMirror.extendMode("javascript", {
-    commentStart: "/*",
-    commentEnd: "*/",
-    // FIXME semicolons inside of for
-    newlineAfterToken: function(_type, content, textAfter, state) {
-      if (this.jsonMode) {
-        return /^[\[,{]$/.test(content) || /^}/.test(textAfter);
-      } else {
-        if (content == ";" && state.lexical && state.lexical.type == ")") return false;
-        return /^[;{}]$/.test(content) && !/^;/.test(textAfter);
+      commentStart: "/*",
+      commentEnd: "*/",
+      wordWrapChars: [";", "\\{", "\\}"],
+
+      autoFormatLineBreaks: function (text) {
+          var curPos = 0;
+          var split = this.jsonMode ? function (str) {
+              return str.replace(/([,{])/g, "$1\n").replace(/}/g, "\n}");
+          } : function (str) {
+              return str.replace(/(;|\{|\})([^\r\n;])/g, "$1\n$2");
+          };
+          var nonBreakableBlocks = jsNonBreakableBlocks(text), res = "";
+          if (nonBreakableBlocks != null) {
+              for (var i = 0; i < nonBreakableBlocks.length; i++) {
+                  if (nonBreakableBlocks[i].start > curPos) { // Break lines till the block
+                      res += split(text.substring(curPos, nonBreakableBlocks[i].start));
+                      curPos = nonBreakableBlocks[i].start;
+                  }
+                  if (nonBreakableBlocks[i].start <= curPos
+                      && nonBreakableBlocks[i].end >= curPos) { // Skip non-breakable block
+                      res += text.substring(curPos, nonBreakableBlocks[i].end);
+                      curPos = nonBreakableBlocks[i].end;
+                  }
+              }
+              if (curPos < text.length)
+                  res += split(text.substr(curPos));
+          } else {
+              res = split(text);
+          }
+          return res.replace(/^\n*|\n*$/, "");
       }
-    }
   });
 
+
+  function jsNonBreakableBlocks(text) {
+      var nonBreakableRegexes = [/for\s*?\((.*?)\)/g,
+                                 /&#?[a-z0-9]+;[\s\S]/g,
+                                 /\"(.*?)((\")|$)/g,
+                                 /\/\*(.*?)(\*\/|$)/g,
+                                 /^\/\/.*/g]
+      var nonBreakableBlocks = [];
+      for (var i = 0; i < nonBreakableRegexes.length; i++) {
+          var curPos = 0;
+          while (curPos < text.length) {
+              var m = text.substr(curPos).match(nonBreakableRegexes[i]);
+              if (m != null) {
+                  nonBreakableBlocks.push({
+                      start: curPos + m.index,
+                      end: curPos + m.index + m[0].length
+                  });
+                  curPos += m.index + Math.max(1, m[0].length);
+              }
+              else { // No more matches
+                  break;
+              }
+          }
+      }
+      nonBreakableBlocks.sort(function (a, b) {
+          return a.start - b.start;
+      });
+
+      return nonBreakableBlocks;
+  }
   var inlineElements = /^(a|abbr|acronym|area|base|bdo|big|br|button|caption|cite|code|col|colgroup|dd|del|dfn|em|frame|hr|iframe|img|input|ins|kbd|label|legend|link|map|object|optgroup|option|param|q|samp|script|select|small|span|strong|sub|sup|textarea|tt|var)$/;
 
   CodeMirror.extendMode("xml", {
-    commentStart: "<!--",
-    commentEnd: "-->",
-    newlineAfterToken: function(type, content, textAfter, state) {
-      var inline = false;
-      if (this.configuration == "html")
-        inline = state.context ? inlineElements.test(state.context.tagName) : false;
-      return !inline && ((type == "tag" && />$/.test(content) && state.context) ||
-                         /^</.test(textAfter));
-    }
+      commentStart: "<!--",
+      commentEnd: "-->",
+      noBreak: false,
+      noBreakEmpty: null,
+      tagType: "",
+      tagName: "",
+      isXML: false,
+      newlineAfterToken: function (type, content, textAfter, state) {
+          var noBreakTagsInner = "label|li|option|textarea|title";
+          var noBreakTagsOuter = "a|b|bdi|bdo|big|center|cite|del|em|font|i|img|ins|s|small|span|strike|strong|sub|sup|u";
+          var noBreakTagsEither = noBreakTagsInner + "|" + noBreakTagsOuter;
+          var noBreak = false, matches = null, tagname = "";
+          this.isXML = this.configuration == "xml" ? true : false;
+          if (type == "comment" || /<!--/.test(textAfter)) return false;
+          if (type == "tag") {
+              if (content.indexOf("<") == 0 && !content.indexOf("</") == 0) {
+                  this.tagType = "open";
+                  matches = content.match(/^<\s*?([\w]+?)$/i);
+                  this.tagName = matches != null ? matches[1] : "";
+                  var tagname = this.tagName.toLowerCase();
+                  if (("|" + noBreakTagsEither + "|").indexOf("|" + tagname + "|") != -1)
+                      this.noBreak = true;
+              }
+              if (content.indexOf(">") == 0 && this.tagType == "open") {
+                  this.tagType = "";
+                  var textInsert = this.isXML ? "[^<]*?" : "";
+                  if (RegExp("^" + textInsert + "<\/\s*?" + this.tagName + "\s*?>", "i").test(textAfter)) {
+                      this.noBreak = false;
+                      if (!this.isXML) this.tagName = "";
+                      return false;
+                  }
+                  noBreak = this.noBreak;
+                  this.noBreak = false;
+                  return noBreak ? false : true;
+              }
+              if (content.indexOf("</") == 0) {
+                  this.tagType = "close";
+                  matches = content.match(/^<\/\s*?([\w]+?)$/i);
+                  if (matches != null) tagname = matches[1].toLowerCase();
+                  if (("|" + noBreakTagsOuter + "|").indexOf("|" + tagname + "|") != -1)
+                      this.noBreak = true;
+              }
+              if (content.indexOf(">") == 0 && this.tagType == "close") {
+                  this.tagType = "";
+                  if (textAfter.indexOf("<") == 0) {
+                      matches = textAfter.match(/^<\/?\s*?([\w]+?)(\s|>)/i);
+                      tagname = matches != null ? matches[1].toLowerCase() : "";
+                      if (("|" + noBreakTagsEither + "|").indexOf("|" + tagname + "|") == -1) {
+                          this.noBreak = false;
+                          return true;
+                      }
+                  }
+                  noBreak = this.noBreak;
+                  this.noBreak = false;
+                  return noBreak ? false : true;
+              }
+          }
+          if (textAfter.indexOf("<") == 0) {
+              this.noBreak = false;
+              if (this.isXML && this.tagName != "") {
+                  this.tagName = "";
+                  return false;
+              }
+              matches = textAfter.match(/^<\/?\s*?([\w]+?)(\s|>)/i);
+              tagname = matches != null ? matches[1].toLowerCase() : "";
+              if (("|" + noBreakTagsEither + "|").indexOf("|" + tagname + "|") != -1)
+                  return false;
+              else return true;
+          }
+          return false;
+      }
   });
 
   // Comment/uncomment the specified range
