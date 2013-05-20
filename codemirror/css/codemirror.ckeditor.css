@@ -13,7 +13,14 @@
 }
 
 /* Fix for the sourceDialog */
-.cke_reset_all,.cke_reset_all *{color:inherit;font:inherit}
+.cke_reset_all .cm-s-cobalt *,
+.cke_reset_all .cm-s-erlang-dark *,
+.cke_reset_all .cm-s-lesser-dark *,
+.cke_reset_all .cm-s-monokai *,
+.cke_reset_all .cm-s-night *,
+.cke_reset_all .cm-s-rubyblue *,
+.cke_reset_all .cm-s-twilight *,
+.cke_reset_all .cm-s-xq-dark * { color:inherit;font:inherit }
 
 /* Fixes for themes */
 .cm-s-cobalt .CodeMirror-selected { background: #b36539 !important; }

@@ -34,7 +34,7 @@
                 showSearchButton: true,
                 showUncommentButton: true,
                 theme: 'default',
-                useBeautify: true
+                useBeautify: false
             };
             
             // Get Config & Lang
