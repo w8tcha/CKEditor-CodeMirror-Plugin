@@ -18,7 +18,7 @@ The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 
 ![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorSourceView.png)
 
-(http://www.watchersnet.de/Portals/0/screenshots/dnn/SourceDialog.png)
+![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/SourceDialog.png)
 
 ####License
 
