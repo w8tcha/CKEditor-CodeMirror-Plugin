@@ -255,7 +255,7 @@
                             elements: [
                                 {
                                     type: 'hbox',
-                                    style: 'width: 80px',
+                                    style: 'width: 80px;margin:0;',
                                     widths: ['20px', '20px', '20px', '20px'],
                                     children: [
                                         {
