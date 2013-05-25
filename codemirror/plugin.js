@@ -77,9 +77,10 @@
                             lineWrapping: config.lineWrapping,
                             autoCloseTags: config.autoCloseTags,
                             autoCloseBrackets: config.autoCloseBrackets,
-                            highlightSelectionMatches: config.highlightMatches,
+                            highligctionMatches: config.highlightMatches,
                             continueComments: config.continueComments,
                             theme: config.theme,
+                            viewportMargin: Infinity,
                             //extraKeys: {"Ctrl-Space": "autocomplete"},
                             extraKeys: { "Ctrl-Q": function (codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
                             onKeyEvent: function (codeMirror_Editor, evt) {
@@ -132,12 +133,13 @@
                             };
                         }
 
-                        window["codemirror_" + editor.id].on("change", function (cm, change) {
+                        window["codemirror_" + editor.id].on("change", function () {
                             clearTimeout(delay);
                             delay = setTimeout(function () {
                                 window["codemirror_" + editor.id].save();
                             }, 300);
                         });
+
                         window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
 
                         // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
@@ -168,8 +170,12 @@
                         minHeight: height,
                         resizable : CKEDITOR.DIALOG_RESIZE_NONE,
                         onShow: function () {
+                            // Set Elements
+                            this.getContentElement('main', 'data').focus();
+                            this.getContentElement('main', 'AutoComplete').setValue(config.autoCloseTags, true);
+                            
                             var textArea = this.getContentElement('main', 'data').getInputElement().$;
-
+                            
                             // Load the content
                             this.setValueOf('main', 'data', oldData = editor.getData());
 
@@ -246,24 +252,87 @@
                         contents: [{
                             id: 'main',
                             label: editor.lang.sourcedialog.title,
-                            elements: [{
-                                type: 'textarea',
-                                id: 'data',
-                                dir: 'ltr',
-                                inputStyle: 'cursor:auto;' +
-                                    'width:' + width + 'px;' +
-                                    'height:' + height + 'px;' +
-                                    'tab-size:4;' +
-                                    'text-align:left;',
-                                'class': 'cke_source cke_enable_context_menu'
-                            }]
+                            elements: [
+                                {
+                                    type: 'hbox',
+                                    style: 'width: 80px',
+                                    widths: ['20px', '20px', '20px', '20px'],
+                                    children: [
+                                        {
+                                            type: 'button',
+                                            id: 'searchCode',
+                                            label: '',
+                                            title: lang.searchCode,
+                                            'class': 'searchCodeButton',
+                                            onClick: function() {
+                                                CodeMirror.commands.find(window["codemirror_" + editor.id]);
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            id: 'autoFormat',
+                                            label: '',
+                                            title: lang.autoFormat,
+                                            'class': 'autoFormat',
+                                            onClick: function() {
+                                                var range = {
+                                                    from: window["codemirror_" + editor.id].getCursor(true),
+                                                    to: window["codemirror_" + editor.id].getCursor(false)
+                                                };
+                                                window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            id: 'CommentSelectedRange',
+                                            label: '',
+                                            title: lang.commentSelectedRange,
+                                            'class': 'CommentSelectedRange',
+                                            onClick: function () {
+                                                var range = {
+                                                    from: window["codemirror_" + editor.id].getCursor(true),
+                                                    to: window["codemirror_" + editor.id].getCursor(false)
+                                                };
+                                                window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            id: 'UncommentSelectedRange',
+                                            label: '',
+                                            title: lang.uncommentSelectedRange,
+                                            'class': 'UncommentSelectedRange',
+                                            onClick: function () {
+                                                var range = {
+                                                    from: window["codemirror_" + editor.id].getCursor(true),
+                                                    to: window["codemirror_" + editor.id].getCursor(false)
+                                                };
+                                                window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
+                                                if (window["codemirror_" + editor.id].config.autoFormatOnUncomment) {
+                                                    window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                                }
+                                            }
+                                        }]
+                                }, {
+                                    type: 'checkbox',
+                                    id: 'AutoComplete',
+                                    label: lang.autoCompleteToggle,
+                                    title: lang.autoCompleteToggle,
+                                    onChange: function () {
+                                        window["codemirror_" + editor.id].setOption("autoCloseTags", this.getValue());
+                                    }
+                                }, {
+                                    type: 'textarea',
+                                    id: 'data',
+                                    dir: 'ltr',
+                                    inputStyle: 'cursor:auto;' +
+                                        'width:' + width + 'px;' +
+                                        'height:' + height + 'px;' +
+                                        'tab-size:4;' +
+                                        'text-align:left;',
+                                    'class': 'cke_source cke_enable_context_menu',
+                                }
+                            ]
                         }]
                     };
                 });
-
-
-
-
 
                 return;
             }

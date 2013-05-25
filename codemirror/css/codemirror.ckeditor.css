@@ -12,7 +12,20 @@
 	cursor: pointer;
 }
 
-/* Fix for the sourceDialog */
+/* Source Dialog Buttons */
+.searchCodeButton span,
+.autoFormat span,
+.CommentSelectedRange span,
+.UncommentSelectedRange span {width:16px;height:16px;margin-left:6px}
+
+.searchCodeButton span {background: url("../icons/searchCode.png") no-repeat}
+.autoFormat span {background: url("../icons/AutoFormat.png") no-repeat}
+.CommentSelectedRange span {background: url("../icons/CommentSelectedRange.png") no-repeat}
+.UncommentSelectedRange span {background: url("../icons/UncommentSelectedRange.png") no-repeat}
+
+/* Fixes for the sourceDialog */
+.cke_reset_all .CodeMirror-scroll * { white-space:normal}
+
 .cke_reset_all .cm-s-cobalt *,
 .cke_reset_all .cm-s-erlang-dark *,
 .cke_reset_all .cm-s-lesser-dark *,

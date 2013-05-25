@@ -8,5 +8,5 @@ CKEDITOR.plugins.setLang( 'codemirror', 'de', {
 	autoFormat: 'Auswahl formatieren',
 	commentSelectedRange: 'Auswahl auskommentieren',
 	uncommentSelectedRange: 'Auskommentierung entferen',
-	autoCompleteToggle: 'HTML Tag Autvervollständigen de-/aktivieren'
+	autoCompleteToggle: 'HTML Tag Autovervollständigen de-/aktivieren'
 });

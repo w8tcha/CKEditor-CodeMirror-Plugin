@@ -1,7 +1,7 @@
 CKEditor-CodeMirror-Plugin
 ==========================
 
-Syntax Highlighting for the CKEditor (Source View) with the CodeMirror Plugin
+Syntax Highlighting for the CKEditor (Source View and Source Dialog) with the CodeMirror Plugin
 
 ### Available Shortcuts
 * 'Ctrl-K' to comment the currently selected text
