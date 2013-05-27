@@ -204,8 +204,7 @@
                         onCancel: function() {
                             window["codemirror_" + editor.id].toTextArea();
 
-                            // Free Memory on destroy
-                            window["editable_" + editor.id] = null;
+                            // Free Memory
                             window["codemirror_" + editor.id] = null;
                         },
                         onOk: (function () {
@@ -226,8 +225,7 @@
                             return function () {
                                 window["codemirror_" + editor.id].toTextArea();
 
-                                // Free Memory on destroy
-                                window["editable_" + editor.id] = null;
+                                // Free Memory
                                 window["codemirror_" + editor.id] = null;
 
                                 // Remove CR from input data for reliable comparison with editor data.
@@ -482,7 +480,7 @@
                     };
                 }
 
-                window["codemirror_" + editor.id].on("change", function(cm, change) {
+                window["codemirror_" + editor.id].on("change", function() {
                     clearTimeout(delay);
                     delay = setTimeout(function() {
                         window["codemirror_" + editor.id].save();
