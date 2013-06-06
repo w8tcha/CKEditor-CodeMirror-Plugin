@@ -11,35 +11,35 @@
         icons: 'SearchCode,AutoFormat,CommentSelectedRange,UncommentSelectedRange,AutoComplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh',
         init: function(editor) {
-            var rootPath = this.path;
-            // Default Config
-            var defaultConfig = {
-                autoCloseBrackets: true,
-                autoCloseTags: true,
-                autoFormatOnStart: false,
-                autoFormatOnUncomment: true,
-                continueComments: true,
-                enableCodeFolding: true,
-                enableCodeFormatting: true,
-                enableSearchTools: true,
-                highlightActiveLine: true,
-                highlightMatches: true,
-                lineNumbers: true,
-                lineWrapping: true,
-                mode: 'text/html',
-                matchBrackets: true,
-                showAutoCompleteButton: true,
-                showCommentButton: true,
-                showFormatButton: true,
-                showSearchButton: true,
-                showUncommentButton: true,
-                theme: 'default',
-                useBeautify: false
-            };
+            var rootPath = this.path,
+                defaultConfig = {
+                    autoCloseBrackets: true,
+                    autoCloseTags: true,
+                    autoFormatOnStart: false,
+                    autoFormatOnUncomment: true,
+                    continueComments: true,
+                    enableCodeFolding: true,
+                    enableCodeFormatting: true,
+                    enableSearchTools: true,
+                    highlightActiveLine: true,
+                    highlightMatches: true,
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    mode: 'text/html',
+                    matchBrackets: true,
+                    showAutoCompleteButton: true,
+                    showCommentButton: true,
+                    showFormatButton: true,
+                    showSearchButton: true,
+                    showUncommentButton: true,
+                    theme: 'default',
+                    useBeautify: false
+                };
             
             // Get Config & Lang
-            var config = CKEDITOR.tools.extend(defaultConfig, editor.config.codemirror || {}, true);
-            var lang = editor.lang.codemirror;
+            var config = CKEDITOR.tools.extend(defaultConfig, editor.config.codemirror || {}, true),
+                lang = editor.lang.codemirror;
+            
             // check for old config settings for legacy support
             if (editor.config.codemirror_theme) {
                 config.theme = editor.config.codemirror_theme;
@@ -53,16 +53,10 @@
                 
                 // Override Source Dialog
                 CKEDITOR.dialog.add('sourcedialog', function (editor) {
-                    var size = CKEDITOR.document.getWindow().getViewPaneSize();
-
-                    // Make it maximum 800px wide, but still fully visible in the viewport.
-                    var width = Math.min(size.width - 70, 800);
-
-                    // Make it use 2/3 of the viewport height.
-                    var height = size.height / 1.5;
-
-                    // Store old editor data to avoid unnecessary setData.
-                    var oldData;
+                    var size = CKEDITOR.document.getWindow().getViewPaneSize(),
+                        width = Math.min(size.width - 70, 800),
+                        height = size.height / 1.5,
+                        oldData;
 
                     function loadCodeMirrorInline(editor, textarea) {
                         var delay;
@@ -108,9 +102,9 @@
                         
                         if (config.autoFormatOnStart) {
                             if (config.useBeautify) {
-                                var indent_size = 4;
-                                var indent_char = ' ';
-                                var brace_style = 'collapse'; //collapse, expand, end-expand 
+                                var indent_size = 4,
+                                    indent_char = ' ',
+                                    brace_style = 'collapse'; //collapse, expand, end-expand 
 
                                 var source = window["codemirror_" + editor.id].getValue();
 
@@ -201,11 +195,13 @@
 
 
                         },
-                        onCancel: function() {
-                            window["codemirror_" + editor.id].toTextArea();
+                        onCancel: function (event) {
+                            if (event.data.hide) {
+                                window["codemirror_" + editor.id].toTextArea();
 
-                            // Free Memory
-                            window["codemirror_" + editor.id] = null;
+                                // Free Memory
+                                window["codemirror_" + editor.id] = null;
+                            }
                         },
                         onOk: (function () {
 
@@ -237,10 +233,7 @@
                                     return true;
 
                                 // Set data asynchronously to avoid errors in IE.
-                                CKEDITOR.env.ie ?
-                                    CKEDITOR.tools.setTimeout(setData, 0, this, newData)
-                                    :
-                                    setData.call(this, newData);
+                                CKEDITOR.env.ie ? CKEDITOR.tools.setTimeout(setData, 0, this, newData) : setData.call(this, newData);
 
                                 // Don't let the dialog close before setData is over.
                                 return false;
@@ -379,8 +372,8 @@
 
                 textarea.setStyles(
                     CKEDITOR.tools.extend({
-                            // IE7 has overflow the <textarea> from wrapping table cell.
-                            width: CKEDITOR.env.ie7Compat ? '99%' : '100%',
+                        // IE7 has overflow the <textarea> from wrapping table cell.
+                        width: CKEDITOR.env.ie7Compat ? '99%' : '100%',
                             height: '100%',
                             resize: 'none',
                             outline: 'none',
@@ -570,7 +563,7 @@
                 editor.getCommand('source').setState(editor.mode === 'source' ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
 
                 if (editor.mode === 'source') {
-                  editor.getCommand('autoCompleteToggle').setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+                    editor.getCommand('autoCompleteToggle').setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
                 }
 
             });
@@ -724,7 +717,9 @@ CKEDITOR.plugins.sourcearea = {
                 };
                 window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
                 if (window["codemirror_" + editor.id].config.autoFormatOnUncomment) {
-                    window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                    window["codemirror_" + editor.id].autoFormatRange(
+                        range.from,
+                        range.to);
                 }
             },
             canUndo: true
