@@ -577,8 +577,9 @@
             });
             
             editor.on('readOnly', function () {
-                window["codemirror_" + editor.id].setOption("readOnly", this.readOnly);
-
+                if (window["editable_" + editor.id] && editor.mode === 'source') {
+                    window["codemirror_" + editor.id].setOption("readOnly", this.readOnly);
+                }
             });
             
             var selectAllCommand = editor.commands.selectAll;
