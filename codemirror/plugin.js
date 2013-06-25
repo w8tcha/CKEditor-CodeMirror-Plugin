@@ -318,7 +318,7 @@
                                         'height:' + height + 'px;' +
                                         'tab-size:4;' +
                                         'text-align:left;',
-                                    'class': 'cke_source cke_enable_context_menu',
+                                    'class': 'cke_source cke_enable_context_menu'
                                 }
                             ]
                         }]
