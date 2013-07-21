@@ -31,6 +31,7 @@
                     showCommentButton: true,
                     showFormatButton: true,
                     showSearchButton: true,
+                    showTrailingSpace: true,
                     showUncommentButton: true,
                     theme: 'default',
                     useBeautify: false
@@ -74,6 +75,7 @@
                             highligctionMatches: config.highlightMatches,
                             continueComments: config.continueComments,
                             theme: config.theme,
+                            showTrailingSpace: config.showTrailingSpace,
                             viewportMargin: Infinity,
                             //extraKeys: {"Ctrl-Space": "autocomplete"},
                             extraKeys: { "Ctrl-Q": function (codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
@@ -90,6 +92,9 @@
                                     } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
                                         window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
                                     }
+                                    /*else if (evt.type === "keydown") {
+                                        CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
+                                    }*/
                                 }
                             }
                         });
@@ -422,6 +427,7 @@
                     highlightSelectionMatches: config.highlightMatches,
                     continueComments: config.continueComments,
                     theme: config.theme,
+                    showTrailingSpace: config.showTrailingSpace,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
                     extraKeys: { "Ctrl-Q": function(codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
                     onKeyEvent: function(codeMirror_Editor, evt) {
@@ -436,7 +442,9 @@
                                 }
                             } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
                                 window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                            }
+                            }/* else if (evt.type === "keydown") {
+                                CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
+                            }*/
                         }
                     }
                 });

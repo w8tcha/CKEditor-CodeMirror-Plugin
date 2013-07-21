@@ -76,6 +76,8 @@ config.codemirror = {
      // Whether or not to show the search Code button on the toolbar
 	showSearchButton: true,
 
+     // Whether or not to show Trailing Spaces
+	showTrailingSpace: true,
 	
 	// Whether or not to show the format button on the toolbar
 	showFormatButton: true,

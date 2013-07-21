@@ -59,7 +59,7 @@
     });
 */
 
-(function() {
+(function () {
 
     function style_html(html_source, options, js_beautify, css_beautify) {
     //Wrapper function to invoke all the necessary constructors and deal with the output.
@@ -433,7 +433,7 @@
           return Array(level + 1).join(this.indent_string);
         };
 
-        this.is_unformatted = function(tag_check, unformatted) {
+        this.is_unformatted = function (tag_check, unformatted) {
             //is this an HTML5 block-level link?
             if (!this.Utils.in_array(tag_check, unformatted)){
                 return false;
@@ -611,11 +611,11 @@
 
     if (typeof define === "function") {
         // Add support for require.js
-        define(function(require, exports, module) {
+        define(function (require, exports, module) {
             var js_beautify  = require('./beautify.js').js_beautify;
             var css_beautify = require('./beautify-css.js').css_beautify;
 
-            exports.html_beautify = function(html_source, options) {
+            exports.html_beautify = function (html_source, options) {
                 return style_html(html_source, options, js_beautify, css_beautify);
             };
         });
@@ -625,17 +625,17 @@
         var js_beautify  = require('./beautify.js').js_beautify;
         var css_beautify = require('./beautify-css.js').css_beautify;
 
-        exports.html_beautify = function(html_source, options) {
+        exports.html_beautify = function (html_source, options) {
             return style_html(html_source, options, js_beautify, css_beautify);
         };
     } else if (typeof window !== "undefined") {
         // If we're running a web page and don't have either of the above, add our one global
-        window.html_beautify = function(html_source, options) {
+        window.html_beautify = function (html_source, options) {
             return style_html(html_source, options, window.js_beautify, window.css_beautify);
         };
     } else if (typeof global !== "undefined") {
         // If we don't even have window, try global.
-        global.html_beautify = function(html_source, options) {
+        global.html_beautify = function (html_source, options) {
             return style_html(html_source, options, global.js_beautify, global.css_beautify);
         };
     }

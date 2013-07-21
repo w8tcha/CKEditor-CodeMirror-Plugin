@@ -51,7 +51,7 @@
 
             jslint_happy   !jslint_happy
             ---------------------------------
-             function ()      function()
+             function ()      function ()
 
     brace_style (default "collapse") - "collapse" | "expand" | "end-expand"
             put braces on the same line as control statements (default), or put braces on own line (Allman / ANSI style), or just put end braces on own line.
@@ -74,7 +74,7 @@
 */
 
 
-(function() {
+(function () {
     function js_beautify(js_source_text, options) {
         "use strict";
         var beautifier = new Beautifier(js_source_text, options);
@@ -945,7 +945,7 @@
             } else if (last_type !== 'TK_WORD' && last_type !== 'TK_OPERATOR') {
                 output_space_before_token = true;
             } else if (flags.last_word === 'function' || flags.last_word === 'typeof') {
-                // function() vs function ()
+                // function () vs function ()
                 if (opt.jslint_happy) {
                     output_space_before_token = true;
                 }
@@ -1510,7 +1510,7 @@
 
     if (typeof define === "function") {
         // Add support for require.js
-        define(function(require, exports, module) {
+        define(function (require, exports, module) {
             exports.js_beautify = js_beautify;
         });
     } else if (typeof exports !== "undefined") {
