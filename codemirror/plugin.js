@@ -26,7 +26,7 @@
                     indentWithTabs: false,
                     lineNumbers: true,
                     lineWrapping: true,
-                    mode: 'text/html',
+                    mode: 'htmlmixed',
                     matchBrackets: true,
                     showAutoCompleteButton: true,
                     showCommentButton: true,
@@ -64,7 +64,7 @@
                         var delay;
 
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
-                            mode: 'text/html',
+                            mode: config.mode,
                             matchBrackets: config.matchBrackets,
                             workDelay: 300,
                             workTime: 35,
@@ -361,7 +361,28 @@
             });
 
             function getCodeMirrorScripts() {
-                var scriptFiles = [rootPath + 'js/codemirror.modes.min.js', rootPath + 'js/codemirror.addons.min.js'];
+                var scriptFiles = [rootPath + 'js/codemirror.addons.min.js'];
+
+                switch (config.mode) {
+                case "htmlmixed":
+                    {
+                        scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
+                    }
+                case "text/html":
+                    {
+                        scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
+                    }
+                case "application/x-httpd-php":
+                    {
+                        scriptFiles.push(rootPath + 'js/codemirror.mode.php.min.js');
+                    }
+                case "text/javascript":
+                    {
+                        scriptFiles.push(rootPath + 'js/codemirror.mode.javascript.min.js');
+                    }
+                default:
+                    scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
+                }
 
                 if (config.useBeautify) {
                     scriptFiles.push(rootPath + 'js/beautify.min.js');
