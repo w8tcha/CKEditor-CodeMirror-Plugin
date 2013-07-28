@@ -73,6 +73,9 @@ config.codemirror = {
 	// Whether or not to highlight all matches of current word/selection
 	highlightMatches: true,
 
+     // Define the language specific mode 'htmlmixed' for html  including (css, xml, javascript), 'application/x-httpd-php' for php mode including html, or 'text/javascript' for using java script only 
+	mode: 'htmlmixed',
+
      // Whether or not to show the search Code button on the toolbar
 	showSearchButton: true,
 
