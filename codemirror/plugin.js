@@ -368,18 +368,26 @@
                     {
                         scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
                     }
+
+                    break;
                 case "text/html":
                     {
                         scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
                     }
+
+                    break;
                 case "application/x-httpd-php":
                     {
                         scriptFiles.push(rootPath + 'js/codemirror.mode.php.min.js');
                     }
+
+                    break;
                 case "text/javascript":
                     {
                         scriptFiles.push(rootPath + 'js/codemirror.mode.javascript.min.js');
                     }
+
+                    break;
                 default:
                     scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
                 }
