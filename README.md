@@ -46,6 +46,9 @@ config.codemirror = {
 	// Whether or not you want to highlight matching braces
 	matchBrackets: true,
 	
+	// Whether or not you want to highlight matching tags
+	matchTags: true,
+	
 	// Whether or not you want tags to automatically close themselves
 	autoCloseTags: true,
 	
