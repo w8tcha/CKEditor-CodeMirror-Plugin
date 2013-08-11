@@ -28,6 +28,7 @@
                     lineWrapping: true,
                     mode: 'htmlmixed',
                     matchBrackets: true,
+                    matchTags: true,
                     showAutoCompleteButton: true,
                     showCommentButton: true,
                     showFormatButton: true,
@@ -66,6 +67,7 @@
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
                             mode: config.mode,
                             matchBrackets: config.matchBrackets,
+                            matchTags: config.matchTags,
                             workDelay: 300,
                             workTime: 35,
                             readOnly: editor.config.readOnly,
@@ -448,6 +450,7 @@
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: config.mode,
                     matchBrackets: config.matchBrackets,
+                    matchTags: config.matchTags,
                     workDelay: 300,
                     workTime: 35,
                     readOnly: editor.config.readOnly,
