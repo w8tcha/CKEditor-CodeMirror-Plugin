@@ -139,7 +139,11 @@
                         window["codemirror_" + editor.id].on("change", function () {
                             clearTimeout(delay);
                             delay = setTimeout(function () {
-                                window["codemirror_" + editor.id].save();
+                                var cm = window["codemirror_" + editor.id];
+
+                                if (cm) {
+                                    cm.save();
+                                }
                             }, 300);
                         });
 
@@ -516,10 +520,14 @@
                     };
                 }
 
-                window["codemirror_" + editor.id].on("change", function() {
+                window["codemirror_" + editor.id].on("change", function () {
                     clearTimeout(delay);
-                    delay = setTimeout(function() {
-                        window["codemirror_" + editor.id].save();
+                    delay = setTimeout(function () {
+                        var cm = window["codemirror_" + editor.id];
+                    
+                        if (cm) {
+                            cm.save();
+                        }
                     }, 300);
                 });
                 window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
