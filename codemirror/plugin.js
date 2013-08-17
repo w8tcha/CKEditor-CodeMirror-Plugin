@@ -399,7 +399,7 @@
                 }
 
                 if (config.enableSearchTools) {
-                    scriptFiles.push(rootPath + 'js/codemirror.search-addons.min.js');
+                    scriptFiles.push(rootPath + 'js/codemirror.addons.search.min.js');
                 }
                 return scriptFiles;
             }
