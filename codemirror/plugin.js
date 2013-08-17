@@ -634,7 +634,7 @@
             });
             
             var selectAllCommand = editor.commands.selectAll;
-            
+
             if (selectAllCommand != null) {
                 selectAllCommand.on('exec', function () {
                     if (editor.mode === 'source') {
@@ -645,7 +645,10 @@
                             line: window["codemirror_" + editor.id].lineCount(),
                             ch: 0
                         });
+
+                        return false;
                     }
+                    return true;
                 });
             }
         }
