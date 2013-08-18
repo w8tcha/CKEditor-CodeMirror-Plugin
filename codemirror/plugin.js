@@ -340,8 +340,120 @@
 
                 return;
             }
-
+            
             var sourcearea = CKEDITOR.plugins.sourcearea;
+            
+            // check if sourcearea plugin is overrriden
+            if (sourcearea.commands.searchCode) {
+
+                CKEDITOR.plugins.sourcearea.commands = {
+                    source: {
+                        modes: {
+                            wysiwyg: 1,
+                            source: 1
+                        },
+                        editorFocus: false,
+                        readOnly: 1,
+                        exec: function(editorInstance) {
+                            if (editorInstance.mode === 'wysiwyg') {
+                                editorInstance.fire('saveSnapshot');
+                            }
+                            editorInstance.getCommand('source').setState(CKEDITOR.TRISTATE_DISABLED);
+                            editorInstance.setMode(editorInstance.mode === 'source' ? 'wysiwyg' : 'source');
+                        },
+                        canUndo: false
+                    },
+                    searchCode: {
+                        modes: {
+                            wysiwyg: 0,
+                            source: 1
+                        },
+                        editorFocus: false,
+                        readOnly: 1,
+                        exec: function (editorInstance) {
+                            CodeMirror.commands.find(window["codemirror_" + editorInstance.id]);
+                        },
+                        canUndo: true
+                    },
+                    autoFormat: {
+                        modes: {
+                            wysiwyg: 0,
+                            source: 1
+                        },
+                        editorFocus: false,
+                        readOnly: 1,
+                        exec: function (editorInstance) {
+                            var range = {
+                                from: window["codemirror_" + editorInstance.id].getCursor(true),
+                                to: window["codemirror_" + editorInstance.id].getCursor(false)
+                            };
+                            window["codemirror_" + editorInstance.id].autoFormatRange(range.from, range.to);
+                        },
+                        canUndo: true
+                    },
+                    commentSelectedRange: {
+                        modes: {
+                            wysiwyg: 0,
+                            source: 1
+                        },
+                        editorFocus: false,
+                        readOnly: 1,
+                        exec: function (editorInstance) {
+                            var range = {
+                                from: window["codemirror_" + editorInstance.id].getCursor(true),
+                                to: window["codemirror_" + editorInstance.id].getCursor(false)
+                            };
+                            window["codemirror_" + editorInstance.id].commentRange(true, range.from, range.to);
+                        },
+                        canUndo: true
+                    },
+                    uncommentSelectedRange: {
+                        modes: {
+                            wysiwyg: 0,
+                            source: 1
+                        },
+                        editorFocus: false,
+                        readOnly: 1,
+                        exec: function (editorInstance) {
+                            var range = {
+                                from: window["codemirror_" + editorInstance.id].getCursor(true),
+                                to: window["codemirror_" + editorInstance.id].getCursor(false)
+                            };
+                            window["codemirror_" + editorInstance.id].commentRange(false, range.from, range.to);
+                            if (window["codemirror_" + editorInstance.id].config.autoFormatOnUncomment) {
+                                window["codemirror_" + editorInstance.id].autoFormatRange(
+                                    range.from,
+                                    range.to);
+                            }
+                        },
+                        canUndo: true
+                    },
+                    autoCompleteToggle: {
+                        modes: {
+                            wysiwyg: 0,
+                            source: 1
+                        },
+                        editorFocus: false,
+                        readOnly: 1,
+                        exec: function (editorInstance) {
+                            if (this.state == CKEDITOR.TRISTATE_ON) {
+                                window["codemirror_" + editorInstance.id].setOption("autoCloseTags", false);
+                            } else if (this.state == CKEDITOR.TRISTATE_OFF) {
+                                window["codemirror_" + editorInstance.id].setOption("autoCloseTags", true);
+                            }
+
+                            this.toggleState();
+                        },
+                        canUndo: true
+                    }
+                };
+
+                console.log(CKEDITOR.plugins.sourcearea);
+            }
+
+            
+
+            
             editor.addMode('source', function(callback) {
                 if (typeof (CodeMirror) == 'undefined') {
                     
@@ -539,11 +651,18 @@
                 // Highlight Active Line
                 if (config.highlightActiveLine) {
                     window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
-                    window["codemirror_" + editor.id].on("cursorActivity", function() {
-                        var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
-                        if (cur != window["codemirror_" + editor.id].hlLine) {
-                            window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
-                            window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
+                    window["codemirror_" + editor.id].on("cursorActivity", function () {
+                        try {
+                            var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
+                        } catch(e) {
+                            cur = null;
+                        } finally {
+                            if (cur != null) {
+                                if (cur != window["codemirror_" + editor.id].hlLine) {
+                                    window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
+                                    window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
+                                }
+                            }
                         }
                     });
                 }
