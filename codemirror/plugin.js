@@ -344,7 +344,7 @@
             var sourcearea = CKEDITOR.plugins.sourcearea;
             
             // check if sourcearea plugin is overrriden
-            if (sourcearea.commands.searchCode) {
+            if (!sourcearea.commands.searchCode) {
 
                 CKEDITOR.plugins.sourcearea.commands = {
                     source: {
@@ -447,8 +447,6 @@
                         canUndo: true
                     }
                 };
-
-                console.log(CKEDITOR.plugins.sourcearea);
             }
 
             
