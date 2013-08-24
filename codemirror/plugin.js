@@ -765,6 +765,7 @@
 
                         return false;
                     }
+                    
                     return true;
                 });
             }
@@ -826,6 +827,7 @@ CKEDITOR.plugins.sourcearea = {
                 if (editor.mode === 'wysiwyg') {
                     editor.fire('saveSnapshot');
                 }
+
                 editor.getCommand('source').setState(CKEDITOR.TRISTATE_DISABLED);
                 editor.setMode(editor.mode === 'source' ? 'wysiwyg' : 'source');
             },

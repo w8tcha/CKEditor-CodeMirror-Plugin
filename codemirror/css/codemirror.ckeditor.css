@@ -12,6 +12,8 @@
 	cursor: pointer;
 }
 
+.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }
+
 /* Source Dialog Buttons */
 .searchCodeButton span,
 .autoFormat span,
@@ -33,7 +35,12 @@
 .cke_reset_all .cm-s-night *,
 .cke_reset_all .cm-s-rubyblue *,
 .cke_reset_all .cm-s-twilight *,
-.cke_reset_all .cm-s-xq-dark * { color:inherit;font:inherit }
+.cke_reset_all .cm-s-xq-dark *,
+.cke_reset_all .cm-s-base16-dark *,
+.cke_reset_all .cm-s-3024-night *,
+.cke_reset_all .cm-s-the-matrix *,
+.cke_reset_all .cm-s-paraiso-dark *,
+.cke_reset_all .cm-s-paraiso-light * { color:inherit;font:inherit }
 
 /* Fixes for themes */
 .cm-s-cobalt .CodeMirror-selected { background: #b36539 !important; }
@@ -44,6 +51,7 @@
 .cm-s-rubyblue .CodeMirror-selected { background: #38566F !important; }
 .cm-s-twilight .CodeMirror-selected { background: #323232 !important; }
 .cm-s-xq-dark .CodeMirror-selected { background: #a8f !important; }
+.cm-s-the-matrix .CodeMirror-selected { background:rgba(255, 150, 0, .3) !important; }
 
 .cm-s-blackboard .activeline,
 .cm-s-cobalt .activeline,
@@ -53,8 +61,15 @@
 .cm-s-night .activeline,
 .cm-s-rubyblue .activeline,
 .cm-s-vibrant-ink .activeline,
-.cm-s-xq-dark .activeline { background: #757575; }
+.cm-s-xq-dark .activeline,
+.cm-s-base16-dark .activeline,
+.cm-s-3024-night .activeline,
+.cm-s-paraiso-light .activeline,
+.cm-s-paraiso-dark .activeline { background: #757575; }
+
 .cm-s-twilight .activeline { background:#494949; }
+
+.cm-s-the-matrix .activeline { background:#060; }
 
 .CodeMirror-focused .cm-matchhighlight {
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
