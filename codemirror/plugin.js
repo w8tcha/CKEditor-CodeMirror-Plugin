@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add('codemirror', {
         icons: 'SearchCode,AutoFormat,CommentSelectedRange,UncommentSelectedRange,AutoComplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh',
-        init: function(editor) {
+        init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
                     autoCloseBrackets: true,
@@ -752,8 +752,9 @@
             
             var selectAllCommand = editor.commands.selectAll;
 
+            // Replace Complete SelectAll command from the plugin, otherwise it will not work in IE10
             if (selectAllCommand != null) {
-                selectAllCommand.on('exec', function () {
+                selectAllCommand.exec = function () {
                     if (editor.mode === 'source') {
                         window["codemirror_" + editor.id].setSelection({
                             line: 0,
@@ -762,12 +763,36 @@
                             line: window["codemirror_" + editor.id].lineCount(),
                             ch: 0
                         });
+                    } else {
+                        var editable = editor.editable();
+                        if (editable.is('body'))
+                            editor.document.$.execCommand('SelectAll', false, null);
+                        else {
+                            var range = editor.createRange();
+                            range.selectNodeContents(editable);
+                            range.select();
+                        }
 
-                        return false;
+                        // Force triggering selectionChange (#7008)
+                        editor.forceNextSelectionCheck();
+                        editor.selectionChange();
+                    }
+                };
+                /*selectAllCommand.on('exec', function () {
+
+                    alert('hello');
+                    if (editor.mode === 'source') {
+                        window["codemirror_" + editor.id].setSelection({
+                            line: 0,
+                            ch: 0
+                        }, {
+                            line: window["codemirror_" + editor.id].lineCount(),
+                            ch: 0
+                        });
                     }
                     
                     return true;
-                });
+                });*/
             }
         }
     });
