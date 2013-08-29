@@ -750,50 +750,37 @@
                 }
             });
             
-            var selectAllCommand = editor.commands.selectAll;
+            editor.on('instanceReady', function () {
+                var selectAllCommand = editor.commands.selectAll;
 
-            // Replace Complete SelectAll command from the plugin, otherwise it will not work in IE10
-            if (selectAllCommand != null) {
-                selectAllCommand.exec = function () {
-                    if (editor.mode === 'source') {
-                        window["codemirror_" + editor.id].setSelection({
-                            line: 0,
-                            ch: 0
-                        }, {
-                            line: window["codemirror_" + editor.id].lineCount(),
-                            ch: 0
-                        });
-                    } else {
-                        var editable = editor.editable();
-                        if (editable.is('body'))
-                            editor.document.$.execCommand('SelectAll', false, null);
-                        else {
-                            var range = editor.createRange();
-                            range.selectNodeContents(editable);
-                            range.select();
+                // Replace Complete SelectAll command from the plugin, otherwise it will not work in IE10
+                if (selectAllCommand != null) {
+                    selectAllCommand.exec = function () {
+                        if (editor.mode === 'source') {
+                            window["codemirror_" + editor.id].setSelection({
+                                line: 0,
+                                ch: 0
+                            }, {
+                                line: window["codemirror_" + editor.id].lineCount(),
+                                ch: 0
+                            });
+                        } else {
+                            var editable = editor.editable();
+                            if (editable.is('body'))
+                                editor.document.$.execCommand('SelectAll', false, null);
+                            else {
+                                var range = editor.createRange();
+                                range.selectNodeContents(editable);
+                                range.select();
+                            }
+
+                            // Force triggering selectionChange (#7008)
+                            editor.forceNextSelectionCheck();
+                            editor.selectionChange();
                         }
-
-                        // Force triggering selectionChange (#7008)
-                        editor.forceNextSelectionCheck();
-                        editor.selectionChange();
-                    }
-                };
-                /*selectAllCommand.on('exec', function () {
-
-                    alert('hello');
-                    if (editor.mode === 'source') {
-                        window["codemirror_" + editor.id].setSelection({
-                            line: 0,
-                            ch: 0
-                        }, {
-                            line: window["codemirror_" + editor.id].lineCount(),
-                            ch: 0
-                        });
-                    }
-                    
-                    return true;
-                });*/
-            }
+                    };
+                }
+            });
         }
     });
     var sourceEditable = CKEDITOR.tools.createClass({
