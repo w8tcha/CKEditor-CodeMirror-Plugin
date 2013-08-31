@@ -781,13 +781,19 @@
                     };
                 }
             });
+
+            editor.on('setData', function (data) {
+                if (window["editable_" + editor.id] && editor.mode === 'source') {
+                    window["codemirror_" + editor.id].setValue(data.data.dataValue);
+                }
+            });
         }
     });
     var sourceEditable = CKEDITOR.tools.createClass({
         base: CKEDITOR.editable,
         proto: {
             setData: function(data) {
-
+                
                 this.setValue(data);
 
                 if (this.codeMirror != null) {
