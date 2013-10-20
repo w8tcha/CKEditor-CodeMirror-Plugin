@@ -7,6 +7,6 @@ CKEDITOR.plugins.setLang( 'codemirror', 'pl', {
 	autoFormat: 'Sformatuj zaznaczenie',
 	commentSelectedRange: 'Zakomentuj zaznaczenie',
 	uncommentSelectedRange: 'Odkomentuj zaznaczenie',
-	searchCode: 'Search Source',
-	autoCompleteToggle: 'Enable/Disable HTML Tag Autocomplete'
+	searchCode: 'Wyszukaj w źródle',
+	autoCompleteToggle: 'Włącza/Wyłącza automatyczne uzupełniania tagów HTML'
 });
