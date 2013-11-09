@@ -10,6 +10,7 @@
     CKEDITOR.plugins.add('codemirror', {
         icons: 'SearchCode,AutoFormat,CommentSelectedRange,UncommentSelectedRange,AutoComplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh',
+        version: 1.09,
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -793,7 +794,6 @@
         base: CKEDITOR.editable,
         proto: {
             setData: function(data) {
-                
                 this.setValue(data);
 
                 if (this.codeMirror != null) {

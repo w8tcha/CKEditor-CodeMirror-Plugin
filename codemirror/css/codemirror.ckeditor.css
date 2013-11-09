@@ -52,6 +52,9 @@
 .cm-s-twilight .CodeMirror-selected { background: #323232 !important; }
 .cm-s-xq-dark .CodeMirror-selected { background: #a8f !important; }
 .cm-s-the-matrix .CodeMirror-selected { background:rgba(255, 150, 0, .3) !important; }
+.cm-s-mbo .CodeMirror-selected {
+	background: #716C62 !important;
+}
 
 .cm-s-blackboard .activeline,
 .cm-s-cobalt .activeline,
@@ -65,7 +68,13 @@
 .cm-s-base16-dark .activeline,
 .cm-s-3024-night .activeline,
 .cm-s-paraiso-light .activeline,
-.cm-s-paraiso-dark .activeline { background: #757575; }
+.cm-s-paraiso-dark .activeline {
+	 background: #757575;
+}
+
+.cm-s-mbo .activeline {
+	 background: #716C62;
+}
 
 .cm-s-twilight .activeline { background:#494949; }
 
