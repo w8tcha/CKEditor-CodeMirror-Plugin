@@ -20,7 +20,7 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
       var scriptType = stream.string.slice(Math.max(0, stream.pos - 100), stream.pos).match(/\btype\s*=\s*("[^"]+"|'[^']+'|\S+)[^<]*$/i);
       scriptType = scriptType ? scriptType[1] : "";
       if (scriptType && /[\"\']/.test(scriptType.charAt(0))) scriptType = scriptType.slice(1, scriptType.length - 1);
-      for (var i = 0; i < scriptTypes.length; ++i) {
+      for (var index = 0; index < scriptTypes.length; ++index) {
         var tp = scriptTypes[i];
         if (typeof tp.matches == "string" ? scriptType == tp.matches : tp.matches.test(scriptType)) {
           if (tp.mode) {
@@ -42,7 +42,7 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
     var cur = stream.current();
     var close = cur.search(pat), m;
     if (close > -1) stream.backUp(cur.length - close);
-    else if (m = cur.match(/<\/?$/)) {
+    else if (cur.match(/<\/?$/)) {
       stream.backUp(cur.length);
       if (!stream.match(pat, false)) stream.match(cur[0]);
     }
