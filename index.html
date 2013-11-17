@@ -1,41 +1,43 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Ckeditor-codemirror-plugin by w8tcha</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
+    <title>CKEditor CodeMirror Plugin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="stylesheets/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Ckeditor-codemirror-plugin</h1>
-        <p>Syntax Highlighting for the CKEditor</p>
 
-        <p class="view"><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin">View the Project on GitHub <small>w8tcha/CKEditor-CodeMirror-Plugin</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin">View On <strong>GitHub</strong></a></li>
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="index.html">Home</a></li>
+          <li><a href="demoFramed.html">Framed Demo</a></li>
+          <li><a href="demoInline.html">Inline Demo</a></li>
+          <li><a href="installation.html">Installation</a></li>
         </ul>
-      </header>
-      <section>
-        <h1>
-<a name="ckeditor-codemirror-plugin" class="anchor" href="#ckeditor-codemirror-plugin"><span class="octicon octicon-link"></span></a>CKEditor-CodeMirror-Plugin</h1>
+        <h3 class="text-muted">CodeMirror Plugin for the CKeditor</h3>
+      </div>
 
-<p>Syntax Highlighting for the CKEditor (Source View and Source Dialog) with the CodeMirror Plugin</p>
-
-<h3>
-<a name="available-shortcuts" class="anchor" href="#available-shortcuts"><span class="octicon octicon-link"></span></a>Available Shortcuts</h3>
-
+      <!-- Begin page content -->
+      <div class="container">
+        <div class="page-header">
+          <h1>CKEditor-CodeMirror-Plugin</h1>
+        </div>
+        <p class="lead">Syntax Highlighting for the CKEditor (Source View and Source Dialog) with the CodeMirror Plugin.</p>
+        <p><img src="http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorSourceView.png" alt="CKEditor Source View" width="568" height="205" class="img-thumbnail"></p>
+        <p><img src="http://www.watchersnet.de/Portals/0/screenshots/dnn/SourceDialog.png" alt="CKEditor Source Dialog" width="505" height="360" class="img-thumbnail">
+        </p>
+        <h3>Available Shortcuts</h3>
+<p class="lead">
 <ul>
 <li>'Ctrl-K' to comment the currently selected text</li>
 <li>'Ctrl-Shift-K' to uncomment currently selected text</li>
@@ -46,99 +48,19 @@
 <li>'Ctrl-Shift-G' to find previous</li>
 <li>'Ctrl-Shift-F' to find and replace</li>
 <li>'Ctrl-Shift-R' to find and replace all</li>
-</ul><p>The Full Theme List can be found here: <a href="http://codemirror.net/demo/theme.html">http://codemirror.net/demo/theme.html</a></p>
-
-<p><img src="http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorSourceView.png" alt="Screenshot"></p>
-
-<p><img src="http://www.watchersnet.de/Portals/0/screenshots/dnn/SourceDialog.png" alt="Screenshot"></p>
-
-<h4>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h4>
-
-<p>Licensed under the terms of the MIT License.</p>
-
-<h4>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h4>
-
-<ol>
-<li>Extract the contents of the file into the "plugins" folder of CKEditor.</li>
-<li>In the CKEditor configuration file (config.js) add the following code:</li>
-</ol><pre><code>config.extraPlugins = 'codemirror';
-
-config.codemirror = {
-
-    // Set this to the theme you wish to use (codemirror themes)
-    theme: 'default',
-
-    // Whether or not you want to show line numbers
-    lineNumbers: true,
-
-    // Whether or not you want to use line wrapping
-    lineWrapping: true,
-
-    // Whether or not you want to highlight matching braces
-    matchBrackets: true,
-
-    // Whether or not you want to highlight matching tags
-    matchTags: true,
-
-    // Whether or not you want tags to automatically close themselves
-    autoCloseTags: true,
-
-    // Whether or not you want Brackets to automatically close themselves
-    autoCloseBrackets: true,
-
-    // Whether or not to enable search tools, CTRL+F (Find), CTRL+SHIFT+F (Replace), CTRL+SHIFT+R (Replace All), CTRL+G (Find Next), CTRL+SHIFT+G (Find Previous)
-    enableSearchTools: true,
-
-    // Whether or not you wish to enable code folding (requires 'lineNumbers' to be set to 'true')
-    enableCodeFolding: true,
-
-    // Whether or not to enable code formatting
-    enableCodeFormatting: true,
-
-    // Whether or not to automatically format code should be done when the editor is loaded
-    autoFormatOnStart: true, 
-
-    // Whether or not to automatically format code which has just been uncommented
-    autoFormatOnUncomment: true,
-
-    // Whether or not to highlight the currently active line
-    highlightActiveLine: true,
-
-    // Whether or not to highlight all matches of current word/selection
-    highlightMatches: true,
-
-     // Define the language specific mode 'htmlmixed' for html  including (css, xml, javascript), 'application/x-httpd-php' for php mode including html, or 'text/javascript' for using java script only 
-    mode: 'htmlmixed',
-
-     // Whether or not to show the search Code button on the toolbar
-    showSearchButton: true,
-
-     // Whether or not to show Trailing Spaces
-    showTrailingSpace: true,
-
-    // Whether or not to show the format button on the toolbar
-    showFormatButton: true,
-
-    // Whether or not to show the comment button on the toolbar
-    showCommentButton: true,
-
-    // Whether or not to show the uncomment button on the toolbar
-    showUncommentButton: true,
-
-     // Whether or not to show the showAutoCompleteButton button on the toolbar
-    showAutoCompleteButton: true
-};
-
-</code></pre>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/w8tcha">w8tcha</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+</ul></p>
+      </div>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">Licensed under the terms of the MIT License.</p>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>

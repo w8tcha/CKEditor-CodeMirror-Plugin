@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CKEditor CodeMirror Plugin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="stylesheets/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    
+    <script src="ckeditor/ckeditor.js"></script>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="index.html">Home</a></li>
+          <li class="active"><a href="demoFramed.html">Framed Demo</a></li>
+          <li><a href="demoInline.html">Inline Demo</a></li>
+          <li><a href="installation.html">Installation</a></li>
+        </ul>
+        <h3 class="text-muted">CodeMirror Plugin for the CKeditor</h3>
+      </div>
+
+      <!-- Begin page content -->
+      <div class="container">
+        <div class="page-header">
+          <h1>Demos</h1>
+        </div>
+        <div>
+          <p class="lead">
+           Source Area
+          </p>
+          <p>
+		    The <strong>CodeMirror</strong> plugin extends the source area of the framed CKEditor, with the source area you can edit the raw HTML content of an editor with Syntax Highlighting.
+          </p>
+          <p>
+			To enable this
+			plugin, basically add <code>extraPlugins: 'codemirror'</code> to editor's
+			config:
+		</p>
+<pre>
+// Framed editor.
+CKEDITOR.replace( 'textarea_id', {
+	<strong>extraPlugins: 'codemirror'</strong>
+});
+</pre>
+          <div>
+		<label for="editor3">
+			Framed editor:
+		</label>
+		<textarea cols="80" id="editor3" name="editor3" rows="10">
+			This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://ckeditor.com/"&gt;CKEditor&lt;/a&gt;.
+		</textarea>
+	</div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">Licensed under the terms of the MIT License.</p>
+      </div>
+    </div>
+
+    <script>
+		CKEDITOR.replace( 'editor3', {extraPlugins: 'codemirror'} );
+	</script>
+  </body>
+</html>

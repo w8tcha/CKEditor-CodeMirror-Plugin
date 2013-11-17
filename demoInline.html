@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CKEditor CodeMirror Plugin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="stylesheets/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    
+    <script src="ckeditor/ckeditor.js"></script>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="demoFramed.html">Framed Demo</a></li>
+          <li class="active"><a href="demoInline.html">Inline Demo</a></li>
+          <li><a href="installation.html">Installation</a></li>
+        </ul>
+        <h3 class="text-muted">CodeMirror Plugin for the CKeditor</h3>
+      </div>
+
+      <!-- Begin page content -->
+      <div class="container">
+        <div class="page-header">
+          <h1>Demos</h1>
+        </div>
+        <div>
+          <p class="lead">
+           Inline/Framed Source Dialog
+          </p>
+          <p>
+		    The <strong>CodeMirror</strong> plugin also extends the Source Dialog, with the Source Dialog you can edit the raw HTML content of an editor with Syntax Highlighting.
+          </p>
+          <p>
+			This <strong>SourceDialog</strong> plugin extends the toolbar with a button,
+			which opens a dialog window with a source code editor. It works with both framed
+			and inline instances. To enable this
+			plugin, basically add <code>extraPlugins: 'codemirror,sourcedialog'</code> to editor's
+			config:
+		</p>
+<pre>
+// Inline editor.
+CKEDITOR.inline( 'editable', {
+	<strong>extraPlugins: 'codemirror,sourcedialog'</strong>
+});
+
+// Framed editor.
+CKEDITOR.replace( 'textarea_id', {
+	<strong>extraPlugins: 'codemirror,sourcedialog'</strong>
+});
+</pre>
+        <p>
+			Note that <code>editable</code> in the code above is the <code>id</code>
+			attribute of the <code>&lt;div&gt;</code> element to be converted into an inline instance.
+		</p>
+		<p>
+			Note that <code><em>textarea_id</em></code> in the code above is the <code>id</code> attribute of
+			the <code>&lt;textarea&gt;</code> element to be replaced with CKEditor.
+		</p>
+		<label for="editor1">
+			Inline editor:
+		</label>
+		<div id="editor1" contenteditable="true" style="padding: 5px 20px;">
+			<p>This is some <strong>sample text</strong>. You are using <a href="http://ckeditor.com/">CKEditor</a>.</p>
+		</div>
+	</div>
+	<br>
+	<div>
+		<label for="editor2">
+			Framed editor:
+		</label>
+		<textarea cols="80" id="editor2" name="editor2" rows="10">
+			This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://ckeditor.com/"&gt;CKEditor&lt;/a&gt;.
+		</textarea>
+	</div>
+	
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">Licensed under the terms of the MIT License.</p>
+      </div>
+    </div>
+	<script>
+		// We need to turn off the automatic editor creation first.
+		CKEDITOR.disableAutoInline = true;
+
+		var config = {
+			toolbarGroups: [
+				{ name: 'mode' },
+				{ name: 'basicstyles' },
+				{ name: 'links' }
+			],
+			extraPlugins: 'sourcedialog,codemirror',
+			removePlugins: 'sourcearea'
+		}
+
+		CKEDITOR.inline( 'editor1', config );
+		CKEDITOR.replace( 'editor2', config );
+
+	</script>
+  </body>
+</html>
