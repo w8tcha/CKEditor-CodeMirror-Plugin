@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -14,32 +14,40 @@
 
   <body>
 
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="demoFramed.html">Framed Demo</a></li>
-          <li><a href="demoInline.html">Inline Demo</a></li>
-          <li class="active"><a href="installation.html">Installation</a></li>
-          <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/releases">Download</a></li>
-        </ul>
-        <h3 class="text-muted">CodeMirror Plugin for the CKEditor</h3>
-      </div>
-
-      <!-- Begin page content -->
       <div class="container">
-        <div class="page-header">
-          <h1>Plugin Installation</h1>
-        </div>
-        <p class="lead">
-          <ol>
-            <li>Extract the contents of the file into the "plugins" folder of CKEditor.</li>
-            <li>In the CKEditor configuration file (config.js) add the following code: <br /><br />
-              <code>config.extraPlugins = 'codemirror';</code><br /><br />
-              If you are using CKEditor in inline mode you also need to add the sourcedialog to the extra Plugins list
-              <code>config.extraPlugins = 'sourcedialog,codemirror';</code><br /><br /></li>
-            <li>To Configure the Plugin the following options are available...<br /><br />
-              <pre>config.codemirror = {
+          <div class="header">
+              <ul class="nav nav-pills pull-right">
+                  <li><a href="index.html">Home</a></li>
+                  <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          Demos <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                          <li><a href="demoFramed.html">Source Area Demo</a></li>
+                          <li><a href="demoInline.html">Source Dialog Demo</a></li>
+                      </ul>
+                  </li>
+                  <li class="active"><a href="installation.html">Installation</a></li>
+                  <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/releases">Download</a></li>
+                  <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/">View on GitHub</a></li>
+              </ul>
+              <h3 class="text-muted">CodeMirror Plugin for the CKEditor</h3>
+          </div>
+
+          <!-- Begin page content -->
+          <div class="container">
+              <div class="page-header">
+                  <h1>Plugin Installation</h1>
+              </div>
+              <p class="lead">
+                  <ol>
+                      <li>Extract the contents of the file into the "plugins" folder of CKEditor.</li>
+                      <li>In the CKEditor configuration file (config.js) add the following code: <br /><br />
+                          <code>config.extraPlugins = 'codemirror';</code><br /><br />
+                          If you are using CKEditor in inline mode you also need to add the sourcedialog to the extra Plugins list
+                          <code>config.extraPlugins = 'sourcedialog,codemirror';</code><br /><br /></li>
+                      <li>To Configure the Plugin the following options are available...<br /><br />
+                          <pre>config.codemirror = {
 
     // Set this to the theme you wish to use (codemirror themes)
     theme: 'default',
@@ -105,17 +113,18 @@
     showAutoCompleteButton: true
 };
               </pre>
-            </li>
-          </ol>
-        </p>
+                      </li>
+                  </ol>
+              </p>
+          </div>
       </div>
-    </div>
+      <div id="footer">
+          <div class="container">
+              <p class="text-muted credit">Licensed under the terms of the MIT License.</p>
+          </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+      <script src="javascripts/bootstrap.min.js"></script>
 
-    <div id="footer">
-      <div class="container">
-        <p class="text-muted credit">Licensed under the terms of the MIT License.</p>
-      </div>
-    </div>
-    <a href="https://github.com/you"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Fork me on GitHub"></a>
   </body>
 </html>
