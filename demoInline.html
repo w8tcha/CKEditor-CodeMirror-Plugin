@@ -77,7 +77,7 @@ CKEDITOR.replace( 'textarea_id', {
                     Inline editor:
                 </label>
                 <div id="editor1" contenteditable="true" style="padding: 5px 20px;">
-                    <p>This is some <strong>sample text</strong>. You are using <a href="http://ckeditor.com/">CKEditor</a>.</p>
+                    <p>This is some <strong>sample text</strong>. <em>Click to edit.</em> You are using <a href="http://ckeditor.com/">CKEditor</a>.</p>
                 </div>
             </div>
             <br>
@@ -110,8 +110,7 @@ CKEDITOR.replace( 'textarea_id', {
             { name: 'links', items: ['Link', 'Unlink', 'Anchor'] }
             ],
             extraPlugins: 'sourcedialog,codemirror'
-        }
-
+        };
         CKEDITOR.inline('editor1', config);
         CKEDITOR.replace('editor2', config);
 
