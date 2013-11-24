@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add('codemirror', {
         icons: 'SearchCode,AutoFormat,CommentSelectedRange,UncommentSelectedRange,AutoComplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh',
-        version: 1.09,
+        version: 1.10,
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -81,6 +81,7 @@
                             indentWithTabs: config.indentWithTabs,
                             theme: config.theme,
                             showTrailingSpace: config.showTrailingSpace,
+                            showCursorWhenSelecting: true,
                             viewportMargin: Infinity,
                             //extraKeys: {"Ctrl-Space": "autocomplete"},
                             extraKeys: { "Ctrl-Q": function (codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
@@ -578,6 +579,7 @@
                     indentWithTabs: config.indentWithTabs,
                     theme: config.theme,
                     showTrailingSpace: config.showTrailingSpace,
+                    showCursorWhenSelecting: true,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
                     extraKeys: { "Ctrl-Q": function(codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
                     onKeyEvent: function(codeMirror_Editor, evt) {
@@ -728,11 +730,43 @@
                     }
                 }
             }
+            
+            editor.on('beforeModeUnload', function (evt) {
+                if (editor.mode === 'source' && editor.plugins.textselection) {
+                    var range = editor.getTextSelection();
+
+                    range.startOffset = LineChanngelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(true));
+                    range.endOffset = LineChanngelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(false));
+
+                    // Fly the range when create bookmark. 
+                    delete range.element;
+                    range.createBookmark();
+                    sourceBookmark = true;
+                    evt.data = range.content;
+                }
+            });
             editor.on('mode', function () {
                 editor.getCommand('source').setState(editor.mode === 'source' ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
 
                 if (editor.mode === 'source') {
                     editor.getCommand('autoCompleteToggle').setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+                    
+
+                    if (editor.plugins.textselection && textRange) {
+                        textRange.element = new CKEDITOR.dom.element(editor._.editable.$);
+                        textRange.select();
+
+                        var start, end;
+
+                        start = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.startOffset);
+
+                        if (typeof (textRange.endOffset) == 'undefined') {
+                            window["codemirror_" + editor.id].setCursor(start);
+                        } else {
+                            end = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.endOffset);
+                            window["codemirror_" + editor.id].setSelection(start, end);
+                        }
+                    }
                 }
 
             });
@@ -936,3 +970,29 @@ CKEDITOR.plugins.sourcearea = {
         }
     }
 };
+
+function LineChanngelToOffSet(ed, linech) {
+    var line = linech.line;
+    var ch = linech.ch;
+    var n = line + ch; //for the \n s & chars in the line
+    for (i = 0; i < line; i++) {
+        n += (ed.getLine(i)).length;//for the chars in all preceeding lines
+    }
+    return n;
+}
+
+function OffSetToLineChannel(ed, n) {
+    var line = 0, ch = 0, index = 0;
+    for (i = 0; i < ed.lineCount() ; i++) {
+        len = (ed.getLine(i)).length;
+        if (n < index + len) {
+            //alert(len+","+index+","+(n-index));
+            line = i;
+            ch = n - index;
+            return { line: line, ch: ch };
+        }
+        len++;//for \n char
+        index += len;
+    }
+    return { line: line, ch: ch };
+}
