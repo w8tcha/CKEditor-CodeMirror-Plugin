@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add('codemirror', {
         icons: 'SearchCode,AutoFormat,CommentSelectedRange,UncommentSelectedRange,AutoComplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh',
-        version: 1.10,
+        version: 1.11,
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -341,6 +341,38 @@
                 });
 
                 return;
+            }
+
+            // Override Find Button
+            if (editor.commands.find) {
+                editor.commands.find.modes = {
+                    wysiwyg: 1,
+                    source: 1
+                };
+
+                editor.commands.find.exec = function() {
+                    if (editor.mode === 'wysiwyg') {
+                        editor.openDialog('find');
+                    } else {
+                        CodeMirror.commands.find(window["codemirror_" + editor.id]);
+                    }
+                };
+            }
+            
+            // Override Replace Button
+            if (editor.commands.replace) {
+                editor.commands.replace.modes = {
+                    wysiwyg: 1,
+                    source: 1
+                };
+
+                editor.commands.replace.exec = function () {
+                    if (editor.mode === 'wysiwyg') {
+                        editor.openDialog('replace');
+                    } else {
+                        CodeMirror.commands.replace(window["codemirror_" + editor.id]);
+                    }
+                };
             }
             
             var sourcearea = CKEDITOR.plugins.sourcearea;
@@ -693,13 +725,13 @@
                     if (config.showFormatButton || config.showCommentButton || config.showUncommentButton || config.showSearchButton) {
                         editor.ui.add('-', CKEDITOR.UI_SEPARATOR, { toolbar: 'mode,30' });
                     }
-                    if (config.showSearchButton && config.enableSearchTools) {
+                    /*if (config.showSearchButton && config.enableSearchTools) {
                         editor.ui.addButton('searchCode', {
                             label: lang.searchCode,
                             command: 'searchCode',
                             toolbar: 'mode,40'
                         });
-                    }
+                    }*/
                     if (config.showFormatButton) {
                         editor.ui.addButton('autoFormat', {
                             label: lang.autoFormat,
