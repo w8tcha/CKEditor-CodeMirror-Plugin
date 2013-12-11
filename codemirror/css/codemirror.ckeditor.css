@@ -1,6 +1,6 @@
 /* Extra for the CKEditor CodeMirror Plugin */
 
-.CodeMirror {font:13px/1.4em monospace;}
+.CodeMirror {font:13px/1.4em monospace;text-align:left;}
 
 .CodeMirror .activeline { background: #e8f2ff; }
 
