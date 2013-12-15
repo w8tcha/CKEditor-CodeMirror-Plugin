@@ -26,7 +26,7 @@
                     highlightMatches: true,
                     indentWithTabs: false,
                     lineNumbers: true,
-                    lineWrapping: true,
+                    lineWrapping: false,
                     mode: 'htmlmixed',
                     matchBrackets: true,
                     matchTags: true,
@@ -767,8 +767,8 @@
                 if (editor.mode === 'source' && editor.plugins.textselection) {
                     var range = editor.getTextSelection();
 
-                    range.startOffset = LineChanngelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(true));
-                    range.endOffset = LineChanngelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(false));
+                    range.startOffset = LineChannelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(true));
+                    range.endOffset = LineChannelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(false));
 
                     // Fly the range when create bookmark. 
                     delete range.element;
@@ -785,6 +785,7 @@
                     
 
                     if (editor.plugins.textselection && textRange) {
+
                         textRange.element = new CKEDITOR.dom.element(editor._.editable.$);
                         textRange.select();
 
@@ -1003,10 +1004,10 @@ CKEDITOR.plugins.sourcearea = {
     }
 };
 
-function LineChanngelToOffSet(ed, linech) {
+function LineChannelToOffSet(ed, linech) {
     var line = linech.line;
     var ch = linech.ch;
-    var n = line + ch; //for the \n s & chars in the line
+    var n = (line + ch); //for the \n s & chars in the line
     for (i = 0; i < line; i++) {
         n += (ed.getLine(i)).length;//for the chars in all preceeding lines
     }
@@ -1018,7 +1019,7 @@ function OffSetToLineChannel(ed, n) {
     for (i = 0; i < ed.lineCount() ; i++) {
         len = (ed.getLine(i)).length;
         if (n < index + len) {
-            //alert(len+","+index+","+(n-index));
+            
             line = i;
             ch = n - index;
             return { line: line, ch: ch };
