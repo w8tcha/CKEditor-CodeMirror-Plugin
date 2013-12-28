@@ -26,7 +26,7 @@
                     highlightMatches: true,
                     indentWithTabs: false,
                     lineNumbers: true,
-                    lineWrapping: false,
+                    lineWrapping: true,
                     mode: 'htmlmixed',
                     matchBrackets: true,
                     matchTags: true,
@@ -342,6 +342,36 @@
 
                 return;
             }
+            /*
+            // Override Copy Button
+            if (editor.commands.copy) {
+                editor.commands.copy.modes = {
+                    wysiwyg: 1,
+                    source: 1
+                };
+
+                // TODO
+            }
+
+            // Override Paste Button
+            if (editor.commands.paste) {
+                editor.commands.paste.modes = {
+                    wysiwyg: 1,
+                    source: 1
+                };
+                // TODO
+
+            }
+
+            // Override Cut Button
+            if (editor.commands.cut) {
+                editor.commands.cut.modes = {
+                    wysiwyg: 1,
+                    source: 1
+                };
+
+                // TODO
+            }*/
 
             // Override Find Button
             if (editor.commands.find) {
@@ -584,8 +614,6 @@
                 var sourceAreaElement = window["editable_" + editor.id],
                     holderElement = sourceAreaElement.getParent();
 
-                //codemirror = editor.id;
-
                 /*CodeMirror.commands.autocomplete = function(cm) {
                     CodeMirror.showHint(cm, CodeMirror.htmlHint);
                 };*/
@@ -675,7 +703,7 @@
                         }
                     }, 300);
                 });
-                window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
+                window["codemirror_" + editor.id].setSize(null, holderHeight);
                 
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
                 if (config.lineNumbers && config.enableCodeFolding) {
