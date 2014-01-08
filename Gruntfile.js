@@ -127,12 +127,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-yui-compressor');
 
-  // Define what/when to do when 'grunt' is run from console:
-  grunt.registerTask('default', [
+  grunt.registerTask('watch', [
     'min',
     'cssmin',
     'imagemin',
     'watch'
+    ]);
+
+  grunt.registerTask('default', [
+    'min',
+    'cssmin',
+    'imagemin'
     ]);
 
 };
