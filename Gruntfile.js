@@ -18,7 +18,7 @@ module.exports = function(grunt) {
       },
       core: {
         src: ['codemirror/js/codemirror.js'],
-        dest: 'codemirror/js/codemirror.min.js',
+        dest: 'codemirror/js/codemirror.min.js'
       },
       modeHtml: {
         src: [
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
           'codemirror/js/mode/css.js',
           'codemirror/js/mode/htmlmixed.js'
           ],
-        dest: 'codemirror/js/codemirror.mode.htmlmixed.min.js',
+        dest: 'codemirror/js/codemirror.mode.htmlmixed.min.js'
       },
       modePHP: {
         src: [
@@ -36,13 +36,13 @@ module.exports = function(grunt) {
           'codemirror/js/mode/javascript.js',
           'codemirror/js/mode/css.js',
           'codemirror/js/mode/clike.js',
-          'codemirror/js/mode/php.js',
+          'codemirror/js/mode/php.js'
           ],
-        dest: 'codemirror/js/codemirror.mode.php.min.js',
+        dest: 'codemirror/js/codemirror.mode.php.min.js'
       },
       modeJs: {
         src: ['codemirror/js/mode/javascript.js'],
-        dest: 'codemirror/js/codemirror.mode.javascript.min.js',
+        dest: 'codemirror/js/codemirror.mode.javascript.min.js'
       },
       addons: {
         src: [
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
           'codemirror/js/addon/format/formatting.js',
           'codemirror/js/addon/search/match-highlighter.js'
           ],
-        dest: 'codemirror/js/codemirror.addons.min.js',
+        dest: 'codemirror/js/codemirror.addons.min.js'
       },
       addonSearch: {
         src: [
@@ -67,15 +67,15 @@ module.exports = function(grunt) {
           'codemirror/js/addon/search/search.js',
           'codemirror/js/addon/search/searchcursor.js'
           ],
-        dest: 'codemirror/js/codemirror.addons.search.min.js',
+        dest: 'codemirror/js/codemirror.addons.search.min.js'
       },
       beautify: {
         src: [
           'codemirror/js/beautify.js',
-          'codemirror/js/beautify-html.js',
+          'codemirror/js/beautify-html.js'
           ],
-        dest: 'codemirror/js/beautify.min.js',
-      },
+        dest: 'codemirror/js/beautify.min.js'
+      }
     },
 
     // Optimize images
@@ -108,17 +108,17 @@ module.exports = function(grunt) {
         files: ['codemirror/js/*.js', 'codemirror/addon/*.js', 'codemirror/mode/*.js'],
         tasks: ['min'],
         options: {
-          spawn: false,
-        },
+          spawn: false
+        }
       },
       css: {
         files: ['codemirror/css/*.css'],
         tasks: ['cssmin'],
         options: {
-          spawn: false,
+          spawn: false
         }
       }
-    },
+    }
 
   });
 
