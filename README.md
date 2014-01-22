@@ -32,19 +32,19 @@ Licensed under the terms of the MIT License.
  1. Extract the contents of the file into the "plugins" folder of CKEditor.
  2. In the CKEditor configuration file (config.js) add the following code:
 
-````
+````js
 config.extraPlugins = 'codemirror';
 ````
 
 If you are using CKEditor in inline mode you also need to add the sourcedialog to the extra Plugins list 
 
-````
+````js
 config.extraPlugins = 'sourcedialog,codemirror';
 ````
 
 3. To Configure the Plugin the following options are available...
 
-````
+````js
 config.codemirror = {
 	
 	// Set this to the theme you wish to use (codemirror themes)
