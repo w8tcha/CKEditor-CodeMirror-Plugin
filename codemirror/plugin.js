@@ -342,6 +342,7 @@
 
                 return;
             }
+            
             /*
             // Override Copy Button
             if (editor.commands.copy) {
@@ -793,6 +794,7 @@
             
             editor.on('beforeModeUnload', function (evt) {
                 if (editor.mode === 'source' && editor.plugins.textselection) {
+
                     var range = editor.getTextSelection();
 
                     range.startOffset = LineChannelToOffSet(window["codemirror_" + editor.id], window["codemirror_" + editor.id].getCursor(true));
@@ -802,6 +804,7 @@
                     delete range.element;
                     range.createBookmark();
                     sourceBookmark = true;
+
                     evt.data = range.content;
                 }
             });
@@ -811,7 +814,6 @@
                 if (editor.mode === 'source') {
                     editor.getCommand('autoCompleteToggle').setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
                     
-
                     if (editor.plugins.textselection && textRange) {
 
                         textRange.element = new CKEDITOR.dom.element(editor._.editable.$);
@@ -822,8 +824,10 @@
                         start = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.startOffset);
 
                         if (typeof (textRange.endOffset) == 'undefined') {
+                            window["codemirror_" + editor.id].focus();
                             window["codemirror_" + editor.id].setCursor(start);
                         } else {
+                            window["codemirror_" + editor.id].focus();
                             end = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.endOffset);
                             window["codemirror_" + editor.id].setSelection(start, end);
                         }
