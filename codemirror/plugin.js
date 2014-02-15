@@ -662,7 +662,7 @@
                     }
                 });
 
-                var holderHeight = holderElement.$.clientHeight + 'px';
+                var holderHeight = holderElement.$.clientHeight == 0 ? editor.ui.space('contents').getStyle('height') : holderElement.$.clientHeight + 'px';
                 var holderWidth = holderElement.$.clientWidth + 'px';
 
                 // Store config so we can access it within commands etc.
@@ -704,6 +704,7 @@
                         }
                     }, 300);
                 });
+
                 window["codemirror_" + editor.id].setSize(null, holderHeight);
                 
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
@@ -882,11 +883,19 @@
                 }
             });
 
+            if (typeof(jQuery) != 'undefined' && $('a[data-toggle="tab"]')) {
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function() {
+                    window["codemirror_" + editor.id].refresh();
+                });
+            }
+
             editor.on('setData', function (data) {
                 if (window["editable_" + editor.id] && editor.mode === 'source') {
                     window["codemirror_" + editor.id].setValue(data.data.dataValue);
                 }
             });
+
+
         }
     });
     var sourceEditable = CKEDITOR.tools.createClass({
