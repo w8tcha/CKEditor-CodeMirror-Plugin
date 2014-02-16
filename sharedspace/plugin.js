@@ -3,6 +3,8 @@
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
+// Modified sharedspaces plugin to work with codemirror
+
 ( function() {
 
 	'use strict';
@@ -97,22 +99,19 @@
 				
 				
 				editor.on('mode', function() {
-				    if (editor.mode === 'source') {
-				        if (window["codemirror_" + editor.id]) {
-				            window["codemirror_" + editor.id].on("focus", function() {
-				                for (var i = 0, sibling, children = target.getChildren(); (sibling = children.getItem(i)); i++) {
-				                    if (sibling.type == CKEDITOR.NODE_ELEMENT &&
-				                        !sibling.equals(space) &&
-				                        sibling.hasClass('cke_shared')) {
-				                        sibling.hide();
-				                    }
+				    if (editor.mode === 'source' && window["codemirror_" + editor.id]) {
+				        window["codemirror_" + editor.id].on("focus", function() {
+				            for (var i = 0, sibling, children = target.getChildren(); (sibling = children.getItem(i)); i++) {
+				                if (sibling.type == CKEDITOR.NODE_ELEMENT &&
+				                    !sibling.equals(space) &&
+				                    sibling.hasClass('cke_shared')) {
+				                    sibling.hide();
 				                }
+				            }
 
-				                space.show();
-				            });
-				        }
+				            space.show();
+				        });
 				    }
-
 				});
 
 				editor.on( 'destroy', function() {
