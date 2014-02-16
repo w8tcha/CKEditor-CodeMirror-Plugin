@@ -883,7 +883,7 @@
                 }
             });
 
-            if (typeof(jQuery) != 'undefined' && $('a[data-toggle="tab"]')) {
+            if (typeof (jQuery) != 'undefined' && $('a[data-toggle="tab"]') && window["codemirror_" + editor.id]) {
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function() {
                     window["codemirror_" + editor.id].refresh();
                 });
@@ -894,8 +894,6 @@
                     window["codemirror_" + editor.id].setValue(data.data.dataValue);
                 }
             });
-
-
         }
     });
     var sourceEditable = CKEDITOR.tools.createClass({
