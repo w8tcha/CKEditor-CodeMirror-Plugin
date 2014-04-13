@@ -22,26 +22,26 @@ module.exports = function(grunt) {
       },
       modeHtml: {
         src: [
-          'codemirror/js/mode/xml.js',
-          'codemirror/js/mode/javascript.js',
-          'codemirror/js/mode/css.js',
-          'codemirror/js/mode/htmlmixed.js'
+          'codemirror/js/mode/xml/xml.js',
+          'codemirror/js/mode/javascript/javascript.js',
+          'codemirror/js/mode/css/css.js',
+          'codemirror/js/mode/htmlmixed/htmlmixed.js'
           ],
         dest: 'codemirror/js/codemirror.mode.htmlmixed.min.js'
       },
       modePHP: {
         src: [
-          'codemirror/js/mode/htmlmixed.js',
-          'codemirror/js/mode/xml.js',
-          'codemirror/js/mode/javascript.js',
-          'codemirror/js/mode/css.js',
-          'codemirror/js/mode/clike.js',
-          'codemirror/js/mode/php.js'
+          'codemirror/js/mode/htmlmixed/htmlmixed.js',
+          'codemirror/js/mode/xml/xml.js',
+          'codemirror/js/mode/javascript/javascript.js',
+          'codemirror/js/mode/css/css.js',
+          'codemirror/js/mode/clike/clike.js',
+          'codemirror/js/mode/php/php.js'
           ],
         dest: 'codemirror/js/codemirror.mode.php.min.js'
       },
       modeJs: {
-        src: ['codemirror/js/mode/javascript.js'],
+        src: ['codemirror/js/mode/javascript/javascript.js'],
         dest: 'codemirror/js/codemirror.mode.javascript.min.js'
       },
       addons: {
