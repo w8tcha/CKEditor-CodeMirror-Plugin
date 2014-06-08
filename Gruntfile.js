@@ -20,6 +20,23 @@ module.exports = function(grunt) {
         src: ['codemirror/js/codemirror.js'],
         dest: 'codemirror/js/codemirror.min.js'
       },
+	  modeBBCode: {
+        src: [
+          'codemirror/js/mode/bbcode/bbcode.js'
+          ],
+        dest: 'codemirror/js/codemirror.mode.bbcode.min.js'
+      },
+	  modeBBCodeMixed: {
+        src: [
+          'codemirror/js/mode/xml/xml.js',
+          'codemirror/js/mode/javascript/javascript.js',
+          'codemirror/js/mode/css/css.js',
+          'codemirror/js/mode/htmlmixed/htmlmixed.js',
+          'codemirror/js/mode/bbcode/bbcodemixed.js',
+          'codemirror/js/mode/bbcodemixed/bbcodemixed.js'
+          ],
+        dest: 'codemirror/js/codemirror.mode.bbcodemixed.min.js'
+      },
       modeHtml: {
         src: [
           'codemirror/js/mode/xml/xml.js',

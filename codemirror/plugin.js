@@ -52,6 +52,11 @@
                 config.autoFormatOnStart = editor.config.codemirror_autoFormatOnStart;
             }
 
+            // automatically switch to bbcode mode if bbcode plugin is enabled
+            if (editor.plugins.bbcode && config.mode.indexOf("bbcode") <= 0) {
+                config.mode = "bbcode";
+            }
+
             // Source mode isn't available in inline mode yet.
             if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
                 
@@ -545,6 +550,18 @@
                 var scriptFiles = [rootPath + 'js/codemirror.addons.min.js'];
 
                 switch (config.mode) {
+                case "bbcode":
+                    {
+                        scriptFiles.push(rootPath + 'js/codemirror.mode.bbcode.min.js');
+                    }
+
+                    break;
+                case "bbcodemixed":
+                        {
+                            scriptFiles.push(rootPath + 'js/codemirror.mode.bbcodemixed.min.js');
+                        }
+
+                        break;
                 case "htmlmixed":
                     {
                         scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
@@ -589,8 +606,8 @@
 
                 textarea.setStyles(
                     CKEDITOR.tools.extend({
-                        // IE7 has overflow the <textarea> from wrapping table cell.
-                        width: CKEDITOR.env.ie7Compat ? '99%' : '100%',
+                            // IE7 has overflow the <textarea> from wrapping table cell.
+                            width: CKEDITOR.env.ie7Compat ? '99%' : '100%',
                             height: '100%',
                             resize: 'none',
                             outline: 'none',
@@ -618,7 +635,7 @@
                 /*CodeMirror.commands.autocomplete = function(cm) {
                     CodeMirror.showHint(cm, CodeMirror.htmlHint);
                 };*/
-                
+
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
                 if (config.lineNumbers && config.enableCodeFolding) {
                     window["foldFunc_" + editor.id] = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
@@ -642,8 +659,9 @@
                     showTrailingSpace: config.showTrailingSpace,
                     showCursorWhenSelecting: true,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
-                    extraKeys: { "Ctrl-Q": function(codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
-                    onKeyEvent: function(codeMirror_Editor, evt) {
+                    extraKeys: { "Ctrl-Q": function (codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
+                    onKeyEvent: function (codeMirror_Editor, evt) {
+                        
                         if (config.enableCodeFormatting) {
                             var range = getSelectedRange();
                             if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
