@@ -35,16 +35,16 @@
 }
 
 .searchCodeButton span {
-	background: url("../icons/SearchCode.png") no-repeat;
+	background: url("../icons/searchcode.png") no-repeat;
 }
 .autoFormat span {
-	background: url("../icons/AutoFormat.png") no-repeat;
+	background: url("../icons/autoformat.png") no-repeat;
 }
 .CommentSelectedRange span {
-	background: url("../icons/CommentSelectedRange.png") no-repeat;
+	background: url("../icons/commentselectedrange.png") no-repeat;
 }
 .UncommentSelectedRange span {
-	background: url("../icons/UncommentSelectedRange.png") no-repeat;
+	background: url("../icons/uncommentselectedrange.png") no-repeat;
 }
 
 /* Fixes for the sourceDialog */
