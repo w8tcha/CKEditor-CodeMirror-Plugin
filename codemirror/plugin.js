@@ -58,7 +58,7 @@
             }
 
             // Source mode isn't available in inline mode yet.
-            if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
+            if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE || editor.plugins.sourcedialog) {
                 
                 // Override Source Dialog
                 CKEDITOR.dialog.add('sourcedialog', function (editor) {
@@ -345,7 +345,7 @@
                     };
                 });
 
-                return;
+               // return;
             }
             
             /*
