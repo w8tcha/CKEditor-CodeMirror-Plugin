@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add('codemirror', {
         icons: 'searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh', // %REMOVE_LINE_CORE%
-        version: 1.11,
+        version: 1.12,
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -640,9 +640,9 @@
 
                 function getCodeMirrorKey(ckeditorKeystroke) {
                     var MODIFIERS = [
-                        [ CKEDITOR.SHIFT, "Shift-" ],
-                        [ CKEDITOR.CTRL, "Ctrl-" ],
-                        [ CKEDITOR.ALT, "Alt-" ]
+                        [CKEDITOR.SHIFT, "Shift-"],
+                        [CKEDITOR.CTRL, "Ctrl-"],
+                        [CKEDITOR.ALT, "Alt-"]
                     ];
                     var keyModifiers = "";
                     for (var i = 0; i < MODIFIERS.length; i++) {
@@ -657,14 +657,14 @@
                     return null;
                 }
 
-                function addCKEditorKeystrokes(extraKeys) {
+                function addCKEditorKeystrokes(editorExtraKeys) {
                     var ckeditorKeystrokes = editor.config.keystrokes;
                     if (CKEDITOR.tools.isArray(ckeditorKeystrokes)) {
                         for (var i = 0; i < ckeditorKeystrokes.length; i++) {
                             var key = getCodeMirrorKey(ckeditorKeystrokes[i][0]);
                             if (key !== null) {
-                                (function(command) {
-                                    extraKeys[key] = function() {
+                                (function (command) {
+                                    editorExtraKeys[key] = function () {
                                         editor.execCommand(command);
                                     }
                                 })(ckeditorKeystrokes[i][1]);
@@ -678,6 +678,7 @@
                         window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
                     }
                 };
+
                 addCKEditorKeystrokes(extraKeys);
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
