@@ -176,6 +176,11 @@
                         if (typeof config.onLoad === 'function') {
                             config.onLoad(window["codemirror_" + editor.id], editor);
                         }
+
+                        // inherit blur event
+                        window["codemirror_" + editor.id].on("blur", function () {
+                            editor.fire('blur', this);
+                        });
                     }
 
                     return {
@@ -795,6 +800,11 @@
                 if (typeof config.onLoad === 'function') {
                     config.onLoad(window["codemirror_" + editor.id], editor);
                 }
+
+                // inherit blur event
+                window["codemirror_" + editor.id].on("blur", function () {
+                    editor.fire('blur', this);
+                });
             }
 
             editor.addCommand('source', sourcearea.commands.source);
