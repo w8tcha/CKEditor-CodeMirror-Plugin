@@ -538,8 +538,11 @@
                     
                     
                 } else {
-                    loadCodeMirror(editor);
-                    callback();
+                    // loading the add-on scripts.
+                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function () {
+                        loadCodeMirror(editor);
+                        callback();
+                    });
                 }
             });
 
