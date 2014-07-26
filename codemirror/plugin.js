@@ -206,19 +206,25 @@
                                     CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                                 }
 
-                                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function () {
+                                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
 
-                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function () {
+                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
                                         loadCodeMirrorInline(editor, textArea);
                                     });
                                 });
 
 
                             } else {
-                                loadCodeMirrorInline(editor, textArea);
+                                //loadCodeMirrorInline(editor, textArea);
+                                if (CodeMirror.prototype['autoFormatAll']) {
+                                    loadCodeMirrorInline(editor, textArea);
+                                } else {
+                                    // loading the add-on scripts.
+                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
+                                        loadCodeMirrorInline(editor, textArea);
+                                    });
+                                }
                             }
-
-
                         },
                         onCancel: function (event) {
                             if (event.data.hide) {
@@ -526,9 +532,9 @@
 
             editor.addMode('source', function(callback) {
                 if (typeof (CodeMirror) == 'undefined') {
-                    
+
                     CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-                    
+
                     if (config.theme.length && config.theme != 'default') {
                         CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                     }
@@ -540,14 +546,17 @@
                             callback();
                         });
                     });
-                    
-                    
                 } else {
-                    // loading the add-on scripts.
-                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function () {
+                    if (CodeMirror.prototype['autoFormatAll']) {
                         loadCodeMirror(editor);
                         callback();
-                    });
+                    } else {
+                        // loading the add-on scripts.
+                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
+                            loadCodeMirror(editor);
+                            callback();
+                        });
+                    }
                 }
             });
 
