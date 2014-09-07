@@ -8,9 +8,9 @@
 
 (function() {
     CKEDITOR.plugins.add('codemirror', {
-        icons: 'SearchCode,AutoFormat,CommentSelectedRange,UncommentSelectedRange,AutoComplete',
+        icons: 'searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete',
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh', // %REMOVE_LINE_CORE%
-        version: 1.11,
+        version: 1.12,
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -52,8 +52,13 @@
                 config.autoFormatOnStart = editor.config.codemirror_autoFormatOnStart;
             }
 
+            // automatically switch to bbcode mode if bbcode plugin is enabled
+            if (editor.plugins.bbcode && config.mode.indexOf("bbcode") <= 0) {
+                config.mode = "bbcode";
+            }
+
             // Source mode isn't available in inline mode yet.
-            if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
+            if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE || editor.plugins.sourcedialog) {
                 
                 // Override Source Dialog
                 CKEDITOR.dialog.add('sourcedialog', function (editor) {
@@ -63,8 +68,6 @@
                         oldData;
 
                     function loadCodeMirrorInline(editor, textarea) {
-                        var delay;
-
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
                             mode: config.mode,
                             matchBrackets: config.matchBrackets,
@@ -139,14 +142,8 @@
                         }
 
                         window["codemirror_" + editor.id].on("change", function () {
-                            clearTimeout(delay);
-                            delay = setTimeout(function () {
-                                var cm = window["codemirror_" + editor.id];
-
-                                if (cm) {
-                                    cm.save();
-                                }
-                            }, 300);
+                            window["codemirror_" + editor.id].save();
+                            editor.fire('change', this);
                         });
 
                         window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
@@ -171,6 +168,11 @@
                         if (typeof config.onLoad === 'function') {
                             config.onLoad(window["codemirror_" + editor.id], editor);
                         }
+
+                        // inherit blur event
+                        window["codemirror_" + editor.id].on("blur", function () {
+                            editor.fire('blur', this);
+                        });
                     }
 
                     return {
@@ -196,19 +198,25 @@
                                     CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                                 }
 
-                                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function () {
+                                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
 
-                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function () {
+                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
                                         loadCodeMirrorInline(editor, textArea);
                                     });
                                 });
 
 
                             } else {
-                                loadCodeMirrorInline(editor, textArea);
+                                //loadCodeMirrorInline(editor, textArea);
+                                if (CodeMirror.prototype['autoFormatAll']) {
+                                    loadCodeMirrorInline(editor, textArea);
+                                } else {
+                                    // loading the add-on scripts.
+                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
+                                        loadCodeMirrorInline(editor, textArea);
+                                    });
+                                }
                             }
-
-
                         },
                         onCancel: function (event) {
                             if (event.data.hide) {
@@ -340,7 +348,7 @@
                     };
                 });
 
-                return;
+               // return;
             }
             
             /*
@@ -514,14 +522,11 @@
                 };
             }
 
-            
-
-            
             editor.addMode('source', function(callback) {
                 if (typeof (CodeMirror) == 'undefined') {
-                    
+
                     CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-                    
+
                     if (config.theme.length && config.theme != 'default') {
                         CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                     }
@@ -533,11 +538,17 @@
                             callback();
                         });
                     });
-                    
-                    
                 } else {
-                    loadCodeMirror(editor);
-                    callback();
+                    if (CodeMirror.prototype['autoFormatAll']) {
+                        loadCodeMirror(editor);
+                        callback();
+                    } else {
+                        // loading the add-on scripts.
+                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
+                            loadCodeMirror(editor);
+                            callback();
+                        });
+                    }
                 }
             });
 
@@ -545,6 +556,18 @@
                 var scriptFiles = [rootPath + 'js/codemirror.addons.min.js'];
 
                 switch (config.mode) {
+                case "bbcode":
+                    {
+                        scriptFiles.push(rootPath + 'js/codemirror.mode.bbcode.min.js');
+                    }
+
+                    break;
+                case "bbcodemixed":
+                        {
+                            scriptFiles.push(rootPath + 'js/codemirror.mode.bbcodemixed.min.js');
+                        }
+
+                        break;
                 case "htmlmixed":
                     {
                         scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
@@ -589,8 +612,8 @@
 
                 textarea.setStyles(
                     CKEDITOR.tools.extend({
-                        // IE7 has overflow the <textarea> from wrapping table cell.
-                        width: CKEDITOR.env.ie7Compat ? '99%' : '100%',
+                            // IE7 has overflow the <textarea> from wrapping table cell.
+                            width: CKEDITOR.env.ie7Compat ? '99%' : '100%',
                             height: '100%',
                             resize: 'none',
                             outline: 'none',
@@ -611,18 +634,61 @@
                 window["editable_" + editor.id].setData(editor.getData(1));
                 window["editable_" + editor.id].editorID = editor.id;
                 editor.fire('ariaWidget', this);
-                var delay;
+
                 var sourceAreaElement = window["editable_" + editor.id],
                     holderElement = sourceAreaElement.getParent();
 
                 /*CodeMirror.commands.autocomplete = function(cm) {
                     CodeMirror.showHint(cm, CodeMirror.htmlHint);
                 };*/
-                
+
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
                 if (config.lineNumbers && config.enableCodeFolding) {
                     window["foldFunc_" + editor.id] = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
                 }
+
+                function getCodeMirrorKey(ckeditorKeystroke) {
+                    var MODIFIERS = [
+                        [CKEDITOR.SHIFT, "Shift-"],
+                        [CKEDITOR.CTRL, "Ctrl-"],
+                        [CKEDITOR.ALT, "Alt-"]
+                    ];
+                    var keyModifiers = "";
+                    for (var i = 0; i < MODIFIERS.length; i++) {
+                        if (ckeditorKeystroke & MODIFIERS[i][0]) {
+                            ckeditorKeystroke -= MODIFIERS[i][0];
+                            keyModifiers += MODIFIERS[i][1];
+                        }
+                    }
+                    if (CodeMirror.keyNames[ckeditorKeystroke]) {
+                        return keyModifiers + CodeMirror.keyNames[ckeditorKeystroke];
+                    }
+                    return null;
+                }
+
+                function addCKEditorKeystrokes(editorExtraKeys) {
+                    var ckeditorKeystrokes = editor.config.keystrokes;
+                    if (CKEDITOR.tools.isArray(ckeditorKeystrokes)) {
+                        for (var i = 0; i < ckeditorKeystrokes.length; i++) {
+                            var key = getCodeMirrorKey(ckeditorKeystrokes[i][0]);
+                            if (key !== null) {
+                                (function (command) {
+                                    editorExtraKeys[key] = function () {
+                                        editor.execCommand(command);
+                                    }
+                                })(ckeditorKeystrokes[i][1]);
+                            }
+                        }
+                    }
+                }
+
+                var extraKeys = {
+                    "Ctrl-Q": function (codeMirror_Editor) {
+                        window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
+                    }
+                };
+
+                addCKEditorKeystrokes(extraKeys);
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: config.mode,
@@ -642,8 +708,9 @@
                     showTrailingSpace: config.showTrailingSpace,
                     showCursorWhenSelecting: true,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
-                    extraKeys: { "Ctrl-Q": function(codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
-                    onKeyEvent: function(codeMirror_Editor, evt) {
+                    extraKeys: extraKeys,
+                    onKeyEvent: function (codeMirror_Editor, evt) {
+                        
                         if (config.enableCodeFormatting) {
                             var range = getSelectedRange();
                             if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
@@ -695,14 +762,8 @@
                 }
 
                 window["codemirror_" + editor.id].on("change", function () {
-                    clearTimeout(delay);
-                    delay = setTimeout(function () {
-                        var cm = window["codemirror_" + editor.id];
-                    
-                        if (cm) {
-                            cm.save();
-                        }
-                    }, 300);
+                    window["codemirror_" + editor.id].save();
+                    editor.fire('change', this);
                 });
 
                 window["codemirror_" + editor.id].setSize(null, holderHeight);
@@ -734,6 +795,11 @@
                 if (typeof config.onLoad === 'function') {
                     config.onLoad(window["codemirror_" + editor.id], editor);
                 }
+
+                // inherit blur event
+                window["codemirror_" + editor.id].on("blur", function () {
+                    editor.fire('blur', this);
+                });
             }
 
             editor.addCommand('source', sourcearea.commands.source);
@@ -803,7 +869,7 @@
 
                     // Fly the range when create bookmark. 
                     delete range.element;
-                    range.createBookmark();
+                    range.createBookmark(editor);
                     sourceBookmark = true;
 
                     evt.data = range.content;
@@ -883,8 +949,8 @@
                 }
             });
 
-            if (typeof (jQuery) != 'undefined' && $('a[data-toggle="tab"]') && window["codemirror_" + editor.id]) {
-                $('a[data-toggle="tab"]').on('shown.bs.tab', function() {
+            if (typeof (jQuery) != 'undefined' && jQuery('a[data-toggle="tab"]') && window["codemirror_" + editor.id]) {
+                jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function() {
                     window["codemirror_" + editor.id].refresh();
                 });
             }
