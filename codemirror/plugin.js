@@ -917,7 +917,11 @@
                 }
             });
             
-            editor.on('instanceReady', function () {
+            editor.on('instanceReady', function (evt) {
+
+                // Fix native context menu
+                editor.container.getPrivate().events.contextmenu.listeners.splice(0, 1);
+
                 var selectAllCommand = editor.commands.selectAll;
 
                 // Replace Complete SelectAll command from the plugin, otherwise it will not work in IE10
