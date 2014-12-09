@@ -75,6 +75,7 @@ module.exports = function(grunt) {
           'codemirror/js/addon/fold/xml-fold.js',
           'codemirror/js/addon/format/autoFormatAll.js',
           'codemirror/js/addon/format/formatting.js',
+          'codemirror/js/addon/selection/active-line.js'
           'codemirror/js/addon/search/match-highlighter.js'
           ],
         dest: 'codemirror/js/codemirror.addons.min.js'

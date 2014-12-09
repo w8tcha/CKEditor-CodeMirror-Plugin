@@ -22,7 +22,6 @@
                     enableCodeFolding: true,
                     enableCodeFormatting: true,
                     enableSearchTools: true,
-                    highlightActiveLine: true,
                     highlightMatches: true,
                     indentWithTabs: false,
                     lineNumbers: true,
@@ -36,6 +35,7 @@
                     showSearchButton: true,
                     showTrailingSpace: true,
                     showUncommentButton: true,
+                    styleActiveLine: true,
                     theme: 'default',
                     useBeautify: false
                 };
@@ -85,6 +85,7 @@
                             theme: config.theme,
                             showTrailingSpace: config.showTrailingSpace,
                             showCursorWhenSelecting: true,
+                            styleActiveLine: config.styleActiveLine,
                             viewportMargin: Infinity,
                             //extraKeys: {"Ctrl-Space": "autocomplete"},
                             extraKeys: {
@@ -158,18 +159,6 @@
                         if (config.lineNumbers && config.enableCodeFolding) {
                             window["codemirror_" + editor.id].on("gutterClick", window["foldFunc_" + editor.id]);
                         }
-                        // Highlight Active Line
-                        if (config.highlightActiveLine) {
-                            window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
-                            window["codemirror_" + editor.id].on("cursorActivity", function () {
-                                var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
-                                if (cur != window["codemirror_" + editor.id].hlLine) {
-                                    window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
-                                    window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
-                                }
-                            });
-                        }
-
                         // Run config.onLoad callback, if present.
                         if (typeof config.onLoad === 'function') {
                             config.onLoad(window["codemirror_" + editor.id], editor);
@@ -715,6 +704,7 @@
                     theme: config.theme,
                     showTrailingSpace: config.showTrailingSpace,
                     showCursorWhenSelecting: true,
+                    styleActiveLine: config.styleActiveLine,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
                     extraKeys: extraKeys,
                     onKeyEvent: function (codeMirror_Editor, evt) {
@@ -779,24 +769,6 @@
                 // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
                 if (config.lineNumbers && config.enableCodeFolding) {
                     window["codemirror_" + editor.id].on("gutterClick", window["foldFunc_" + editor.id]);
-                }
-                // Highlight Active Line
-                if (config.highlightActiveLine) {
-                    window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(0, "background", "activeline");
-                    window["codemirror_" + editor.id].on("cursorActivity", function () {
-                        try {
-                            var cur = window["codemirror_" + editor.id].getLineHandle(window["codemirror_" + editor.id].getCursor().line);
-                        } catch(e) {
-                            cur = null;
-                        } finally {
-                            if (cur != null) {
-                                if (cur != window["codemirror_" + editor.id].hlLine) {
-                                    window["codemirror_" + editor.id].removeLineClass(window["codemirror_" + editor.id].hlLine, "background", "activeline");
-                                    window["codemirror_" + editor.id].hlLine = window["codemirror_" + editor.id].addLineClass(cur, "background", "activeline");
-                                }
-                            }
-                        }
-                    });
                 }
 
                 // Run config.onLoad callback, if present.
