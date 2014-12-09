@@ -185,13 +185,15 @@
                             // Load the content
                             this.setValueOf('main', 'data', oldData = editor.getData());
 
-                            if (typeof (CodeMirror) == 'undefined') {
-
+                            if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
                                 CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                            }
 
-                                if (config.theme.length && config.theme != 'default') {
-                                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                                }
+                            if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
+                                CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                            }
+
+                            if (typeof (CodeMirror) == 'undefined') {
 
                                 CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
 
@@ -517,14 +519,16 @@
                 };
             }
 
-            editor.addMode('source', function(callback) {
-                if (typeof (CodeMirror) == 'undefined') {
-
+            editor.addMode('source', function (callback) {
+                if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
                     CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                }
 
-                    if (config.theme.length && config.theme != 'default') {
-                        CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                    }
+                if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
+                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                }
+
+                if (typeof (CodeMirror) == 'undefined') {
 
                     CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
 
@@ -1117,4 +1121,16 @@ function OffSetToLineChannel(ed, n) {
         index += len;
     }
     return { line: line, ch: ch };
+}
+
+function IsStyleSheetAlreadyLoaded(href) {
+    var links = CKEDITOR.document.getHead().find('link');
+
+    for (var i = 0; i < links.count() ; i++) {
+        if (links.getItem(i).$.href === href) {
+            return true;
+        }
+    }
+
+    return false;
 }
