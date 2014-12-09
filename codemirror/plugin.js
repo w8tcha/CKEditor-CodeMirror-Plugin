@@ -87,7 +87,13 @@
                             showCursorWhenSelecting: true,
                             viewportMargin: Infinity,
                             //extraKeys: {"Ctrl-Space": "autocomplete"},
-                            extraKeys: { "Ctrl-Q": function (codeMirror_Editor) { window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line); } },
+                            extraKeys: {
+                                "Ctrl-Q": function (codeMirror_Editor) {
+                                    if (config.enableCodeFolding) {
+                                        window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
+                                    }
+                                }
+                            },
                             onKeyEvent: function (codeMirror_Editor, evt) {
                                 if (config.enableCodeFormatting) {
                                     var range = getSelectedRange();
@@ -683,8 +689,10 @@
                 }
 
                 var extraKeys = {
-                    "Ctrl-Q": function (codeMirror_Editor) {
-                        window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
+                    "Ctrl-Q": function(codeMirror_Editor) {
+                        if (config.enableCodeFolding) {
+                            window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
+                        }
                     }
                 };
 
