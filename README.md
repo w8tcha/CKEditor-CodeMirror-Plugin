@@ -83,9 +83,6 @@ config.codemirror = {
 	// Whether or not to automatically format code which has just been uncommented
 	autoFormatOnUncomment: true,
 	
-	// Whether or not to highlight the currently active line
-	highlightActiveLine: true,
-	
 	// Whether or not to highlight all matches of current word/selection
 	highlightMatches: true,
 
@@ -108,7 +105,10 @@ config.codemirror = {
 	showUncommentButton: true,
 
      // Whether or not to show the showAutoCompleteButton button on the toolbar
-	showAutoCompleteButton: true
+	showAutoCompleteButton: true,
+
+     // Whether or not to highlight the currently active line
+	highlightActiveLine: true
 };
 
 ````
