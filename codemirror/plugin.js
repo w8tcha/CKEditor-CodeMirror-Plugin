@@ -95,6 +95,8 @@
                                     }
                                 }
                             },
+                            foldGutter: true,
+                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                             onKeyEvent: function (codeMirror_Editor, evt) {
                                 if (config.enableCodeFormatting) {
                                     var range = getSelectedRange();
@@ -189,7 +191,7 @@
                                 CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
                             }
 
-                            if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
+                            if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
                                 CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                             }
 
@@ -524,7 +526,7 @@
                     CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
                 }
 
-                if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
+                if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
                     CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                 }
 
@@ -711,6 +713,8 @@
                     styleActiveLine: config.styleActiveLine,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
                     extraKeys: extraKeys,
+                    foldGutter: true,
+                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                     onKeyEvent: function (codeMirror_Editor, evt) {
                         
                         if (config.enableCodeFormatting) {

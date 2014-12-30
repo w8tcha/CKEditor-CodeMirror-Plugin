@@ -64,18 +64,21 @@ module.exports = function(grunt) {
       },
       addons: {
         src: [
+          'codemirror/js/addon/comment/continuecomment.js',
           'codemirror/js/addon/edit/closebrackets.js',
           'codemirror/js/addon/edit/closetag.js',
-          'codemirror/js/addon/edit/continuecomment.js',
           'codemirror/js/addon/edit/matchbrackets.js',
           'codemirror/js/addon/edit/matchtags.js',
           'codemirror/js/addon/edit/trailingspace.js',
           'codemirror/js/addon/fold/foldcode.js',
+          'codemirror/js/addon/fold/foldgutter.js',
           'codemirror/js/addon/fold/brace-fold.js',
+          'codemirror/js/addon/fold/comment-fold.js',
+          'codemirror/js/addon/fold/indent-fold.js',
           'codemirror/js/addon/fold/xml-fold.js',
           'codemirror/js/addon/format/autoFormatAll.js',
           'codemirror/js/addon/format/formatting.js',
-          'codemirror/js/addon/selection/active-line.js'
+          'codemirror/js/addon/selection/active-line.js',
           'codemirror/js/addon/search/match-highlighter.js'
           ],
         dest: 'codemirror/js/codemirror.addons.min.js'
@@ -113,7 +116,13 @@ module.exports = function(grunt) {
     cssmin: {
       combine: {
         files: {
-          'codemirror/css/codemirror.min.css': ['codemirror/css/codemirror.css', 'codemirror/css/codemirror.ckeditor.css']
+          'codemirror/css/codemirror.min.css': 
+		  [
+		  'codemirror/css/codemirror.css', 
+		  'codemirror/css/codemirror.ckeditor.css',
+ 		  'codemirror/js/addon/dialog/dialog.css',
+		  'codemirror/js/addon/fold/foldgutter.css'
+		  ]
         }
       }
     },
