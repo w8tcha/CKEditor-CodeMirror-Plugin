@@ -93,6 +93,12 @@
                                     if (config.enableCodeFolding) {
                                         window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
                                     }
+                                },
+                                "'>'": function (codeMirror_Editor) {
+                                    codeMirror_Editor.closeTag(codeMirror_Editor, '>');
+                                },
+                                "'/'": function (codeMirror_Editor) {
+                                    codeMirror_Editor.closeTag(codeMirror_Editor, '/');
                                 }
                             },
                             foldGutter: true,
@@ -688,6 +694,12 @@
                         if (config.enableCodeFolding) {
                             window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
                         }
+                    },
+                    "'>'": function (codeMirror_Editor) {
+                        codeMirror_Editor.closeTag(codeMirror_Editor, '>');
+                    },
+                    "'/'": function (codeMirror_Editor) {
+                        codeMirror_Editor.closeTag(codeMirror_Editor, '/');
                     }
                 };
 
@@ -701,7 +713,7 @@
                     workTime: 35,
                     readOnly: editor.config.readOnly,
                     lineNumbers: config.lineNumbers,
-                    lineWrapping: config.lineWrapping,
+                    lineWrapping: true,
                     autoCloseTags: config.autoCloseTags,
                     autoCloseBrackets: config.autoCloseBrackets,
                     highlightSelectionMatches: config.highlightMatches,
