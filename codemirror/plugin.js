@@ -79,7 +79,7 @@
                             lineWrapping: config.lineWrapping,
                             autoCloseTags: config.autoCloseTags,
                             autoCloseBrackets: config.autoCloseBrackets,
-                            highligctionMatches: config.highlightMatches,
+                            highlightSelectionMatches: config.highlightMatches,
                             continueComments: config.continueComments,
                             indentWithTabs: config.indentWithTabs,
                             theme: config.theme,
