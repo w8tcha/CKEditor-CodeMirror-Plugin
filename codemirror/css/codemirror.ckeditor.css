@@ -49,7 +49,7 @@
 
 /* Fixes for the sourceDialog */
 .cke_reset_all .CodeMirror-scroll * {
-	white-space: normal;
+	white-space: pre;
 }
 
 .cke_reset_all .cm-s-cobalt *,
