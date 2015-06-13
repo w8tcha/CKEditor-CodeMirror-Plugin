@@ -634,7 +634,9 @@
                     'role': 'textbox',
                     'aria-label': ariaLabel
                 });
-                textarea.addClass('cke_source cke_reset cke_enable_context_menu');
+                textarea.addClass('cke_source');
+                textarea.addClass('cke_reset');
+                textarea.addClass('cke_enable_context_menu');
                 editor.ui.space('contents').append(textarea);
                 window["editable_" + editor.id] = editor.editable(new sourceEditable(editor, textarea));
                 // Fill the textarea with the current editor data.
