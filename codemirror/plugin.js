@@ -93,12 +93,6 @@
                                     if (config.enableCodeFolding) {
                                         window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
                                     }
-                                },
-                                "'>'": function (codeMirror_Editor) {
-                                    codeMirror_Editor.closeTag(codeMirror_Editor, '>');
-                                },
-                                "'/'": function (codeMirror_Editor) {
-                                    codeMirror_Editor.closeTag(codeMirror_Editor, '/');
                                 }
                             },
                             foldGutter: true,
@@ -696,12 +690,6 @@
                         if (config.enableCodeFolding) {
                             window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
                         }
-                    },
-                    "'>'": function (codeMirror_Editor) {
-                        codeMirror_Editor.closeTag(codeMirror_Editor, '>');
-                    },
-                    "'/'": function (codeMirror_Editor) {
-                        codeMirror_Editor.closeTag(codeMirror_Editor, '/');
                     }
                 };
 
