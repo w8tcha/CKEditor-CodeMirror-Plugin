@@ -96,25 +96,7 @@
                                 }
                             },
                             foldGutter: true,
-                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                            onKeyEvent: function (codeMirror_Editor, evt) {
-                                if (config.enableCodeFormatting) {
-                                    var range = getSelectedRange();
-                                    if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
-                                        window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
-                                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
-                                        window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
-                                        if (config.autoFormatOnUncomment) {
-                                            window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                                        }
-                                    } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
-                                        window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                                    }
-                                    /*else if (evt.type === "keydown") {
-                                        CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
-                                    }*/
-                                }
-                            }
+                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
                         });
 
                         var holderHeight = height + 'px';
@@ -169,6 +151,24 @@
                         // inherit blur event
                         window["codemirror_" + editor.id].on("blur", function () {
                             editor.fire('blur', this);
+                        });
+
+                        window["codemirror_" + editor.id].on("keypress", function (codeMirror_Editor, evt) {
+                            if (config.enableCodeFormatting) {
+                                var range = getSelectedRange();
+                                if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
+                                    window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
+                                } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
+                                    window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
+                                    if (config.autoFormatOnUncomment) {
+                                        window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                    }
+                                } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
+                                    window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                                }/* else if (evt.type === "keydown") {
+                                CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
+                            }*/
+                            }
                         });
                     }
 
@@ -716,25 +716,7 @@
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
                     extraKeys: extraKeys,
                     foldGutter: true,
-                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                    onKeyEvent: function (codeMirror_Editor, evt) {
-                        
-                        if (config.enableCodeFormatting) {
-                            var range = getSelectedRange();
-                            if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
-                                window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
-                            } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
-                                window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
-                                if (config.autoFormatOnUncomment) {
-                                    window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                                }
-                            } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
-                                window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
-                            }/* else if (evt.type === "keydown") {
-                                CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
-                            }*/
-                        }
-                    }
+                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
                 });
 
                 var holderHeight = holderElement.$.clientHeight == 0 ? editor.ui.space('contents').getStyle('height') : holderElement.$.clientHeight + 'px';
@@ -789,6 +771,24 @@
                 // inherit blur event
                 window["codemirror_" + editor.id].on("blur", function () {
                     editor.fire('blur', this);
+                });
+
+                window["codemirror_" + editor.id].on("keypress", function (codeMirror_Editor, evt) {
+                    if (config.enableCodeFormatting) {
+                        var range = getSelectedRange();
+                        if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && !evt.altKey) {
+                            window["codemirror_" + editor.id].commentRange(true, range.from, range.to);
+                        } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && evt.shiftKey && !evt.altKey) {
+                            window["codemirror_" + editor.id].commentRange(false, range.from, range.to);
+                            if (config.autoFormatOnUncomment) {
+                                window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                            }
+                        } else if (evt.type === "keydown" && evt.ctrlKey && evt.keyCode === 75 && !evt.shiftKey && evt.altKey) {
+                            window["codemirror_" + editor.id].autoFormatRange(range.from, range.to);
+                        }/* else if (evt.type === "keydown") {
+                                CodeMirror.commands.newlineAndIndentContinueMarkdownList(window["codemirror_" + editor.id]);
+                            }*/
+                    }
                 });
             }
 
