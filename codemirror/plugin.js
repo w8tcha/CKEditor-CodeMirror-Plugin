@@ -949,10 +949,10 @@
                 });
             }
 
-            editor.on('setData', function (data) {
- 
-                if (window["editable_" + editor.id] && editor.mode === 'source') {
-                    window["codemirror_" + editor.id].setValue(data.data.dataValue);
+            editor.on('setData', function(data) {
+
+                if (window["editable_" + data.editor.id] && data.editor.mode === 'source') {
+                    window["codemirror_" + data.editor.id].setValue(data.data.dataValue);
                 }
             });
         }
@@ -960,12 +960,12 @@
     var sourceEditable = CKEDITOR.tools.createClass({
         base: CKEDITOR.editable,
         proto: {
-            setData: function(data) {
+            setData: function (data) {
 
                 this.setValue(data);
 
-                if (this.codeMirror != null) {
-                    this.codeMirror.setValue(data);
+                if (window["editable_" + this.editor.id] && this.editor.mode === 'source') {
+                    window["codemirror_" + this.editor.id].setValue(data);
                 }
 
                 this.editor.fire('dataReady');
