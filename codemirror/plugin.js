@@ -172,6 +172,7 @@
                         });
                     }
 
+
                     return {
                         title: editor.lang.sourcedialog.title,
                         minWidth: width,
@@ -861,6 +862,10 @@
                     delete range.element;
                     range.createBookmark(editor);
                     sourceBookmark = true;
+
+                    if (editor.undoManager) {
+                        editor.undoManager.unlock();
+                    }
 
                     evt.data = range.content;
                 }
