@@ -812,13 +812,13 @@
                     if (config.showFormatButton || config.showCommentButton || config.showUncommentButton || config.showSearchButton) {
                         editor.ui.add('-', CKEDITOR.UI_SEPARATOR, { toolbar: 'mode,30' });
                     }
-                    /*if (config.showSearchButton && config.enableSearchTools) {
+                    if (config.showSearchButton && config.enableSearchTools) {
                         editor.ui.addButton('searchCode', {
                             label: lang.searchCode,
                             command: 'searchCode',
                             toolbar: 'mode,40'
                         });
-                    }*/
+                    }
                     if (config.showFormatButton) {
                         editor.ui.addButton('autoFormat', {
                             label: lang.autoFormat,
