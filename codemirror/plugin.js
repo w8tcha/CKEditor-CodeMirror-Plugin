@@ -224,6 +224,9 @@
 
                                 // Free Memory
                                 window["codemirror_" + editor.id] = null;
+                                
+                                editor.fire('blur', this);
+                                editor.fire('focus', this);
                             }
                         },
                         onOk: (function () {
@@ -258,6 +261,9 @@
                                 // Set data asynchronously to avoid errors in IE.
                                 CKEDITOR.env.ie ? CKEDITOR.tools.setTimeout(setData, 0, this, newData) : setData.call(this, newData);
 
+                                editor.fire('blur', this);
+                                editor.fire('focus', this);
+                                
                                 // Don't let the dialog close before setData is over.
                                 return false;
                             };
