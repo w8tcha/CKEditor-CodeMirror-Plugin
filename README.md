@@ -116,8 +116,8 @@ config.codemirror = {
      // Set this to the theme you wish to use (codemirror themes)
 	theme: 'default',
 	
-	// "Whether or not to use Beautify for auto formatting
-	useBeautify: false
+	// "Whether or not to use Beautify for auto formatting On start
+	useBeautifyOnStart: false
 };
 
 ````

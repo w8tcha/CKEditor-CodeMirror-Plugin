@@ -37,7 +37,7 @@
                     showUncommentButton: true,
                     styleActiveLine: true,
                     theme: 'default',
-                    useBeautify: false
+                    useBeautifyOnStart: false
                 };
 
             // Get Config & Lang
@@ -96,7 +96,7 @@
                                 }
                             },
                             foldGutter: true,
-                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+                            gutters: ["CodeMirror-linenumbbers", "CodeMirror-foldgutter"]
                         });
 
                         var holderHeight = height + 'px';
@@ -106,7 +106,7 @@
                         window["codemirror_" + editor.id].config = config;
 
                         if (config.autoFormatOnStart) {
-                            if (config.useBeautify) {
+                            if (config.useBeautifyOnStart) {
                                 var indent_size = 4,
                                     indent_char = ' ',
                                     brace_style = 'collapse'; //collapse, expand, end-expand
@@ -604,7 +604,7 @@
                     scriptFiles.push(rootPath + 'js/codemirror.mode.htmlmixed.min.js');
                 }
 
-                if (config.useBeautify) {
+                if (config.useBeautifyOnStart) {
                     scriptFiles.push(rootPath + 'js/beautify.min.js');
                 }
 
@@ -732,7 +732,7 @@
                 // Store config so we can access it within commands etc.
                 window["codemirror_" + editor.id].config = config;
                 if (config.autoFormatOnStart) {
-                    if (config.useBeautify) {
+                    if (config.useBeautifyOnStart) {
                         var indent_size = 4;
                         var indent_char = ' ';
                         var brace_style = 'collapse'; //collapse, expand, end-expand
