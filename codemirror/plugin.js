@@ -18,6 +18,7 @@
                     autoCloseTags: true,
                     autoFormatOnStart: false,
                     autoFormatOnUncomment: true,
+                    autoLoadCodeMirror: true,
                     continueComments: true,
                     enableCodeFolding: true,
                     enableCodeFormatting: true,
@@ -188,34 +189,43 @@
                             // Load the content
                             this.setValueOf('main', 'data', oldData = editor.getData());
 
-                            if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
-                                CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
-                            }
+                            if (config.autoLoadCodeMirror) {
 
-                            if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
-                                CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                            }
-
-                            if (typeof (CodeMirror) == 'undefined') {
-
-                                CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
-
-                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                                        loadCodeMirrorInline(editor, textArea);
-                                    });
-                                });
-
-
-                            } else {
-                                //loadCodeMirrorInline(editor, textArea);
-                                if (CodeMirror.prototype['autoFormatAll']) {
-                                    loadCodeMirrorInline(editor, textArea);
-                                } else {
-                                    // loading the add-on scripts.
-                                    CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                                        loadCodeMirrorInline(editor, textArea);
-                                    });
+                                if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
+                                    CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
                                 }
+
+                                if (config.theme.length &&
+                                    config.theme != 'default' &&
+                                    !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
+                                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                                }
+
+                                if (typeof (CodeMirror) == 'undefined') {
+
+                                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js',
+                                        function() {
+
+                                            CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                                                function() {
+                                                    loadCodeMirrorInline(editor, textArea);
+                                                });
+                                        });
+
+
+                                } else {
+                                    //loadCodeMirrorInline(editor, textArea);
+                                    if (CodeMirror.prototype['autoFormatAll']) {
+                                        loadCodeMirrorInline(editor, textArea);
+                                    } else {
+                                        // loading the add-on scripts.
+                                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                                            function() {
+                                                loadCodeMirrorInline(editor, textArea);
+                                            });
+                                    }
+                                }
+
                             }
                         },
                         onCancel: function (event) {
@@ -529,33 +539,42 @@
             }
 
             editor.addMode('source', function (callback) {
-                if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
-                    CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                if (!config.autoLoadCodeMirror) {
+                    return;
                 }
 
-                if (config.theme.length && config.theme != 'default' && !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
-                    CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
-                }
+                if (!IsStyleSheetAlreadyLoaded(rootPath + 'css/codemirror.min.css')) {
+                        CKEDITOR.document.appendStyleSheet(rootPath + 'css/codemirror.min.css');
+                    }
+
+                    if (config.theme.length &&
+                        config.theme != 'default' &&
+                        !IsStyleSheetAlreadyLoaded(rootPath + 'theme/' + config.theme + '.css')) {
+                        CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
+                    }
 
                 if (typeof (CodeMirror) == 'undefined') {
 
-                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js', function() {
+                    CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js',
+                        function() {
 
-                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                            loadCodeMirror(editor);
-                            callback();
+                            CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                                function() {
+                                    loadCodeMirror(editor);
+                                    callback();
+                                });
                         });
-                    });
                 } else {
                     if (CodeMirror.prototype['autoFormatAll']) {
                         loadCodeMirror(editor);
                         callback();
                     } else {
                         // loading the add-on scripts.
-                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(), function() {
-                            loadCodeMirror(editor);
-                            callback();
-                        });
+                        CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
+                            function() {
+                                loadCodeMirror(editor);
+                                callback();
+                            });
                     }
                 }
             });
