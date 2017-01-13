@@ -26,6 +26,12 @@ module.exports = function(grunt) {
           ],
         dest: 'codemirror/js/codemirror.mode.bbcode.min.js'
       },
+         modeTwig: {
+        src: [
+          'codemirror/js/mode/twig/twig.js'
+          ],
+        dest: 'codemirror/js/codemirror.mode.twig.min.js'
+      },
 	  modeBBCodeMixed: {
         src: [
           'codemirror/js/mode/xml/xml.js',
