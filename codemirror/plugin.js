@@ -265,8 +265,11 @@
 
                                 // Avoid unnecessary setData. Also preserve selection
                                 // when user changed his mind and goes back to wysiwyg editing.
-                                if (newData === oldData)
+                                if (newData === oldData) {
+                                    editor.fire('blur', this);
+                                    editor.fire('focus', this);
                                     return true;
+                                }
 
                                 // Set data asynchronously to avoid errors in IE.
                                 CKEDITOR.env.ie ? CKEDITOR.tools.setTimeout(setData, 0, this, newData) : setData.call(this, newData);
