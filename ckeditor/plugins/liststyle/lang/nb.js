@@ -1,10 +1,10 @@
-﻿/*
-Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+/*
+Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'liststyle', 'nb', {
 	armenian: 'Armensk nummerering',
-	bulletedTitle: 'Egenskaper for punktmerket liste',
+	bulletedTitle: 'Egenskaper for punktliste',
 	circle: 'Sirkel',
 	decimal: 'Tall (1, 2, 3, osv.)',
 	decimalLeadingZero: 'Tall, med førstesiffer null (01, 02, 03, osv.)',
