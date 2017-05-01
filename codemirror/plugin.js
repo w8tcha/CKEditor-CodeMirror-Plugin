@@ -948,8 +948,7 @@
 
             editor.on('instanceReady', function (evt) {
 
-                // Fix native context menu
-                editor.container.getPrivate().events.contextmenu.listeners.splice(0, 1);
+                //editor.container.getPrivate().events.contextmenu.listeners.splice(0, 1);
 
                 var selectAllCommand = editor.commands.selectAll;
 
