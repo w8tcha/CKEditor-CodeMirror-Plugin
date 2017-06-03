@@ -178,7 +178,16 @@
                         title: editor.lang.sourcedialog.title,
                         minWidth: width,
                         minHeight: height,
-                        resizable : CKEDITOR.DIALOG_RESIZE_NONE,
+                        resizable: CKEDITOR.DIALOG_RESIZE_BOTH,
+                        onLoad: function() {
+                            this.on('resize',
+                                function(event) {
+                                    var holderHeight = event.data.height + 'px';
+                                    var holderWidth = event.data.width + 'px';
+                                    window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
+                                },
+                                this);
+                        },
                         onShow: function () {
                             // Set Elements
                             this.getContentElement('main', 'data').focus();
