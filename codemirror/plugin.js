@@ -63,12 +63,16 @@
 
                 // Override Source Dialog
                 CKEDITOR.dialog.add('sourcedialog', function (editor) {
-                    var size = CKEDITOR.document.getWindow().getViewPaneSize(),
-                        width = Math.min(size.width - 70, 800),
-                        height = size.height / 1.5,
+                    var sizeDialog = CKEDITOR.document.getWindow().getViewPaneSize(),
+                        minWidth = Math.min(sizeDialog.width - 70, 800),
+                        minHeight = sizeDialog.height / 1.5,
                         oldData;
 
-                    function loadCodeMirrorInline(editor, textarea) {
+                    function loadCodeMirrorInline(editor, textarea, dialog) {
+                        var size = dialog.getSize(),
+                            width = size.width,
+                            height = size.height / 1.5;
+
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
                             mode: config.mode,
                             matchBrackets: config.matchBrackets,
@@ -99,6 +103,7 @@
                             foldGutter: true,
                             gutters: ["CodeMirror-linenumbbers", "CodeMirror-foldgutter"]
                         });
+       
 
                         var holderHeight = height + 'px';
                         var holderWidth = width + 'px';
@@ -138,6 +143,7 @@
                             editor.fire('change', this);
                         });
 
+
                         window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
 
                         // Enable Code Folding (Requires 'lineNumbers' to be set to 'true')
@@ -176,19 +182,24 @@
 
                     return {
                         title: editor.lang.sourcedialog.title,
-                        minWidth: width,
-                        minHeight: height,
+                        minWidth: minWidth,
+                        minHeight: minHeight,
                         resizable: CKEDITOR.DIALOG_RESIZE_BOTH,
                         onLoad: function() {
                             this.on('resize',
-                                function(event) {
-                                    var holderHeight = event.data.height + 'px';
+                                function (event) {
+                                    var parts = event.sender.parts;
+                                    var title = parts.title;
+                                    var footer = parts.footer;
+                                    
+                                    var holderHeight = (event.data.height - title.$.offsetHeight - footer.$.offsetHeight) + 'px';
                                     var holderWidth = event.data.width + 'px';
+
                                     window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
                                 },
                                 this);
                         },
-                        onShow: function () {
+                        onShow: function (event) {
                             // Set Elements
                             this.getContentElement('main', 'data').focus();
                             this.getContentElement('main', 'AutoComplete').setValue(config.autoCloseTags, true);
@@ -217,20 +228,19 @@
 
                                             CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
                                                 function() {
-                                                    loadCodeMirrorInline(editor, textArea);
+                                                    loadCodeMirrorInline(editor, textArea, event.sender);
                                                 });
                                         });
 
 
                                 } else {
-                                    //loadCodeMirrorInline(editor, textArea);
                                     if (CodeMirror.prototype['autoFormatAll']) {
-                                        loadCodeMirrorInline(editor, textArea);
+                                        loadCodeMirrorInline(editor, textArea, event.sender);
                                     } else {
                                         // loading the add-on scripts.
                                         CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
                                             function() {
-                                                loadCodeMirrorInline(editor, textArea);
+                                                loadCodeMirrorInline(editor, textArea, event.sender);
                                             });
                                     }
                                 }
@@ -365,8 +375,8 @@
                                     id: 'data',
                                     dir: 'ltr',
                                     inputStyle: 'cursor:auto;' +
-                                        'width:' + width + 'px;' +
-                                        'height:' + height + 'px;' +
+                                        'width:' + minWidth + 'px;' +
+                                        'height:' + minHeight + 'px;' +
                                         'tab-size:4;' +
                                         'text-align:left;',
                                     'class': 'cke_source cke_enable_context_menu'
