@@ -14,7 +14,7 @@ Syntax Highlighting for the CKEditor (Source View and Source Dialog) with the Co
 * 'Ctrl-Shift-F' to find and replace
 * 'Ctrl-Shift-R' to find and replace all
 
-###Demo
+### Demo
 http://w8tcha.github.io/CKEditor-CodeMirror-Plugin/
 
 The Full Theme List can be found here: http://codemirror.net/demo/theme.html
@@ -23,11 +23,11 @@ The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 
 ![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/SourceDialog.png)
 
-####License
+#### License
 
 Licensed under the terms of the MIT License.
 
-####Installation
+#### Installation
 
  1. Extract the contents of the file into the "plugins" folder of CKEditor.
  2. In the CKEditor configuration file (config.js) add the following code:
