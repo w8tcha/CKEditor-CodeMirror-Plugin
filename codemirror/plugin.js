@@ -904,7 +904,7 @@
             }
 
             editor.on('beforeModeUnload', function (evt) {
-                if (editor.mode === 'source' && editor.plugins.textselection) {
+                if (editor.mode === 'source' && editor.plugins.textselection && !editor.config.fullPage) {
 
                     var range = editor.getTextSelection();
 
@@ -929,7 +929,7 @@
                 if (editor.mode === 'source') {
                     editor.getCommand('autoCompleteToggle').setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
 
-                    if (editor.plugins.textselection && textRange) {
+                    if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
 
                         //textRange.element = new CKEDITOR.dom.element(editor._.editable.$);
                         //textRange.select();
