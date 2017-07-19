@@ -29,6 +29,7 @@
                     lineWrapping: true,
                     mode: 'htmlmixed',
                     matchBrackets: true,
+                    maxScanLines: 1000,
                     matchTags: true,
                     showAutoCompleteButton: true,
                     showCommentButton: true,
@@ -76,6 +77,7 @@
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
                             mode: config.mode,
                             matchBrackets: config.matchBrackets,
+                            maxScanLines: config.maxScanLines,
                             matchTags: config.matchTags,
                             workDelay: 300,
                             workTime: 35,
@@ -752,6 +754,7 @@
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: config.mode,
                     matchBrackets: config.matchBrackets,
+                    maxScanLines: config.maxScanLines,
                     matchTags: config.matchTags,
                     workDelay: 300,
                     workTime: 35,
