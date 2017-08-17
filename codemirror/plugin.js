@@ -1192,13 +1192,5 @@ function OffSetToLineChannel(ed, n) {
 }
 
 function IsStyleSheetAlreadyLoaded(href) {
-    var links = CKEDITOR.document.getHead().find('link');
-
-    for (var i = 0; i < links.count() ; i++) {
-        if (links.getItem(i).$.href === href) {
-            return true;
-        }
-    }
-
-    return false;
+    return CKEDITOR.document.getHead().findOne('link[href="'+href+'"]') != null;
 }
