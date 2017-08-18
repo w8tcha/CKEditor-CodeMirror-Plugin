@@ -7,10 +7,67 @@
  */
 module.exports = function(grunt) {
 
-  // CONFIGURATION
+    var addons = [
+        'addon/comment/continuecomment.js',
+        'addon/edit/closebrackets.js',
+        'addon/edit/closetag.js',
+        'addon/edit/matchbrackets.js',
+        'addon/edit/matchtags.js',
+        'addon/edit/trailingspace.js',
+        //'addon/fold/foldcode.js' // gets included as a dependency
+        'addon/fold/foldgutter.js',
+        'addon/fold/brace-fold.js',
+        'addon/fold/comment-fold.js',
+        'addon/fold/indent-fold.js',
+        //'addon/fold/xml-fold.js', // gets included as a dependency
+        'addon/format/autoFormatAll.js',
+        'addon/format/formatting.js',
+        'addon/selection/active-line.js',
+        'addon/search/match-highlighter.js',
+        //  'addon/mode/multiplex.js', required from htmlembedded
+    ];
+// CONFIGURATION
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    requirejs: {
+        core: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths:{
+                    '../../lib/codemirror': 'codemirror'
+                },
+                include: ['codemirror.js'],
+                out: 'codemirror/js/codemirror.min.r.js'
+            }
+        },
 
+        addons: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths: {
+                    'lib/codemirror': 'empty:'
+                },
+                preserveLicenseComments: false,
+                include: addons,
+                out: 'codemirror/js/codemirror.addons.min.r.js',
+                insertRequire: addons   // TODO will break if require not present
+            }
+        },
+        modeHtml: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths: {
+                    'lib/codemirror': 'empty:'
+                },
+                preserveLicenseComments: false,
+                include: [
+                    'mode/htmlembedded/htmlembedded.js'
+                ],
+                out: 'codemirror/js/codemirror.mode.htmlmixed.min.r.js',
+                insertRequire: ['mode/htmlembedded/htmlembedded.js'] // TODO will break if require not present
+            }
+        }
+    },
     // Minimize JS
     min: {
       options: {
@@ -20,7 +77,7 @@ module.exports = function(grunt) {
         src: ['codemirror/js/codemirror.js'],
         dest: 'codemirror/js/codemirror.min.js'
       },
-	  modeBBCode: {
+      modeBBCode: {
         src: [
           'codemirror/js/mode/bbcode/bbcode.js'
           ],
@@ -32,7 +89,7 @@ module.exports = function(grunt) {
           ],
         dest: 'codemirror/js/codemirror.mode.twig.min.js'
       },
-	  modeBBCodeMixed: {
+      modeBBCodeMixed: {
         src: [
           'codemirror/js/mode/xml/xml.js',
           'codemirror/js/mode/javascript/javascript.js',
@@ -68,7 +125,8 @@ module.exports = function(grunt) {
         src: ['codemirror/js/mode/javascript/javascript.js'],
         dest: 'codemirror/js/codemirror.mode.javascript.min.js'
       },
-      addons: {
+
+    addons: {
         src: [
           'codemirror/js/addon/comment/continuecomment.js',
           'codemirror/js/addon/edit/closebrackets.js',
@@ -161,7 +219,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-yui-compressor');
-
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+ 
   grunt.registerTask('watch', [
     'min',
     'cssmin',
