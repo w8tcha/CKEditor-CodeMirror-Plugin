@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         'addon/format/formatting.js',
         'addon/selection/active-line.js',
         'addon/search/match-highlighter.js',
-        //  'addon/mode/multiplex.js', required from htmlembedded
+        'addon/mode/multiplex.js', // TODO also required from htmlembedded
     ];
 // CONFIGURATION
   grunt.initConfig({
@@ -33,61 +33,178 @@ module.exports = function(grunt) {
         core: {
             options: {
                 baseUrl: 'codemirror/js',
-                paths:{
-                    '../../lib/codemirror': 'codemirror'
-                },
                 include: ['codemirror.js'],
-                out: 'codemirror/js/codemirror.min.r.js'
+                preserveLicenseComments: false,
+                out: 'codemirror/js/codemirror.min.js',
+                wrap: {
+                    end:'(function(window){' +
+                        '    "function"==typeof window.define && ' +
+                        '    window.define("core", ["codemirror.js"], function (codemirror){'+
+                        '        window.CodeMirror = codemirror;'+
+                        '    });' +
+                        '})(this)'
+                }
             }
         },
-
-        addons: {
+        modeTwig: {
             options: {
                 baseUrl: 'codemirror/js',
+                include: ['mode/twig/twig.js'],
                 paths: {
                     'lib/codemirror': 'empty:'
                 },
                 preserveLicenseComments: false,
-                include: addons,
-                out: 'codemirror/js/codemirror.addons.min.r.js',
-                insertRequire: addons   // TODO will break if require not present
+                out: 'codemirror/js/codemirror.mode.twig.min.js',
+                wrap: {
+                    end:'(function(window){' +
+                    '    "function"==typeof window.define && ' +
+                    '    window.define("modeTwig", ["mode/twig/twig.js"], function (){'+
+                    '    });' +
+                    '})(this)'
+                }
             }
         },
         modeHtml: {
             options: {
                 baseUrl: 'codemirror/js',
                 paths: {
-                    'lib/codemirror': 'empty:'
+                    'lib/codemirror': 'empty:',
+                    'codemirror.js': 'empty:'
                 },
                 preserveLicenseComments: false,
                 include: [
                     'mode/htmlembedded/htmlembedded.js'
                 ],
-                out: 'codemirror/js/codemirror.mode.htmlmixed.min.r.js',
-                insertRequire: ['mode/htmlembedded/htmlembedded.js'] // TODO will break if require not present
+                out: 'codemirror/js/codemirror.mode.htmlmixed.min.js',
+                wrap: {
+                    end:'(function(window){' +
+                    '    "function"==typeof define && ' +
+                    '    define("modeHtml",["mode/htmlembedded/htmlembedded.js"], function (){'+
+                    '    });' +
+                    '})(this)'
+                },
             }
-        }
+        },
+        modePHP: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths: {
+                    'lib/codemirror': 'empty:',
+                },
+                preserveLicenseComments: false,
+                include: [
+                    'mode/php/php.js'
+                ],
+                out: 'codemirror/js/codemirror.mode.php.min.js',
+                wrap: {
+                    end:'(function(window){' +
+                    '    "function"==typeof window.define && ' +
+                    '    window.define("modePHP",["mode/php/php.js"], function (){'+
+                    '    });' +
+                    '})(this)'
+                },
+            }
+        },
+        modeJs: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths: {
+                    'lib/codemirror': 'empty:',
+                },
+                preserveLicenseComments: false,
+                include: [
+                    'mode/javascript/javascript.js'
+                ],
+                out: 'codemirror/js/codemirror.mode.javascript.min.js',
+                wrap: {
+                    end:'(function(window){' +
+                    '    "function"==typeof window.define && ' +
+                    '    window.define("modeJs",["mode/javascript/javascript.js"], function (){'+
+                    '    });' +
+                    '})(this)'
+                },
+            }
+        },
+        addons: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths: {
+                    'lib/codemirror': 'empty:',
+                },
+                preserveLicenseComments: false,
+                include: addons,
+                out: 'codemirror/js/codemirror.addons.min.js',
+                wrap: {
+                        end:'(function(window){' +
+                        '    "function"==typeof window.define && ' +
+                        '    window.define("addons",["' + addons.join('","') + '"], function (){'+
+                        '    });' +
+                        '})(this)'
+                }
+            }
+        },
+        addonSearch: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths: {
+                    'lib/codemirror': 'empty:',
+                },
+                preserveLicenseComments: false,
+                include: [
+                    'addon/search/search.js',
+                ],
+                out: 'codemirror/js/codemirror.addons.search.min.js',
+                wrap: {
+                        end:'(function(window){' +
+                        '    "function"==typeof window.define && ' +
+                        '    window.define("addonSearch",["addon/search/search.js"], function (){'+
+                        '    });' +
+                        '})(this)'
+                },
+            }
+        },
+        beautify: {
+            options: {
+                baseUrl: 'codemirror/js',
+                paths: {
+                    'beautify-css': 'empty:'
+                },
+                preserveLicenseComments: false,
+                include: [
+                    'beautify.js',
+                    'beautify-html.js'
+                ],
+                map:{
+                    '*':{
+                        './beautify': 'beautify.js',
+                        'beautify': 'beautify.js'
+                    }
+                },
+                out: 'codemirror/js/beautify.min.js',
+                wrap: {
+                    end:'(function(window){' +
+                    '    if("function"==typeof window.define){ ' +
+                    '    window.define("beautify",["beautify.js"], function (b){return b;}); '+
+                    '    window.define("beautify-css",[], function (){return {css_beautify:undefined};}); '+    //I know, i know...
+                    '    window.define("beautifyModule",["beautify", "beautify-html.js"], function (js_beautify, html_beautify){'+
+                    '        window.js_beautify = js_beautify.js_beautify;' +
+                    '        window.html_beautify = html_beautify.html_beautify;' +
+                    '    });}' +
+                    '})(this)'
+                },
+            }
+        },
     },
     // Minimize JS
     min: {
       options: {
         report: false
       },
-      core: {
-        src: ['codemirror/js/codemirror.js'],
-        dest: 'codemirror/js/codemirror.min.js'
-      },
       modeBBCode: {
         src: [
           'codemirror/js/mode/bbcode/bbcode.js'
           ],
         dest: 'codemirror/js/codemirror.mode.bbcode.min.js'
-      },
-         modeTwig: {
-        src: [
-          'codemirror/js/mode/twig/twig.js'
-          ],
-        dest: 'codemirror/js/codemirror.mode.twig.min.js'
       },
       modeBBCodeMixed: {
         src: [
@@ -100,69 +217,6 @@ module.exports = function(grunt) {
           ],
         dest: 'codemirror/js/codemirror.mode.bbcodemixed.min.js'
       },
-      modeHtml: {
-        src: [
-          'codemirror/js/mode/xml/xml.js',
-          'codemirror/js/mode/javascript/javascript.js',
-          'codemirror/js/mode/css/css.js',
-          'codemirror/js/mode/htmlmixed/htmlmixed.js',
-          'codemirror/js/mode/htmlembedded/htmlembedded.js'
-          ],
-        dest: 'codemirror/js/codemirror.mode.htmlmixed.min.js'
-      },
-      modePHP: {
-        src: [
-          'codemirror/js/mode/htmlmixed/htmlmixed.js',
-          'codemirror/js/mode/xml/xml.js',
-          'codemirror/js/mode/javascript/javascript.js',
-          'codemirror/js/mode/css/css.js',
-          'codemirror/js/mode/clike/clike.js',
-          'codemirror/js/mode/php/php.js'
-          ],
-        dest: 'codemirror/js/codemirror.mode.php.min.js'
-      },
-      modeJs: {
-        src: ['codemirror/js/mode/javascript/javascript.js'],
-        dest: 'codemirror/js/codemirror.mode.javascript.min.js'
-      },
-
-    addons: {
-        src: [
-          'codemirror/js/addon/comment/continuecomment.js',
-          'codemirror/js/addon/edit/closebrackets.js',
-          'codemirror/js/addon/edit/closetag.js',
-          'codemirror/js/addon/edit/matchbrackets.js',
-          'codemirror/js/addon/edit/matchtags.js',
-          'codemirror/js/addon/edit/trailingspace.js',
-          'codemirror/js/addon/fold/foldcode.js',
-          'codemirror/js/addon/fold/foldgutter.js',
-          'codemirror/js/addon/fold/brace-fold.js',
-          'codemirror/js/addon/fold/comment-fold.js',
-          'codemirror/js/addon/fold/indent-fold.js',
-          'codemirror/js/addon/fold/xml-fold.js',
-          'codemirror/js/addon/format/autoFormatAll.js',
-          'codemirror/js/addon/format/formatting.js',
-          'codemirror/js/addon/selection/active-line.js',
-          'codemirror/js/addon/search/match-highlighter.js',
-          'codemirror/js/addon/mode/multiplex.js'
-          ],
-        dest: 'codemirror/js/codemirror.addons.min.js'
-      },
-      addonSearch: {
-        src: [
-          'codemirror/js/addon/dialog/dialog.js',
-          'codemirror/js/addon/search/search.js',
-          'codemirror/js/addon/search/searchcursor.js'
-          ],
-        dest: 'codemirror/js/codemirror.addons.search.min.js'
-      },
-      beautify: {
-        src: [
-          'codemirror/js/beautify.js',
-          'codemirror/js/beautify-html.js'
-          ],
-        dest: 'codemirror/js/beautify.min.js'
-      }
     },
 
     // Optimize images
