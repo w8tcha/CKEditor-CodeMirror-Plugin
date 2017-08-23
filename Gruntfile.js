@@ -276,6 +276,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
  
   grunt.registerTask('watch', [
+    'requirejs',
     'min',
     'cssmin',
     'imagemin',
@@ -283,6 +284,7 @@ module.exports = function(grunt) {
     ]);
 
   grunt.registerTask('default', [
+    'requirejs',
     'min',
     'cssmin',
     'imagemin'
