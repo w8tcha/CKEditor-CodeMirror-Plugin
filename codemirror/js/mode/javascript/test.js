@@ -236,6 +236,15 @@
      "    [keyword return] [number 2]",
      "}")
 
+  MT("regexp_corner_case",
+     "[operator +]{} [operator /] [atom undefined];",
+     "[[[meta ...][string-2 /\\//] ]];",
+     "[keyword void] [string-2 /\\//];",
+     "[keyword do] [string-2 /\\//]; [keyword while] ([number 0]);",
+     "[keyword if] ([number 0]) {} [keyword else] [string-2 /\\//];",
+     "[string-2 `${][variable async][operator ++][string-2 }//`];",
+     "[string-2 `${]{} [operator /] [string-2 /\\//}`];")
+
   var ts_mode = CodeMirror.getMode({indentUnit: 2}, "application/typescript")
   function TS(name) {
     test.mode(name, ts_mode, Array.prototype.slice.call(arguments, 1))
@@ -338,6 +347,22 @@
 
   TS("typescript_complex_type_casting",
      "[keyword const] [def giftpay] [operator =] [variable config].[property get]([string 'giftpay']) [keyword as] { [[ [variable platformUuid]: [type string] ]]: { [property version]: [type number]; [property apiCode]: [type string]; } };")
+
+  TS("typescript_keyof",
+     "[keyword function] [def x][operator <][type T] [keyword extends] [keyword keyof] [type X][operator >]([def a]: [type T]) {",
+     "  [keyword return]")
+
+  TS("typescript_new_typeargs",
+     "[keyword let] [def x] [operator =] [keyword new] [variable Map][operator <][type string], [type Date][operator >]([string-2 `foo${][variable bar][string-2 }`])")
+
+  TS("modifiers",
+     "[keyword class] [def Foo] {",
+     "  [keyword public] [keyword abstract] [property bar]() {}",
+     "  [property constructor]([keyword readonly] [keyword private] [def x]) {}",
+     "}")
+
+  TS("arrow prop",
+     "({[property a]: [def p] [operator =>] [variable-2 p]})")
 
   var jsonld_mode = CodeMirror.getMode(
     {indentUnit: 2},
