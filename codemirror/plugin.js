@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add('codemirror', {
         icons: 'searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete', // %REMOVE_LINE_CORE%
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh', // %REMOVE_LINE_CORE%
-        version: '1.17.1',
+        version: '1.17.2',
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -235,6 +235,22 @@
                             }*/
                             }
                         });
+
+                        if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
+
+                            var start, end;
+
+                            start = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.startOffset);
+
+                            if (typeof (textRange.endOffset) == 'undefined') {
+                                window["codemirror_" + editor.id].focus();
+                                window["codemirror_" + editor.id].setCursor(start);
+                            } else {
+                                window["codemirror_" + editor.id].focus();
+                                end = OffSetToLineChannel(window["codemirror_" + editor.id], textRange.endOffset);
+                                window["codemirror_" + editor.id].setSelection(start, end);
+                            }
+                        }
                     }
 
 
