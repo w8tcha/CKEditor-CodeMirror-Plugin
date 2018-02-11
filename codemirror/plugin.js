@@ -61,7 +61,7 @@
             var requirePresent = "function" === typeof require;
 
             if (requirePresent){
-                var location = window.CKEDITOR_GETURL('plugins/codemirror/js');
+                var location = CKEDITOR.getUrl('plugins/codemirror/js');
                 require.config({
                     packages: [{
                         name: 'codemirror',
