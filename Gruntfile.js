@@ -279,15 +279,13 @@ module.exports = function(grunt) {
     'requirejs',
     'min',
     'cssmin',
-    'imagemin',
     'watch'
     ]);
 
   grunt.registerTask('default', [
     'requirejs',
     'min',
-    'cssmin',
-    'imagemin'
+    'cssmin'
     ]);
 
 };
