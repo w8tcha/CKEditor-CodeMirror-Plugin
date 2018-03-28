@@ -66,7 +66,7 @@
                     packages: [{
                         name: 'codemirror',
                         location: location,
-                        main: 'codemirror.js'
+                        main: 'codemirror.min.js'
                     }, {
                         name: 'codemirror-mode-twig',
                         location: location,
@@ -109,7 +109,7 @@
                     map: {
                         '*': {
                             //all the requires pointing to ../../lib/codemirror from addons will be redirected to module named codemirror.js
-                            //which is located in bundle 'codemirror' whose js file is codemirror.js
+                            //which is located in bundle 'codemirror' whose js file is codemirror.min.js
                             'lib/codemirror': 'codemirror.js'
                         }
                     }
@@ -301,7 +301,7 @@
                                 } else {
                                     if (typeof (CodeMirror) == 'undefined') {
 
-                                        CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.js',
+                                        CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js',
                                             function() {
 
                                                 CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
@@ -661,7 +661,7 @@
                 } else {
                     if (typeof (CodeMirror) == 'undefined') {
 
-                        CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.js',
+                        CKEDITOR.scriptLoader.load(rootPath + 'js/codemirror.min.js',
                             function() {
 
                                 CKEDITOR.scriptLoader.load(getCodeMirrorScripts(),
