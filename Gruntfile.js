@@ -35,7 +35,8 @@ module.exports = function(grunt) {
                 baseUrl: 'codemirror/js',
                 include: ['codemirror.js'],
                 preserveLicenseComments: false,
-                out: 'codemirror/js/codemirror.min.js',
+                optimize: 'none',
+                out: 'codemirror/js/codemirror.min.r.js',
                 wrap: {
                     end:'(function(window){' +
                         '    "function"==typeof window.define && ' +
@@ -199,6 +200,12 @@ module.exports = function(grunt) {
     min: {
       options: {
         report: false
+      },
+      core: {
+        src: [
+            'codemirror/js/codemirror.min.r.js',
+        ],
+        dest: 'codemirror/js/codemirror.min.js'
       },
       modeBBCode: {
         src: [
