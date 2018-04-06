@@ -58,7 +58,7 @@
             if (editor.plugins.bbcode && config.mode.indexOf("bbcode") <= 0) {
                 config.mode = "bbcode";
             }
-            var requirePresent = "function" === typeof require;
+            var requirePresent = "function" === typeof require && "function" === typeof require.config;
 
             if (requirePresent){
                 var location = CKEDITOR.getUrl('plugins/codemirror/js');
