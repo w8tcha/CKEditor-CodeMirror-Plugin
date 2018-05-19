@@ -59,10 +59,12 @@
                 config.mode = "bbcode";
             }
             var requirePresent = "function" === typeof require && "function" === typeof require.config;
-
+            var pluginRequire;
             if (requirePresent){
+                var requireContext = config.requireContext || '_';
                 var location = CKEDITOR.getUrl('plugins/codemirror/js');
-                require.config({
+                pluginRequire = require.config({
+                    context: requireContext,
                     packages: [{
                         name: 'codemirror',
                         location: location,
@@ -295,7 +297,7 @@
                                     CKEDITOR.document.appendStyleSheet(rootPath + 'theme/' + config.theme + '.css');
                                 }
                                 if(requirePresent) {
-                                    require(getCodeMirrorDependencies(),function (codemirror, addons){
+                                    pluginRequire(getCodeMirrorDependencies(),function (codemirror, addons){
                                         loadCodeMirrorInline(editor, textArea, event.sender);
                                     });
                                 } else {
@@ -654,7 +656,7 @@
                     }
 
                 if (requirePresent) {
-                    require(getCodeMirrorDependencies(), function () {
+                    pluginRequire(getCodeMirrorDependencies(), function () {
                         loadCodeMirror(editor);
                         callback();
                     });
