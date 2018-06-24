@@ -47,6 +47,28 @@ module.exports = function(grunt) {
                 }
             }
         },
+        modeHandlebars: {
+            options: {
+                baseUrl: 'codemirror/js',
+                include: [
+                    'mode/handlebars/handlebars.js',
+                    'mode/xml/xml.js',
+                    'addon/mode/simple.js'
+                ],
+                paths: {
+                    'lib/codemirror': 'empty:'
+                },
+                preserveLicenseComments: false,
+                out: 'codemirror/js/codemirror.mode.handlebars.min.js',
+                wrap: {
+                    end:'(function(window){' +
+                    '    "function"==typeof window.define && ' +
+                    '    window.define("modeHandlebars", ["mode/handlebars/handlebars.js"], function (){'+
+                    '    });' +
+                    '})(this)'
+                }
+            }
+        },
         modeTwig: {
             options: {
                 baseUrl: 'codemirror/js',
