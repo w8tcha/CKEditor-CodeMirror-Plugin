@@ -20,6 +20,8 @@ module.exports = function(grunt) {
         'addon/fold/comment-fold.js',
         'addon/fold/indent-fold.js',
         //'addon/fold/xml-fold.js', // gets included as a dependency
+        'addon/hint/show-hint.js',
+        'addon/hint/javascript-hint.js',
         'addon/format/autoFormatAll.js',
         'addon/format/formatting.js',
         'addon/selection/active-line.js',
@@ -261,18 +263,19 @@ module.exports = function(grunt) {
     },
 
     // CSS Minify
-    cssmin: {
-      combine: {
-        files: {
-          'codemirror/css/codemirror.min.css': 
-		  [
-		  'codemirror/css/codemirror.css', 
-		  'codemirror/css/codemirror.ckeditor.css',
- 		  'codemirror/js/addon/dialog/dialog.css',
-		  'codemirror/js/addon/fold/foldgutter.css'
-		  ]
-        }
-      }
+      cssmin: {
+          combine: {
+	          files: {
+			    'codemirror/css/codemirror.min.css':
+			    [
+				    'codemirror/css/codemirror.css',
+				    'codemirror/css/codemirror.ckeditor.css',
+				    'codemirror/js/addon/dialog/dialog.css',
+				    'codemirror/js/addon/hint/show-hint.css',
+				    'codemirror/js/addon/fold/foldgutter.css'
+			    ]
+		    }
+	    }
     },
 
     // Watch
