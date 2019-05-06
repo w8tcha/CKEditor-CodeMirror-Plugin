@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CKEditor CodeMirror Plugin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="stylesheets/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    
+    <script src="ckeditor/ckeditor.js"></script>
+  </head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <ul class="nav nav-pills pull-right">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Demos <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="active"><a href="demoFramed.html">Source Area Demo</a></li>
+                        <li><a href="demoInline.html">Source Dialog Demo</a></li>
+                    </ul>
+                </li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/releases">Download</a></li>
+                <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/">View on GitHub</a></li>
+            </ul>
+            <h3 class="text-muted">CodeMirror Plugin for the CKEditor</h3>
+        </div>
+
+        <!-- Begin page content -->
+        <div class="container">
+            <div class="page-header">
+                <h1>Demos</h1>
+            </div>
+            <div>
+                <p class="lead">
+                    Source Area
+                </p>
+                <p>
+                    The <strong>CodeMirror</strong> plugin extends the source area of the framed CKEditor, with the source area you can edit the raw HTML content of an editor with Syntax Highlighting.
+                </p>
+                <p>
+                    To enable this
+                    plugin, basically add <code>extraPlugins: 'codemirror'</code> to editor's
+                    config:
+                </p>
+                <pre>
+// Framed editor.
+CKEDITOR.replace( 'textarea_id', {
+	<strong>extraPlugins: 'codemirror'</strong>
+});
+</pre>
+                <div>
+                    <label for="editor3">
+                        Framed editor:
+                    </label>
+                    <textarea cols="80" id="editor3" name="editor3" rows="10">
+
+function getCompletions(token, context) {
+  var found = [], start = token.string;
+  function maybeAdd(str) {
+    if (str.indexOf(start) == 0) found.push(str);
+  }
+  function gatherCompletions(obj) {
+    if (typeof obj == "string") forEach(stringProps, maybeAdd);
+    else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
+    else if (obj instanceof Function) forEach(funcProps, maybeAdd);
+    for (var name in obj) maybeAdd(name);
+  }
+
+  if (context) {
+    // If this is a property, see if it belongs to some object we can
+    // find in the current environment.
+    var obj = context.pop(), base;
+    if (obj.className == "js-variable")
+      base = window[obj.string];
+    else if (obj.className == "js-string")
+      base = "";
+    else if (obj.className == "js-atom")
+      base = 1;
+    while (base != null && context.length)
+      base = base[context.pop().string];
+    if (base != null) gatherCompletions(base);
+  }
+  else {
+    // If not, just look in the window object and any local scope
+    // (reading into JS mode internals to get at the local variables)
+    for (var v = token.state.localVars; v; v = v.next) maybeAdd(v.name);
+    gatherCompletions(window);
+    forEach(keywords, maybeAdd);
+  }
+  return found;
+}
+</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted credit">Licensed under the terms of the MIT License.</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+
+    <script>
+        CKEDITOR.replace( 'editor3', {extraPlugins: 'codemirror',startupMode : 'source', codemirror : { mode:{name: "javascript", globalVars: true}} } );
+    </script>
+</body>
+</html>
