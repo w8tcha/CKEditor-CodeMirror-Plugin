@@ -55,7 +55,12 @@
                 <pre>
 // Framed editor.
 CKEDITOR.replace( 'textarea_id', {
-	<strong>extraPlugins: 'codemirror'</strong>
+	<strong>extraPlugins: 'codemirror',</strong>
+                codemirror : { 
+                               mode:{
+                                         name: "javascript", globalVars: true
+                                     }
+                              }
 });
 </pre>
                 <div>
