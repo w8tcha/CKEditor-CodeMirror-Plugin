@@ -39,7 +39,8 @@
                     showUncommentButton: true,
                     styleActiveLine: true,
                     theme: "default",
-                    useBeautifyOnStart: false
+                    useBeautifyOnStart: false,
+                    hintOptions: null
                 };
 
             // Get Config & Lang
@@ -156,6 +157,7 @@
                             showTrailingSpace: config.showTrailingSpace,
                             showCursorWhenSelecting: true,
                             styleActiveLine: config.styleActiveLine,
+                            hintOptions: config.hintOptions,
                             viewportMargin: Infinity,
                             extraKeys: {
                                 "Ctrl-Space":
@@ -902,6 +904,7 @@
                     theme: config.theme,
                     showTrailingSpace: config.showTrailingSpace,
                     showCursorWhenSelecting: true,
+                    hintOptions: config.hintOptions,
                     styleActiveLine: config.styleActiveLine,
                     //extraKeys: {"Ctrl-Space": "autocomplete"},
                     extraKeys: extraKeys,
