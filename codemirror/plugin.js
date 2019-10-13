@@ -738,7 +738,7 @@
                 var scriptFiles = [rootPath + "js/codemirror.addons.min.js"];
 
                 switch (config.mode) {
-                    case 'handlebars':
+                    case "handlebars":
                     {
                         scriptFiles.push(rootPath + "js/codemirror.mode.handlebars.min.js");
                     }
