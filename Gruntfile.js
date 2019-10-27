@@ -179,7 +179,7 @@ module.exports = function(grunt) {
                 },
                 preserveLicenseComments: false,
                 include: [
-                    "addon/search/search.js",
+                    "addon/search/search.js"
                 ],
                 out: "codemirror/js/codemirror.addons.search.min.js",
                 wrap: {
