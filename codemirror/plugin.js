@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add("codemirror", {
         icons: "searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete", // %REMOVE_LINE_CORE%
         lang: "af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh", // %REMOVE_LINE_CORE%
-        version: "1.17.13",
+        version: "1.17.14",
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -148,6 +148,7 @@
                             height = size.height / 1.5;
 
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
+                            direction: editor.lang.dir,
                             mode: config.mode === "handlebars" ? { name: "handlebars", base: "text/html" } : config.mode,
                             matchBrackets: config.matchBrackets,
                             maxHighlightLineLength: config.maxHighlightLineLength,
@@ -879,6 +880,7 @@
                 addCKEditorKeystrokes(config.extraKeys);
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
+                    direction: editor.lang.dir,
                     mode: config.mode === "handlebars" ? { name: "handlebars", base: "text/html" } : config.mode,
                     matchBrackets: config.matchBrackets,
                     maxHighlightLineLength: config.maxHighlightLineLength,
