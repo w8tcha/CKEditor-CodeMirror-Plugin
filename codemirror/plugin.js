@@ -1059,7 +1059,9 @@
                 editor.getCommand("source").setState(editor.mode === "source" ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
 
                 if (editor.mode === "source") {
-                    editor.getCommand("autoCompleteToggle").setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+                    if ("autoCompleteToggle" in editor.commands) {
+                        editor.getCommand("autoCompleteToggle").setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+                    }
 
                     if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
 
