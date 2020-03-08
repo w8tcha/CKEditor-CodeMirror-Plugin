@@ -72,7 +72,8 @@
             var pluginRequire;
             if (requirePresent){
                 var requireContext = config.requireContext || "_";
-                var location = CKEDITOR.getUrl("plugins/codemirror/js");
+                var location = CKEDITOR.getUrl("plugins/codemirror/js/");
+                location = location.substring(0, location.length - 1);
                 pluginRequire = require.config({
                     context: requireContext,
                     packages: [{
