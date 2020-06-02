@@ -175,7 +175,8 @@
                             gutters: ["CodeMirror-linenumbbers", "CodeMirror-foldgutter"]
                         });
        
-
+                        window["codemirror_" + editor.id].display.wrapper.classList.add('cke_enable_context_menu');
+                        
                         var holderHeight = height + "px";
                         var holderWidth = width + "px";
 
@@ -905,6 +906,8 @@
                     foldGutter: true,
                     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
                 });
+                
+                window["codemirror_" + editor.id].display.wrapper.classList.add('cke_enable_context_menu');
 
                 var holderHeight = holderElement.$.clientHeight == 0 ? editor.ui.space("contents").getStyle("height") : holderElement.$.clientHeight + "px";
                 var holderWidth = holderElement.$.clientWidth + "px";
@@ -1101,9 +1104,6 @@
             });
 
             editor.on("instanceReady", function (evt) {
-
-                //editor.container.getPrivate().events.contextmenu.listeners.splice(0, 1);
-
                 var selectAllCommand = editor.commands.selectAll;
 
                 // Replace Complete SelectAll command from the plugin, otherwise it will not work in IE10
