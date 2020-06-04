@@ -42,11 +42,11 @@
       if (!match) return;
       if (cm.state.matchBothTags) {
         var hit = match.at == "open" ? match.open : match.close;
-        if (hit) cm.state.tagHit = cm.markText(hit.from, hit.to, {className: "CodeMirror-matchingtag"});
+        if (hit) cm.state.tagHit = cm.markText(hit.from, hit.to, {className: "CodeMirror-matchingtag cke_enable_context_menu"});
       }
       var other = match.at == "close" ? match.open : match.close;
       if (other)
-        cm.state.tagOther = cm.markText(other.from, other.to, {className: "CodeMirror-matchingtag"});
+        cm.state.tagOther = cm.markText(other.from, other.to, {className: "CodeMirror-matchingtag cke_enable_context_menu"});
       else
         cm.state.failedTagMatch = true;
     });
