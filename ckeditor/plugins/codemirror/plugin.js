@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add("codemirror", {
         icons: "searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete", // %REMOVE_LINE_CORE%
         lang: "af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh", // %REMOVE_LINE_CORE%
-        version: "1.17.11",
+        version: "1.17.14",
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -39,7 +39,17 @@
                     showUncommentButton: true,
                     styleActiveLine: true,
                     theme: "default",
-                    useBeautifyOnStart: false
+                    useBeautifyOnStart: false,
+                    hintOptions: null,
+                    extraKeys: {
+                        "Ctrl-Space":
+                            "autocomplete",
+                        "Ctrl-Q": function (codeMirror_Editor) {
+                            if (config.enableCodeFolding) {
+                                window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
+                            }
+                        }
+                    }
                 };
 
             // Get Config & Lang
@@ -62,7 +72,8 @@
             var pluginRequire;
             if (requirePresent){
                 var requireContext = config.requireContext || "_";
-                var location = CKEDITOR.getUrl("plugins/codemirror/js");
+                var location = CKEDITOR.getUrl("plugins/codemirror/js/");
+                location = location.substring(0, location.length - 1);
                 pluginRequire = require.config({
                     context: requireContext,
                     packages: [{
@@ -138,6 +149,7 @@
                             height = size.height / 1.5;
 
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
+                            direction: editor.lang.dir,
                             mode: config.mode === "handlebars" ? { name: "handlebars", base: "text/html" } : config.mode,
                             matchBrackets: config.matchBrackets,
                             maxHighlightLineLength: config.maxHighlightLineLength,
@@ -156,21 +168,15 @@
                             showTrailingSpace: config.showTrailingSpace,
                             showCursorWhenSelecting: true,
                             styleActiveLine: config.styleActiveLine,
+                            hintOptions: config.hintOptions,
                             viewportMargin: Infinity,
-                            extraKeys: {
-                                "Ctrl-Space":
-	                                "autocomplete",
-                                "Ctrl-Q": function (codeMirror_Editor) {
-                                    if (config.enableCodeFolding) {
-                                        window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
-                                    }
-                                }
-                            },
+                            extraKeys: config.extraKeys,
                             foldGutter: true,
                             gutters: ["CodeMirror-linenumbbers", "CodeMirror-foldgutter"]
                         });
        
-
+                        window["codemirror_" + editor.id].display.wrapper.classList.add('cke_enable_context_menu');
+                        
                         var holderHeight = height + "px";
                         var holderWidth = width + "px";
 
@@ -735,7 +741,7 @@
                 var scriptFiles = [rootPath + "js/codemirror.addons.min.js"];
 
                 switch (config.mode) {
-                    case 'handlebars':
+                    case "handlebars":
                     {
                         scriptFiles.push(rootPath + "js/codemirror.mode.handlebars.min.js");
                     }
@@ -873,18 +879,10 @@
                     }
                 }
 
-                var extraKeys = {
-	                "Ctrl-Space": "autocomplete",
-                    "Ctrl-Q": function(codeMirror_Editor) {
-                        if (config.enableCodeFolding) {
-                            window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
-                        }
-                    }
-                };
-
-                addCKEditorKeystrokes(extraKeys);
+                addCKEditorKeystrokes(config.extraKeys);
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
+                    direction: editor.lang.dir,
                     mode: config.mode === "handlebars" ? { name: "handlebars", base: "text/html" } : config.mode,
                     matchBrackets: config.matchBrackets,
                     maxHighlightLineLength: config.maxHighlightLineLength,
@@ -902,12 +900,14 @@
                     theme: config.theme,
                     showTrailingSpace: config.showTrailingSpace,
                     showCursorWhenSelecting: true,
+                    hintOptions: config.hintOptions,
                     styleActiveLine: config.styleActiveLine,
-                    //extraKeys: {"Ctrl-Space": "autocomplete"},
-                    extraKeys: extraKeys,
+                    extraKeys: config.extraKeys,
                     foldGutter: true,
                     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
                 });
+                
+                window["codemirror_" + editor.id].display.wrapper.classList.add('cke_enable_context_menu');
 
                 var holderHeight = holderElement.$.clientHeight == 0 ? editor.ui.space("contents").getStyle("height") : holderElement.$.clientHeight + "px";
                 var holderWidth = holderElement.$.clientWidth + "px";
@@ -1063,7 +1063,9 @@
                 editor.getCommand("source").setState(editor.mode === "source" ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
 
                 if (editor.mode === "source") {
-                    editor.getCommand("autoCompleteToggle").setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+                    if ("autoCompleteToggle" in editor.commands) {
+                        editor.getCommand("autoCompleteToggle").setState(window["codemirror_" + editor.id].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
+                    }
 
                     if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
 
@@ -1102,9 +1104,6 @@
             });
 
             editor.on("instanceReady", function (evt) {
-
-                //editor.container.getPrivate().events.contextmenu.listeners.splice(0, 1);
-
                 var selectAllCommand = editor.commands.selectAll;
 
                 // Replace Complete SelectAll command from the plugin, otherwise it will not work in IE10
