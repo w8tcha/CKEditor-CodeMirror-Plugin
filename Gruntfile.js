@@ -226,7 +226,7 @@ module.exports = function(grunt) {
             },
         },
         // Minimize JS
-        min: {
+        uglify: {
             options: {
                 report: false
             },
@@ -297,7 +297,7 @@ module.exports = function(grunt) {
             },
             scripts: {
                 files: ["codemirror/js/*.js", "codemirror/addon/*.js", "codemirror/mode/*.js"],
-                tasks: ["min"],
+                tasks: ["uglify"],
                 options: {
                     spawn: false
                 }
@@ -316,13 +316,14 @@ module.exports = function(grunt) {
     // PLUGINS
     grunt.loadNpmTasks("grunt-contrib-imagemin");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-yui-compressor");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
+	grunt.loadNpmTasks("grunt-contrib-cssmin");
+	grunt.loadNpmTasks("grunt-contrib-uglify");
 
     grunt.registerTask("watch",
         [
             "requirejs",
-            "min",
+            "uglify",
             "cssmin",
             "watch"
         ]);
@@ -330,7 +331,7 @@ module.exports = function(grunt) {
     grunt.registerTask("default",
         [
             "requirejs",
-            "min",
+            "uglify",
             "cssmin"
         ]);
 

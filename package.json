@@ -13,9 +13,10 @@
   ],
   "devDependencies": {
     "grunt": "~0.4.2",
+    "grunt-contrib-cssmin": "*",
     "grunt-contrib-imagemin": "4.0.0",
     "grunt-contrib-requirejs": "^1.0.0",
-    "grunt-contrib-watch": "~1.1.0",
-    "grunt-yui-compressor": "~0.4.0"
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "~1.1.0"
   }
 }
