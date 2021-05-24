@@ -41,7 +41,7 @@ module.exports = function(grunt) {
                     include: ["codemirror.js"],
                     preserveLicenseComments: false,
                     optimize: "none",
-                    out: "codemirror/js/codemirror.min.r.js",
+                    out: "codemirror/js/codemirror.min.js",
                     wrap: {
                         end: "(function(window){" +
                             '    "function"==typeof window.define && ' +
@@ -232,7 +232,7 @@ module.exports = function(grunt) {
             },
             core: {
                 src: [
-                    "codemirror/js/codemirror.min.r.js",
+                    "codemirror/js/codemirror.min.js",
                 ],
                 dest: "codemirror/js/codemirror.min.js"
             },
