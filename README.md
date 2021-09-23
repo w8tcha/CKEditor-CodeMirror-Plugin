@@ -4,15 +4,15 @@ CKEditor-CodeMirror-Plugin
 Syntax Highlighting for the CKEditor (Source View and Source Dialog) with the CodeMirror Plugin
 
 ### Available Shortcuts
-* 'Ctrl-K' to comment the currently selected text
-* 'Ctrl-Shift-K' to uncomment currently selected text
-* 'Ctrl-Alt-K' to auto format currently selected text
-* 'Ctrl-Q' Expand/Collapse Code Block
-* 'Ctrl-F' to perform a search
-* 'Ctrl-G' to find next
-* 'Ctrl-Shift-G' to find previous
-* 'Ctrl-Shift-F' to find and replace
-* 'Ctrl-Shift-R' to find and replace all
+* 'CTRL + K' to comment the currently selected text
+* 'CTRL + SHIFT + K' to uncomment currently selected text
+* 'CTRL + ALT + K' to auto format currently selected text
+* 'CTRL + Q' Expand/Collapse Code Block
+* 'CTRL + F' to perform a search
+* 'CTRL + G' to find next
+* 'CTRL + SHIFT + G' to find previous
+* 'CTRL + SHIFT + F' to find and replace
+* 'CTRL + SHIFT + R' to find and replace all
 
 ### Demo
 http://w8tcha.github.io/CKEditor-CodeMirror-Plugin/
