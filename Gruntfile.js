@@ -77,7 +77,8 @@ module.exports = function(grunt) {
             modeTwig: {
                 options: {
                     baseUrl: "codemirror/js",
-                    include: ["mode/twig/twig.js"],
+                    include: ["mode/twig/twig.js",
+					          "addon/hint/sql-hint.js"],
                     paths: {
                         'lib/codemirror': "empty:"
                     },
@@ -87,6 +88,24 @@ module.exports = function(grunt) {
                         end: "(function(window){" +
                             '    "function"==typeof window.define && ' +
                             '    window.define("modeTwig", ["mode/twig/twig.js"], function (){' +
+                            "    });" +
+                            "})(this)"
+                    }
+                }
+            },
+			modeSql: {
+                options: {
+                    baseUrl: "codemirror/js",
+                    include: ["mode/sql/sql.js"],
+                    paths: {
+                        'lib/codemirror': "empty:"
+                    },
+                    preserveLicenseComments: false,
+                    out: "codemirror/js/codemirror.mode.sql.min.js",
+                    wrap: {
+                        end: "(function(window){" +
+                            '    "function"==typeof window.define && ' +
+                            '    window.define("modeSql", ["mode/sql/sql.js"], function (){' +
                             "    });" +
                             "})(this)"
                     }
@@ -179,6 +198,7 @@ module.exports = function(grunt) {
                     paths: {
                         'lib/codemirror': "empty:",
                     },
+					optimize: 'none',
                     preserveLicenseComments: false,
                     include: [
                         "addon/search/search.js"
@@ -282,7 +302,8 @@ module.exports = function(grunt) {
                             "codemirror/css/codemirror.ckeditor.css",
                             "codemirror/js/addon/dialog/dialog.css",
                             "codemirror/js/addon/hint/show-hint.css",
-                            "codemirror/js/addon/fold/foldgutter.css"
+                            "codemirror/js/addon/fold/foldgutter.css",
+                            "codemirror/js/addon/search/matchesonscrollbar.css"
                         ],
                         dest: "codemirror/css/codemirror.min.css"
                     }

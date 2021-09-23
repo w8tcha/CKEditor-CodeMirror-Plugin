@@ -3174,7 +3174,9 @@
 
     if (/\bcm-fat-cursor\b/.test(cm.getWrapperElement().className)) {
       var charPos = charCoords(cm, head, "div", null, null);
-      cursor.style.width = Math.max(0, charPos.right - charPos.left) + "px";
+      if (charPos.right - charPos.left > 0) {
+        cursor.style.width = (charPos.right - charPos.left) + "px";
+      }
     }
 
     if (pos.other) {
@@ -3349,10 +3351,14 @@
   function updateHeightsInViewport(cm) {
     var display = cm.display;
     var prevBottom = display.lineDiv.offsetTop;
+    var viewTop = Math.max(0, display.scroller.getBoundingClientRect().top);
+    var oldHeight = display.lineDiv.getBoundingClientRect().top;
+    var mustScroll = 0;
     for (var i = 0; i < display.view.length; i++) {
       var cur = display.view[i], wrapping = cm.options.lineWrapping;
       var height = (void 0), width = 0;
       if (cur.hidden) { continue }
+      oldHeight += cur.line.height;
       if (ie && ie_version < 8) {
         var bot = cur.node.offsetTop + cur.node.offsetHeight;
         height = bot - prevBottom;
@@ -3367,6 +3373,7 @@
       }
       var diff = cur.line.height - height;
       if (diff > .005 || diff < -.005) {
+        if (oldHeight < viewTop) { mustScroll -= diff; }
         updateLineHeight(cur.line, height);
         updateWidgetHeight(cur.line);
         if (cur.rest) { for (var j = 0; j < cur.rest.length; j++)
@@ -3381,6 +3388,7 @@
         }
       }
     }
+    if (Math.abs(mustScroll) > 2) { display.scroller.scrollTop += mustScroll; }
   }
 
   // Read and store the height of line widgets associated with the
@@ -8985,9 +8993,11 @@
   ContentEditableInput.prototype.supportsTouch = function () { return true };
 
   ContentEditableInput.prototype.receivedFocus = function () {
+      var this$1 = this;
+
     var input = this;
     if (this.selectionInEditor())
-      { this.pollSelection(); }
+      { setTimeout(function () { return this$1.pollSelection(); }, 20); }
     else
       { runInOp(this.cm, function () { return input.cm.curOp.selectionChanged = true; }); }
 
@@ -9816,7 +9826,7 @@
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.62.3";
+  CodeMirror.version = "5.63.0";
 
   return CodeMirror;
 

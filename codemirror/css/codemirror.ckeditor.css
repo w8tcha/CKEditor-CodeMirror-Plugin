@@ -26,6 +26,7 @@
 
 /* Source Dialog Buttons */
 .searchCodeButton span,
+.replaceCodeButton span,
 .autoFormat span,
 .CommentSelectedRange span,
 .UncommentSelectedRange span {
@@ -34,17 +35,22 @@
 	margin-left: 6px;
 }
 
+.UncommentSelectedRange { margin-top: 0 !important}
+
 .searchCodeButton span {
-	background: url("../images/searchcode.png") no-repeat;
+	background: url("../icons/find.svg") no-repeat;
+}
+.replaceCodeButton span {
+    background: url("../icons/replace.svg") no-repeat;
 }
 .autoFormat span {
-    background: url("../images/autoformat.png") no-repeat;
+	background: url("../icons/autoformat.svg") no-repeat;
 }
 .CommentSelectedRange span {
-    background: url("../images/commentselectedrange.png") no-repeat;
+	background: url("../icons/commentselectedrange.svg") no-repeat;
 }
 .UncommentSelectedRange span {
-    background: url("../images/uncommentselectedrange.png") no-repeat;
+	background: url("../icons/uncommentselectedrange.svg") no-repeat;
 }
 
 /* Fixes for the sourceDialog */
