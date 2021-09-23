@@ -15,30 +15,34 @@
   <body>
 
       <div class="container">
-          <div class="header">
-              <ul class="nav nav-pills pull-right">
-                  <li><a href="index.html">Home</a></li>
-                  <li class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                          Demos <span class="caret"></span>
+          <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+              <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                  <span class="fs-4">CodeMirror Plugin for the CKEditor</span>
+              </a>
+
+              <ul class="nav nav-pills">
+                  <li class="nav-item">
+                      <a class="nav-link active" href="index.html">Home</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                          Demos
                       </a>
                       <ul class="dropdown-menu">
-                          <li><a href="demoFramed.html">Source Area Demo</a></li>
-                          <li><a href="demoInline.html">Source Dialog Demo</a></li>
+                          <li><a class="dropdown-item"  href="demoFramed.html">Source Area Demo</a></li>
+                          <li><a class="dropdown-item"  href="demoInline.html">Source Dialog Demo</a></li>
                       </ul>
                   </li>
-                  <li class="active"><a href="installation.html">Installation</a></li>
-                  <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/releases">Download</a></li>
-                  <li><a href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/">View on GitHub</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="installation.html">Installation</a></li>
+                  <li class="nav-item"><a class="nav-link" href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/releases">Download</a></li>
+                  <li class="nav-item"><a class="nav-link" href="https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/">View on GitHub</a></li>
               </ul>
-              <h3 class="text-muted">CodeMirror Plugin for the CKEditor</h3>
-          </div>
+              <h3 class="text-muted"></h3>
+          </header>
 
           <!-- Begin page content -->
           <div class="container">
-              <div class="page-header">
-                  <h1>Plugin Installation</h1>
-              </div>
+              <h1>Plugin Installation</h1>
               <p class="lead">
                   <ol>
                       <li>Extract the contents of the file into the "plugins" folder of CKEditor.</li>
@@ -120,7 +124,7 @@
       </div>
       <div id="footer">
           <div class="container">
-              <p class="text-muted credit">Licensed under the terms of the MIT License.</p>
+              <p class="text-muted">Licensed under the terms of the MIT License.</p>
           </div>
       </div>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
