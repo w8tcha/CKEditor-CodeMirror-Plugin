@@ -5,6 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang( 'codemirror', 'sv', {
 	toolbar: 'Källa',
 	searchCode: 'Search Source',
+	replaceCode: 'Replace Code (CTRL + SHIFT + F)',
 	autoFormat: 'Format Selection',
 	commentSelectedRange: 'Comment Selection',
 	uncommentSelectedRange: 'Uncomment Selection',

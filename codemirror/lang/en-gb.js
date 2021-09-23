@@ -4,9 +4,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'codemirror', 'en-gb', {
 	toolbar: 'Source',
-	searchCode: 'Search Source',
-	autoFormat: 'Format Selection',
-	commentSelectedRange: 'Comment Selection',
-	uncommentSelectedRange: 'Uncomment Selection',
+	searchCode: 'Search Source (CTRL + F)',
+	replaceCode: 'Replace Code (CTRL + SHIFT + F)',
+	autoFormat: 'Format Selection (CTRL + ALT + K)',
+	commentSelectedRange: 'Comment Selection (CTRL + K)',
+	uncommentSelectedRange: 'Uncomment Selection (CTRL + SHIFT + K)',
 	autoCompleteToggle: 'Enable/Disable HTML Tag Autocomplete'
 });

@@ -5,6 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang( 'codemirror', 'ru', {
 	toolbar: 'Источник',
 	searchCode: 'Найти в источнике',
+	replaceCode: 'Replace Code (CTRL + SHIFT + F)',
 	autoFormat: 'Форматировать выбранное значение',
 	commentSelectedRange: 'Закомментировать выбранное значение',
 	uncommentSelectedRange: 'Раскомментировать выбранное значение',

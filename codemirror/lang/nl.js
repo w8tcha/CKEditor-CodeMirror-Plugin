@@ -5,6 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang( 'codemirror', 'nl', {
 	toolbar: 'Broncode',
 	searchCode: 'Zoek in broncode',
+	replaceCode: 'Replace Code (CTRL + SHIFT + F)',
 	autoFormat: 'Formatteer selectie',
 	commentSelectedRange: 'Zet selectie in commentaar',
 	uncommentSelectedRange: 'Haal selectie uit commentaar',

@@ -8,5 +8,6 @@ CKEDITOR.plugins.setLang( 'codemirror', 'pl', {
 	commentSelectedRange: 'Zakomentuj zaznaczenie',
 	uncommentSelectedRange: 'Odkomentuj zaznaczenie',
 	searchCode: 'Wyszukaj w źródle',
+	replaceCode: 'Replace Code (CTRL + SHIFT + F)',
 	autoCompleteToggle: 'Włącza/Wyłącza automatyczne uzupełniania tagów HTML'
 });
