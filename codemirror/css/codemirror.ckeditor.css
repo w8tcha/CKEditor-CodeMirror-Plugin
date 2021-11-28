@@ -195,3 +195,7 @@
 	background-position: bottom left;
 	background-repeat: repeat-x;
 }
+
+.CodeMirror-merge-editor {
+	position: absolute;
+	left: 0;

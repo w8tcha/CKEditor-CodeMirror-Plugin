@@ -256,6 +256,12 @@ module.exports = function(grunt) {
                 ],
                 dest: "codemirror/js/codemirror.min.js"
             },
+			mergeAddon: {
+                src: [
+                    "codemirror/js/addon/merge/merge.js",
+                ],
+                dest: "codemirror/js/codemirror.addon.merge.min.js"
+            },
             modeBBCode: {
                 src: [
                     "codemirror/js/mode/bbcode/bbcode.js"
@@ -303,6 +309,7 @@ module.exports = function(grunt) {
                             "codemirror/js/addon/dialog/dialog.css",
                             "codemirror/js/addon/hint/show-hint.css",
                             "codemirror/js/addon/fold/foldgutter.css",
+                            "codemirror/js/addon/merge/merge.css",
                             "codemirror/js/addon/search/matchesonscrollbar.css"
                         ],
                         dest: "codemirror/css/codemirror.min.css"
