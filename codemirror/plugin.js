@@ -152,9 +152,18 @@
                             width = size.width,
                             height = size.height / 1.5;
 
+                        var mode = config.mode;
+
+                        if (mode == "handlebars") {
+                            mode = { name: "handlebars", base: "text/html" };
+                        }
+                        else if (mode == "twig") {
+                            mode = { name: "twig", base: "text/html" };
+                        }
+
                         window["codemirror_" + editor.id] = CodeMirror.fromTextArea(textarea, {
                             direction: editor.lang.dir,
-                            mode: config.mode === "handlebars" ? { name: "handlebars", base: "text/html" } : config.mode,
+                            mode: mode,
                             matchBrackets: config.matchBrackets,
                             maxHighlightLineLength: config.maxHighlightLineLength,
                             matchTags: config.matchTags,
@@ -917,9 +926,18 @@
 
                 addCKEditorKeystrokes(config.extraKeys);
 
+                var mode = config.mode;
+
+                if (mode == "handlebars") {
+                    mode = { name: "handlebars", base: "text/html" };
+                }
+                else if (config.mode == "twig") {
+                    mode = { name: "twig", base: "text/html" };
+                }
+
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     direction: editor.lang.dir,
-                    mode: config.mode === "handlebars" ? { name: "handlebars", base: "text/html" } : config.mode,
+                    mode: mode,
                     matchBrackets: config.matchBrackets,
                     maxHighlightLineLength: config.maxHighlightLineLength,
                     matchTags: config.matchTags,

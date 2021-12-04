@@ -78,7 +78,8 @@ module.exports = function(grunt) {
                 options: {
                     baseUrl: "codemirror/js",
                     include: ["mode/twig/twig.js",
-					          "addon/hint/sql-hint.js"],
+                        "mode/xml/xml.js",
+                        "addon/mode/multiplex.js"],
                     paths: {
                         'lib/codemirror': "empty:"
                     },
