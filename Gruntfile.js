@@ -28,6 +28,7 @@ module.exports = function(grunt) {
         "addon/format/autoFormatAll.js",
         "addon/format/formatting.js",
         "addon/selection/active-line.js",
+		"addon/selection/wrap-selection.js",
         "addon/search/match-highlighter.js",
         "addon/mode/multiplex.js", // TODO also required from htmlembedded
     ];
