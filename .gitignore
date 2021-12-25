@@ -1,3 +1,4 @@
 # Ignore NPM modules
 /node_modules/**
 codemirror/js/codemirror.min.r.js
+package-lock.json
