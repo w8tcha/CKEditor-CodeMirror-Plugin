@@ -12,12 +12,13 @@
     "CodeMirror"
   ],
   "devDependencies": {
-	"codemirror": "5.65.0",
+    "codemirror": "^5.65.1",
     "grunt": "~1.4.0",
     "grunt-contrib-cssmin": "*",
-    "grunt-contrib-imagemin": "4.0.0",
     "grunt-contrib-requirejs": "^1.0.0",
     "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch": "~1.1.0"
+    "grunt-contrib-watch": "~1.1.0",
+	"grunt-contrib-copy": "^1.0.0",
+    "js-beautify": "^1.14.0"
   }
 }

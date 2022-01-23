@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         requirejs: {
             core: {
                 options: {
-                    baseUrl: "codemirror/js",
+                    baseUrl: "node_modules/codemirror/lib",
                     include: ["codemirror.js"],
                     preserveLicenseComments: false,
                     optimize: "none",
@@ -78,9 +78,11 @@ module.exports = function(grunt) {
             modeTwig: {
                 options: {
                     baseUrl: "codemirror/js",
-                    include: ["mode/twig/twig.js",
+                    include: [
+                        "mode/twig/twig.js",
                         "mode/xml/xml.js",
-                        "addon/mode/multiplex.js"],
+                        "addon/mode/multiplex.js"
+                    ],
                     paths: {
                         'lib/codemirror': "empty:"
                     },
@@ -95,7 +97,7 @@ module.exports = function(grunt) {
                     }
                 }
             },
-			modeSql: {
+            modeSql: {
                 options: {
                     baseUrl: "codemirror/js",
                     include: ["mode/sql/sql.js"],
@@ -200,7 +202,7 @@ module.exports = function(grunt) {
                     paths: {
                         'lib/codemirror': "empty:",
                     },
-					optimize: 'none',
+                    optimize: "none",
                     preserveLicenseComments: false,
                     include: [
                         "addon/search/search.js"
@@ -217,7 +219,7 @@ module.exports = function(grunt) {
             },
             beautify: {
                 options: {
-                    baseUrl: "codemirror/js",
+                    baseUrl: "node_modules/js-beautify/js/lib",
                     paths: {
                         'beautify-css': "empty:"
                     },
@@ -258,7 +260,7 @@ module.exports = function(grunt) {
                 ],
                 dest: "codemirror/js/codemirror.min.js"
             },
-			mergeAddon: {
+            mergeAddon: {
                 src: [
                     "codemirror/js/addon/merge/merge.js",
                 ],
@@ -283,20 +285,6 @@ module.exports = function(grunt) {
             },
         },
 
-        // Optimize images
-        imagemin: {
-            dynamic: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: "codemirror/icons/",
-                        src: ["**/*.{png,jpg,gif}"],
-                        dest: "codemirror/icons/"
-                    }
-                ]
-            }
-        },
-
         // CSS Minify
         cssmin: {
             dist: {
@@ -306,13 +294,13 @@ module.exports = function(grunt) {
                 files: [
                     {
                         src: [
-                            "codemirror/css/codemirror.css",
+                            "node_modules/codemirror/lib/codemirror.css",
                             "codemirror/css/codemirror.ckeditor.css",
-                            "codemirror/js/addon/dialog/dialog.css",
-                            "codemirror/js/addon/hint/show-hint.css",
-                            "codemirror/js/addon/fold/foldgutter.css",
-                            "codemirror/js/addon/merge/merge.css",
-                            "codemirror/js/addon/search/matchesonscrollbar.css"
+                            "node_modules/codemirror/addon/dialog/dialog.css",
+                            "node_modules/codemirror/addon/hint/show-hint.css",
+                            "node_modules/codemirror/addon/fold/foldgutter.css",
+                            "node_modules/codemirror/addon/merge/merge.css",
+                            "node_modules/codemirror/addon/search/matchesonscrollbar.css"
                         ],
                         dest: "codemirror/css/codemirror.min.css"
                     }
@@ -339,28 +327,47 @@ module.exports = function(grunt) {
                     spawn: false
                 }
             }
-        }
+        },
 
+        copy: {
+            addon: {
+                files: [
+                    { expand: true, src: "**/*", cwd: "node_modules/codemirror/addon", dest: "codemirror/js/addon" }
+                ]
+            },
+            mode: {
+                files: [
+                    { expand: true, src: "**/*", cwd: "node_modules/codemirror/mode", dest: "codemirror/js/mode" }
+                ]
+            },
+            theme: {
+                files: [
+                    { expand: true, src: "**/*", cwd: "node_modules/codemirror/theme", dest: "codemirror/theme" }
+                ]
+            }
+        }
     });
 
     // PLUGINS
-    grunt.loadNpmTasks("grunt-contrib-imagemin");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-contrib-copy");
 
     grunt.registerTask("watch",
         [
-            "requirejs",
+			"copy",
+			"requirejs",
             "uglify",
             "cssmin",
-            "watch"
+            "watch",
         ]);
 
     grunt.registerTask("default",
         [
-            "requirejs",
+			"copy",
+			"requirejs",
             "uglify",
             "cssmin"
         ]);
