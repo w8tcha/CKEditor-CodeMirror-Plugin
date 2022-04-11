@@ -23,14 +23,14 @@ module.exports = function(grunt) {
         "addon/hint/show-hint.js",
         "addon/hint/javascript-hint.js",
         "addon/hint/css-hint.js",
-        "addon/hint/xml-hint.js",
+        //"addon/hint/xml-hint.js", // gets included as a dependency
         "addon/hint/html-hint.js",
         "addon/format/autoFormatAll.js",
         "addon/format/formatting.js",
         "addon/selection/active-line.js",
 		"addon/selection/wrap-selection.js",
         "addon/search/match-highlighter.js",
-        "addon/mode/multiplex.js", // TODO also required from htmlembedded
+        "addon/mode/multiplex.js" // TODO also required from htmlembedded
     ];
 // CONFIGURATION
     grunt.initConfig({
