@@ -41,22 +41,22 @@
 }
 
 .searchCodeButton span {
-	background: url("../icons/find.svg") no-repeat;
+	background: url("../images/find.svg") no-repeat;
 }
 .replaceCodeButton span {
-    background: url("../icons/replace.svg") no-repeat;
+    background: url("../images/replace.svg") no-repeat;
 }
 .autoFormat span {
-	background: url("../icons/autoformat.svg") no-repeat;
+	background: url("../images/autoformat.svg") no-repeat;
 }
 .CommentSelectedRange span {
-	background: url("../icons/commentselectedrange.svg") no-repeat;
+	background: url("../images/commentselectedrange.svg") no-repeat;
 }
 .UncommentSelectedRange span {
-	background: url("../icons/uncommentselectedrange.svg") no-repeat;
+	background: url("../images/uncommentselectedrange.svg") no-repeat;
 }
 .codemirrorAbout span {
-    background: url("../icons/codemirror.svg") no-repeat;
+    background: url("../images/codemirror.svg") no-repeat;
 }
 
 /* Fixes for the sourceDialog */
