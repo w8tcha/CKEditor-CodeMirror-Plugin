@@ -345,6 +345,15 @@ module.exports = function(grunt) {
                     { expand: true, src: "**/*", cwd: "node_modules/codemirror/theme", dest: "codemirror/theme" }
                 ]
             }
+        },
+		devUpdate: {
+            main: {
+                options: {
+                    reportUpdated: true,
+					updateType: "force",
+					semver: false
+                }
+            }
         }
     });
 
@@ -354,6 +363,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-copy");
+	grunt.loadNpmTasks("grunt-dev-update");
 
     grunt.registerTask("watch",
         [
@@ -366,6 +376,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask("default",
         [
+			"devUpdate",
 			"copy",
 			"requirejs",
             "uglify",
