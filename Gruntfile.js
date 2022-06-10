@@ -260,6 +260,12 @@ module.exports = function(grunt) {
                 ],
                 dest: "codemirror/js/codemirror.min.js"
             },
+            searchAddon: {
+                src: [
+                    "codemirror/js/codemirror.addons.search.min.js",
+                ],
+                dest: "codemirror/js/codemirror.addons.search.min.js"
+            },
             mergeAddon: {
                 src: [
                     "codemirror/js/addon/merge/merge.js",
@@ -351,7 +357,7 @@ module.exports = function(grunt) {
                 options: {
                     reportUpdated: true,
 					updateType: "force",
-					semver: false
+					semver: true
                 }
             }
         }
