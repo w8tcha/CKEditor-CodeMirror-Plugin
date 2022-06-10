@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/2956688318a2c2e4ebed7a0bfde2348b
+ * (2) https://ckeditor.com/cke4/builder/6490967e78ab135a44d8c0998d90e841
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/2956688318a2c2e4ebed7a0bfde2348b
+ * (3) https://ckeditor.com/cke4/builder/download/6490967e78ab135a44d8c0998d90e841
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -26,7 +26,7 @@
 
 var CKBUILDER_CONFIG = {
 	skin: 'moono-lisa',
-	preset: 'standard',
+	preset: 'full',
 	ignore: [
 		'.DS_Store',
 		'.bender',
@@ -57,31 +57,55 @@ var CKBUILDER_CONFIG = {
 		'a11yhelp' : 1,
 		'about' : 1,
 		'basicstyles' : 1,
+		'bidi' : 1,
 		'blockquote' : 1,
 		'clipboard' : 1,
+		'colorbutton' : 1,
+		'colordialog' : 1,
 		'contextmenu' : 1,
+		'copyformatting' : 1,
+		'dialogadvtab' : 1,
+		'div' : 1,
+		'editorplaceholder' : 1,
 		'elementspath' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
+		'exportpdf' : 1,
 		'filebrowser' : 1,
+		'find' : 1,
 		'floatingspace' : 1,
+		'font' : 1,
 		'format' : 1,
+		'forms' : 1,
 		'horizontalrule' : 1,
 		'htmlwriter' : 1,
+		'iframe' : 1,
 		'image' : 1,
+		'indentblock' : 1,
 		'indentlist' : 1,
+		'justify' : 1,
+		'language' : 1,
 		'link' : 1,
 		'list' : 1,
+		'liststyle' : 1,
 		'magicline' : 1,
 		'maximize' : 1,
+		'newpage' : 1,
+		'pagebreak' : 1,
 		'pastefromgdocs' : 1,
 		'pastefromlibreoffice' : 1,
 		'pastefromword' : 1,
 		'pastetext' : 1,
+		'preview' : 1,
+		'print' : 1,
 		'removeformat' : 1,
 		'resize' : 1,
+		'save' : 1,
 		'scayt' : 1,
+		'selectall' : 1,
+		'showblocks' : 1,
 		'showborders' : 1,
+		'smiley' : 1,
 		'sourcearea' : 1,
 		'specialchar' : 1,
 		'stylescombo' : 1,
@@ -89,6 +113,7 @@ var CKBUILDER_CONFIG = {
 		'table' : 1,
 		'tableselection' : 1,
 		'tabletools' : 1,
+		'templates' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
 		'uploadimage' : 1,
