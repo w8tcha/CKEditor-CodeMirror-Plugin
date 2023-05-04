@@ -12,7 +12,7 @@
     "CodeMirror"
   ],
   "devDependencies": {
-    "codemirror": "^5.65.12",
+    "codemirror": "^5.65.13",
     "grunt": "~1.6.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "*",
