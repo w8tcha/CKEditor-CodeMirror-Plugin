@@ -20,6 +20,6 @@
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "~1.1.0",
     "grunt-dev-update": "^2.3.0",
-    "js-beautify": "^1.14.5"
+    "js-beautify": "^1.14.8"
   }
 }
