@@ -9,12 +9,14 @@
 (function() {
     CKEDITOR.plugins.add("codemirror", {
         lang: "af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh", // %REMOVE_LINE_CORE%
-        version: "1.18.7",
+        version: "1.18.9",
         init: function (editor) {
             var command = editor.addCommand("codemirrorAbout", new CKEDITOR.dialogCommand("codemirrorAboutDialog"));
             command.modes = { wysiwyg: 1, source: 1 };
 
             CKEDITOR.dialog.add('codemirrorAboutDialog', this.path + 'dialogs/codemirrorAbout.js');
+			
+			editor.setKeystroke( CKEDITOR.ALT + 83, 'source' );
 
             var rootPath = this.path,
                 defaultConfig = {
@@ -317,17 +319,20 @@
                                     }
 
                                     var sel = editor.getSelection(), range;
+
                                     if (sel && (range = sel.getRanges()[0])) {
                                         wysiwygBookmark = range.createBookmark(editor);
+
+                                        if (editor.mode === "wysiwyg" && wysiwygBookmark) {
+                                            textRange = new CKEDITOR.dom.textRange(editor.getData());
+                                            textRange.moveToBookmark(wysiwygBookmark, editor);
+
+                                            editor.setData(textRange.content);
+                                        }
                                     }
                                 }
 
-                                if (editor.mode === "wysiwyg" && wysiwygBookmark) {
-                                    textRange = new CKEDITOR.dom.textRange(editor.getData());
-                                    textRange.moveToBookmark(wysiwygBookmark, editor);
-
-                                    editor.setData(textRange.content);
-                                }
+                                
 							}
 
                             // Load the content
@@ -938,8 +943,8 @@
 
                 function addCKEditorKeystrokes(editorExtraKeys) {
                     var ckeditorKeystrokes = editor.keystrokeHandler.keystrokes;
-
-                    for (var i in ckeditorKeystrokes) {
+					
+					for (var i in ckeditorKeystrokes) {
                         var key = getCodeMirrorKey(i);
                         if (key !== null &&
                             key !== 'Enter' &&
@@ -1074,8 +1079,8 @@
             editor.addCommand("source", sourcearea.commands.source);
             if (editor.ui.addButton && editor.ui.space("contents") != null) {
                 editor.ui.addButton("Source", {
-                    label: editor.lang.codemirror.toolbar,
-                    command: "source",
+					label: editor.lang.codemirror.toolbar,
+					command: "source",
                     toolbar: "mode,10"
                 });
             }
@@ -1195,6 +1200,15 @@
                     var holderWidth = holderElement.$.clientWidth + "px";
                     window["codemirror_" + editor.id].setSize(holderWidth, holderHeight);
                 }
+            });
+			
+			editor.on('beforeFocus', function(e) {
+				 
+				 if (e.editor.mode === "source") {
+					 if (!window["codemirror_" + editor.id].hasFocus()) {
+						 window["codemirror_" + editor.id].focus();
+					 }
+				 }
             });
 
             editor.on("readOnly", function () {
