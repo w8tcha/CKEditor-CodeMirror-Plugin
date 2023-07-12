@@ -1,9 +1,10 @@
 CKEditor-CodeMirror-Plugin
 ==========================
 
-Syntax Highlighting for the CKEditor (Source View and Source Dialog) with the CodeMirror Plugin
+Syntax Highlighting for the CKEditor v4 (Source View and Source Dialog) with the CodeMirror Plugin
 
 ### Available Shortcuts
+* 'ALT + S' Switch to Source/WYSIWYG
 * 'CTRL + K' to comment the currently selected text
 * 'CTRL + SHIFT + K' to uncomment currently selected text
 * 'CTRL + ALT + K' to auto format currently selected text
