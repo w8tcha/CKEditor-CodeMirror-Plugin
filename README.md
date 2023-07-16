@@ -1,6 +1,10 @@
 CKEditor-CodeMirror-Plugin
 ==========================
 
+[![npm version](https://badge.fury.io/js/ckeditor-codemirror-plugin.svg)](https://www.npmjs.com/package/ckeditor-codemirror-plugin)
+![license](https://img.shields.io/github/license/w8tcha/ckeditor-codemirror-plugin)
+
+
 Syntax Highlighting for the CKEditor v4 (Source View and Source Dialog) with the CodeMirror Plugin
 
 ### Available Shortcuts
