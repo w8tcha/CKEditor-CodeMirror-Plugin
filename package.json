@@ -12,6 +12,7 @@
     "CodeMirror"
   ],
   "devDependencies": {
+    "@w8tcha/grunt-dev-update": "^2.3.1",
     "codemirror": "^5.65.14",
     "grunt": "~1.6.1",
     "grunt-contrib-copy": "^1.0.0",
@@ -19,7 +20,6 @@
     "grunt-contrib-requirejs": "^1.0.0",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "~1.1.0",
-    "grunt-dev-update": "^2.3.0",
-    "js-beautify": "^1.14.8"
+    "js-beautify": "^1.14.9"
   }
 }
