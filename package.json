@@ -13,13 +13,13 @@
   ],
   "devDependencies": {
     "@w8tcha/grunt-dev-update": "^2.3.4",
-    "codemirror": "^5.65.16",
+    "codemirror": "^5.65.18",
     "grunt": "~1.6.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "*",
     "grunt-contrib-requirejs": "^1.0.0",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "~1.1.0",
-    "js-beautify": "^1.15.1"
+    "js-beautify": "^1.15.4"
   }
 }
