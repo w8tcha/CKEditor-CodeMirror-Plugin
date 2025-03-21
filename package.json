@@ -13,7 +13,7 @@
   ],
   "devDependencies": {
     "@w8tcha/grunt-dev-update": "^2.3.4",
-    "codemirror": "^5.65.18",
+    "codemirror": "^5.65.19",
     "grunt": "~1.6.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "*",
