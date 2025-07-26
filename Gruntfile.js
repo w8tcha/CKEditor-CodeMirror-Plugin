@@ -32,7 +32,8 @@ module.exports = function(grunt) {
         'addon/search/match-highlighter.js',
         'addon/mode/multiplex.js' // TODO also required from htmlembedded
     ];
-// CONFIGURATION
+	require('@lodder/time-grunt')(grunt);
+    // CONFIGURATION
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         requirejs: {
