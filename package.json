@@ -21,6 +21,6 @@
     "grunt-contrib-requirejs": "^1.0.0",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "~1.1.0",
-    "js-beautify": "^1.15.4"
+    "js-beautify": "^2.0.3"
   }
 }
