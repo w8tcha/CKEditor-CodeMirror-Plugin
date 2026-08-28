@@ -1,0 +1,20 @@
+{
+  "name": "ckeditor-codemirror-plugin-website",
+  "version": "1.0.0",
+  "description": "CKEditor CodeMirror Plugin Website",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/w8tcha/CKEditor-CodeMirror-Plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/w8tcha/CKEditor-CodeMirror-Plugin.git"
+  },
+  "dependencies": {
+    "ckeditor4": "^4.22.1"
+  },
+  "scripts": {
+    "update-deps": "set npm_config_allow_scripts=&& npm-check -y",
+    "update-ckeditor": "node scripts/update-ckeditor.js",
+    "update-codemirror-plugin": "node scripts/update-codemirror-plugin.js"
+  }
+}
