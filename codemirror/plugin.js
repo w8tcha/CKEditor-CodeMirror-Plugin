@@ -9,8 +9,13 @@
 (function() {
     CKEDITOR.plugins.add('codemirror', {
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh', // %REMOVE_LINE_CORE%
-        version: '1.18.10',
+        version: '1.18.11',
         init: function (editor) {
+            // Text-selection state shared between the 'sourcedialog' factory
+            // (onShow/loadCodeMirrorInline) and the editor.on(...) handlers
+            // below, scoped per editor instance via this closure.
+            var wysiwygBookmark, textRange, sourceBookmark;
+
             var command = editor.addCommand('codemirrorAbout', new CKEDITOR.dialogCommand('codemirrorAboutDialog'));
             command.modes = { wysiwyg: 1, source: 1 };
 
@@ -338,7 +343,17 @@
                                             textRange = new CKEDITOR.dom.textRange(editor.getData());
                                             textRange.moveToBookmark(wysiwygBookmark, editor);
 
-                                            editor.setData(textRange.content);
+                                            // Remove the bookmark marker span(s) directly from the
+                                            // live WYSIWYG DOM instead of reloading via setData(),
+                                            // which would rebuild the editable and destroy the
+                                            // original selection -- breaking a dialog close/cancel
+                                            // that makes no edits.
+                                            const startMarker = editor.document.getById(wysiwygBookmark.startNode);
+                                            startMarker && startMarker.remove();
+                                            if (!wysiwygBookmark.collapsed) {
+                                                const endMarker = editor.document.getById(wysiwygBookmark.endNode);
+                                                endMarker && endMarker.remove();
+                                            }
                                         }
                                     }
                                 }
@@ -404,21 +419,38 @@
                         },
                         onOk: (function () {
 
-                            function setData(newData) {
+                            function setData(newData, restoreSelection) {
                                 var that = this;
 
                                 editor.setData(newData, function () {
                                     that.hide();
 
-                                    // Ensure correct selection.
-                                    const range = editor.createRange();
-                                    range.moveToElementEditStart(editor.editable());
-                                    range.select();
+                                    if (restoreSelection) {
+                                        // textselection plugin already embedded
+                                        // comment bookmarks into newData below.
+                                        restoreWysiwygSelectionFromCommentBookmark(editor);
+                                    } else {
+                                        // Ensure correct selection.
+                                        const range = editor.createRange();
+                                        range.moveToElementEditStart(editor.editable());
+                                        range.select();
+                                    }
                                 });
                             }
 
                             return function () {
-                                window[`codemirror_${editor.id}`].toTextArea();
+                                const cm = window[`codemirror_${editor.id}`];
+
+                                // Capture the CodeMirror caret/selection as a flat
+                                // text offset before destroying the CodeMirror
+                                // instance below (toTextArea() tears it down).
+                                var startOffset = -1, endOffset = -1;
+                                if (editor.plugins.textselection && cm) {
+                                    startOffset = LineChannelToOffSet(cm, cm.getCursor(true));
+                                    endOffset = LineChannelToOffSet(cm, cm.getCursor(false));
+                                }
+
+                                cm.toTextArea();
 
                                 // Free Memory
                                 window[`codemirror_${editor.id}`] = null;
@@ -434,8 +466,18 @@
                                     return true;
                                 }
 
+                                var finalData = newData,
+                                    restoreSelection = false;
+
+                                if (startOffset > -1 && endOffset > -1) {
+                                    const cursor = new CKEDITOR.dom.textRange(newData, startOffset, endOffset);
+                                    cursor.createBookmark(editor);
+                                    finalData = cursor.content;
+                                    restoreSelection = true;
+                                }
+
                                 // Set data asynchronously to avoid errors in IE.
-                                CKEDITOR.env.ie ? CKEDITOR.tools.setTimeout(setData, 0, this, newData) : setData.call(this, newData);
+                                CKEDITOR.env.ie ? CKEDITOR.tools.setTimeout(setData, 0, this, finalData, restoreSelection) : setData.call(this, finalData, restoreSelection);
 
                                 editor.fire('blur', this);
                                 editor.fire('focus', this);
@@ -1169,6 +1211,11 @@
                     range.createBookmark(editor);
                     sourceBookmark = true;
 
+                    // Also expose on the editor so the textselection plugin's
+                    // always-on 'mode' listener (which can't see this
+                    // closure's private variables) knows to restore it.
+                    editor._.textSelectionSourceBookmark = true;
+
                     if (editor.undoManager) {
                         editor.undoManager.unlock();
                     }
@@ -1184,21 +1231,25 @@
                         editor.getCommand('autoCompleteToggle').setState(window[`codemirror_${editor.id}`].config.autoCloseTags ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
                     }
 
-                    if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
-                        //textRange.element = new CKEDITOR.dom.element(editor._.editable.$);
-                        //textRange.select();
+                    // The textselection plugin computes this (including
+                    // handling for a collapsed, no-selection caret) in its own
+                    // 'beforeGetModeData'/'afterModeUnload' handlers and
+                    // exposes it here since it can't see this closure's
+                    // private variables.
+                    const sharedTextRange = editor._.textSelectionRange;
 
+                    if (editor.plugins.textselection && sharedTextRange && !editor.config.fullPage) {
                         let start;
                         let end;
 
-                        start = OffSetToLineChannel(window[`codemirror_${editor.id}`], textRange.startOffset);
+                        start = OffSetToLineChannel(window[`codemirror_${editor.id}`], sharedTextRange.startOffset);
 
-                        if (typeof (textRange.endOffset) == 'undefined') {
+                        if (typeof (sharedTextRange.endOffset) == 'undefined') {
                             window[`codemirror_${editor.id}`].focus();
                             window[`codemirror_${editor.id}`].setCursor(start);
                         } else {
                             window[`codemirror_${editor.id}`].focus();
-                            end = OffSetToLineChannel(window[`codemirror_${editor.id}`], textRange.endOffset);
+                            end = OffSetToLineChannel(window[`codemirror_${editor.id}`], sharedTextRange.endOffset);
                             window[`codemirror_${editor.id}`].setSelection(start, end);
                         }
                     }
