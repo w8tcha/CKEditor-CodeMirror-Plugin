@@ -274,18 +274,32 @@ module.exports = function(grunt) {
                 dest: 'codemirror/js/codemirror.addon.merge.min.js'
             },
             modeBBCode: {
+                options: {
+                    footer: '(function(window){' +
+                        '    "function"==typeof window.define && ' +
+                        '    window.define("modeBBCode", [], function (){' +
+                        '    });' +
+                        '})(this);'
+                },
                 src: [
                     'codemirror/js/mode/bbcode/bbcode.js'
                 ],
                 dest: 'codemirror/js/codemirror.mode.bbcode.min.js'
             },
             modeBBCodeMixed: {
+                options: {
+                    footer: '(function(window){' +
+                        '    "function"==typeof window.define && ' +
+                        '    window.define("modeBBCodeMixed", [], function (){' +
+                        '    });' +
+                        '})(this);'
+                },
                 src: [
                     'codemirror/js/mode/xml/xml.js',
                     'codemirror/js/mode/javascript/javascript.js',
                     'codemirror/js/mode/css/css.js',
                     'codemirror/js/mode/htmlmixed/htmlmixed.js',
-                    'codemirror/js/mode/bbcode/bbcodemixed.js',
+                    'codemirror/js/mode/bbcode/bbcode.js',
                     'codemirror/js/mode/bbcodemixed/bbcodemixed.js'
                 ],
                 dest: 'codemirror/js/codemirror.mode.bbcodemixed.min.js'
@@ -352,38 +366,17 @@ module.exports = function(grunt) {
                     { expand: true, src: '**/*', cwd: 'node_modules/codemirror/theme', dest: 'codemirror/theme' }
                 ]
             }
-        },
-		devUpdate: {
-            main: {
-                options: {
-                    reportUpdated: true,
-					updateType: 'force',
-					semver: true
-                }
-            }
         }
     });
 
     // PLUGINS
-    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('@w8tcha/grunt-dev-update');
-
-    grunt.registerTask('watch',
-        [
-			'copy',
-			'requirejs',
-            'uglify',
-            'cssmin',
-            'watch'
-        ]);
 
     grunt.registerTask('default',
         [
-			'devUpdate',
 			'copy',
 			'requirejs',
             'uglify',

@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: latest
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+
+      # npm Trusted Publishing (OIDC) requires npm CLI 11.5.1+; make sure we have it
+      # regardless of whatever version setup-node's Node build happens to bundle.
+      - name: Ensure npm supports trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Determine current and latest released version
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          LATEST_TAG=$(gh release view --json tagName -q .tagName --repo "$GITHUB_REPOSITORY" 2>/dev/null || echo "v0.0.0")
+          LATEST_VERSION=${LATEST_TAG#v}
+
+          IS_NEWER=$(node -e "
+            const gt = (a, b) => {
+              const pa = a.split('.').map(Number);
+              const pb = b.split('.').map(Number);
+              for (let i = 0; i < 3; i++) {
+                if ((pa[i] || 0) > (pb[i] || 0)) return true;
+                if ((pa[i] || 0) < (pb[i] || 0)) return false;
+              }
+              return false;
+            };
+            console.log(gt('$PKG_VERSION', '$LATEST_VERSION'));
+          ")
+
+          echo "pkg_version=$PKG_VERSION" >> "$GITHUB_OUTPUT"
+          echo "latest_version=$LATEST_VERSION" >> "$GITHUB_OUTPUT"
+          echo "is_newer=$IS_NEWER" >> "$GITHUB_OUTPUT"
+          echo "package.json version: $PKG_VERSION / latest release: $LATEST_VERSION / newer: $IS_NEWER"
+
+      - name: Install dependencies
+        if: steps.version.outputs.is_newer == 'true'
+        run: npm ci
+
+      - name: Build
+        if: steps.version.outputs.is_newer == 'true'
+        run: npm run build
+
+      - name: Create GitHub release
+        if: steps.version.outputs.is_newer == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.version.outputs.pkg_version }}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "${{ github.event.workflow_run.head_sha }}" \
+            --title "v${{ steps.version.outputs.pkg_version }}" \
+            --generate-notes
+
+      # Authenticates via OIDC using the job's id-token permission — no NPM_TOKEN secret needed.
+      # Requires the "@w8tcha/bootbox" package to have this repo + workflow registered as a
+      # Trusted Publisher in npm's package settings (see npmjs.com package Settings page).
+      - name: Publish to npm
+        if: steps.version.outputs.is_newer == 'true'
+        run: npm publish --access public

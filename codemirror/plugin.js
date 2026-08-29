@@ -9,7 +9,7 @@
 (function() {
     CKEDITOR.plugins.add('codemirror', {
         lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh', // %REMOVE_LINE_CORE%
-        version: '1.18.9',
+        version: '1.18.10',
         init: function (editor) {
             var command = editor.addCommand('codemirrorAbout', new CKEDITOR.dialogCommand('codemirrorAboutDialog'));
             command.modes = { wysiwyg: 1, source: 1 };
@@ -71,7 +71,7 @@
             }
 
             // automatically switch to bbcode mode if bbcode plugin is enabled
-            if (editor.plugins.bbcode && config.mode.indexOf('bbcode') <= 0) {
+            if (editor.plugins.bbcode && config.mode.indexOf('bbcode') < 0) {
                 config.mode = 'bbcode';
             }
             var requirePresent = 'function' === typeof require && 'function' === typeof require.config;
@@ -107,6 +107,14 @@
                         location: location,
                         main: 'codemirror.mode.js.min.js'
                     }, {
+                        name: 'codemirror-mode-bbcode',
+                        location: location,
+                        main: 'codemirror.mode.bbcode.min.js'
+                    }, {
+                        name: 'codemirror-mode-bbcodemixed',
+                        location: location,
+                        main: 'codemirror.mode.bbcodemixed.min.js'
+                    }, {
                         name: 'codemirror-addons',
                         location: location,
                         main: 'codemirror.addons.min.js'
@@ -123,6 +131,8 @@
                         'codemirror': ['core', 'codemirror.js'],
                         'codemirror-mode-handlebars': ['modeHandlebars'],
                         'codemirror-mode-twig': ['modeTwig'],
+                        'codemirror-mode-bbcode': ['modeBBCode'],
+                        'codemirror-mode-bbcodemixed': ['modeBBCodeMixed'],
                         'codemirror-mode-html': ['modeHtml'],
                         'codemirror-mode-php': ['modePHP'],
                         'codemirror-mode-js': ['modeJS'],
@@ -188,7 +198,7 @@
                             viewportMargin: Infinity,
                             extraKeys: config.extraKeys,
                             foldGutter: true,
-                            gutters: ['CodeMirror-linenumbbers', 'CodeMirror-foldgutter']
+                            gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']
                         });
 
                         window[`codemirror_${editor.id}`].display.wrapper.classList.add('cke_enable_context_menu');
@@ -767,8 +777,10 @@
                 const dependencies = ['core', 'addons'];
                 switch (config.mode) {
                     case 'bbcode':
+                        dependencies.push('modeBBCode');
+                        break;
                     case 'bbcodemixed':
-                        dependencies.push('modeHtml');
+                        dependencies.push('modeBBCodeMixed');
                         break;
                     case 'application/x-httpd-php':
                         dependencies.push('modePHP');
@@ -806,6 +818,8 @@
                         {
                             scriptFiles.push(rootPath + 'js/codemirror.mode.handlebars.min.js');
                         }
+
+                        break;
                     case 'bbcode':
                         {
                             scriptFiles.push(rootPath + 'js/codemirror.mode.bbcode.min.js');
@@ -982,7 +996,7 @@
                     workTime: 35,
                     readOnly: editor.readOnly,
                     lineNumbers: config.lineNumbers,
-                    lineWrapping: true,
+                    lineWrapping: config.lineWrapping,
                     autoCloseTags: config.autoCloseTags,
                     autoCloseBrackets: config.autoCloseBrackets,
                     highlightSelectionMatches: config.highlightMatches,
@@ -1423,7 +1437,7 @@ function OffSetToLineChannel(ed, n) {
     var line = 0, ch = 0, index = 0;
     for (i = 0; i < ed.lineCount() ; i++) {
         len = (ed.getLine(i)).length;
-        if (n < index + len) {
+        if (n <= index + len) {
 
             line = i;
             ch = n - index;
