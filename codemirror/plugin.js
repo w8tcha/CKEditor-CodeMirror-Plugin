@@ -281,7 +281,7 @@
                             }
                         });
 
-                        if (editor.plugins.textselection && textRange && !editor.config.fullPage) {
+                        if (editor.plugins.textselection && textRange) {
                             var start, end;
 
                             start = OffSetToLineChannel(window[`codemirror_${editor.id}`], textRange.startOffset);
@@ -1199,7 +1199,7 @@
             }
 
             editor.on('beforeModeUnload', function (evt) {
-                if (editor.mode === 'source' && editor.plugins.textselection && !editor.config.fullPage) {
+                if (editor.mode === 'source' && editor.plugins.textselection) {
 
                     const range = editor.getTextSelection();
 
@@ -1238,7 +1238,7 @@
                     // private variables.
                     const sharedTextRange = editor._.textSelectionRange;
 
-                    if (editor.plugins.textselection && sharedTextRange && !editor.config.fullPage) {
+                    if (editor.plugins.textselection && sharedTextRange) {
                         let start;
                         let end;
 
