@@ -24,9 +24,9 @@ http://w8tcha.github.io/CKEditor-CodeMirror-Plugin/
 
 The Full Theme List can be found here: http://codemirror.net/demo/theme.html
 
-![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorSourceView.png)
+![Screenshot](https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/blob/master/CKEditorSourceView.png?raw=true)
 
-![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/SourceDialog.png)
+![Screenshot](https://github.com/w8tcha/CKEditor-CodeMirror-Plugin/blob/master/SourceDialog.png?raw=true)
 
 #### License
 
