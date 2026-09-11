@@ -149,16 +149,11 @@ module.exports = {
         path: __dirname,
         clean: false
     },
-    externalsType: 'umd',
+    externalsType: 'window',
     externals: [
         ({ request }, callback) => {
             if (/\/lib\/codemirror$/.test(request)) {
-                return callback(null, {
-                    root: 'CodeMirror',
-                    commonjs: 'codemirror',
-                    commonjs2: 'codemirror',
-                    amd: 'codemirror.js'
-                });
+                return callback(null, 'CodeMirror');
             }
             callback();
         }
