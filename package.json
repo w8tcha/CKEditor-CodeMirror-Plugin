@@ -12,7 +12,7 @@
     "CodeMirror"
   ],
   "devDependencies": {
-    "codemirror": "^5.65.19",
+    "codemirror": "^5.65.21",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^8.0.0",
