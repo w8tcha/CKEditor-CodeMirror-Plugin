@@ -4,7 +4,7 @@
   function copyObj(obj, target, overwrite) {
     if (!target) { target = {}; }
     for (var prop in obj)
-      { if (Object.prototype.hasOwnProperty.call(obj, prop) && (overwrite !== false || !Object.prototype.hasOwnProperty.call(target, prop)))
+      { if (obj.hasOwnProperty(prop) && (overwrite !== false || !target.hasOwnProperty(prop)))
         { target[prop] = obj[prop]; } }
     return target
   }
