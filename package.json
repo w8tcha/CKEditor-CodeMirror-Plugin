@@ -12,7 +12,7 @@
     "CodeMirror"
   ],
   "devDependencies": {
-    "codemirror": "5.65.19",
+    "codemirror": "^5.65.19",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^8.0.0",
@@ -23,7 +23,7 @@
     "webpack-cli": "^7.2.3"
   },
   "scripts": {
-    "update-deps": "set npm_config_allow_scripts=&& npm-check -y",
+    "update-deps": "set npm_config_allow_scripts=&& npm-check -y -ignore ['codemirror']",
     "build": "webpack",
     "watch": "webpack --watch"
   }
