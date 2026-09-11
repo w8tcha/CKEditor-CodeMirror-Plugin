@@ -1,2 +1,5 @@
 # Ignore NPM modules
 /node_modules/**
+
+# Throwaway JS chunk emitted by mini-css-extract-plugin's CSS-only entry
+/.webpack-tmp/**
